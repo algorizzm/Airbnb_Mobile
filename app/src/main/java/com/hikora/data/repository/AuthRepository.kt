@@ -28,6 +28,7 @@ class AuthRepository {
         name: String,
         email: String,
         password: String,
+        role: String,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -40,7 +41,7 @@ class AuthRepository {
                     id = uid,
                     name = name,
                     email = email,
-                    role = "client"
+                    role = role.lowercase()
                 )
 
                 FirebaseFirestore.getInstance()

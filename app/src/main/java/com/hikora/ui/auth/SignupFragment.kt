@@ -15,7 +15,11 @@ class SignupFragment : Fragment() {
 
     private lateinit var viewModel: AuthViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_signup, container, false)
     }
 
@@ -24,68 +28,50 @@ class SignupFragment : Fragment() {
         val etEmail = view.findViewById<EditText>(R.id.etEmail)
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
         val etConfirm = view.findViewById<EditText>(R.id.etConfirmPassword)
-        val btnSignup = view.findViewById<Button>(R.id.btnSignup)
+        val etName = view.findViewById<EditText>(R.id.etName)
+
+        val btnClient = view.findViewById<Button>(R.id.btnClient)
+        val btnGuide = view.findViewById<Button>(R.id.btnGuide)
+
         val tvError = view.findViewById<TextView>(R.id.tvError)
         val btnBack = view.findViewById<ImageView>(R.id.btnBackLogin)
-        val etName = view.findViewById<EditText>(R.id.etName)
         val cbTerms = view.findViewById<CheckBox>(R.id.cbTerms)
         val tvLoginRedirect = view.findViewById<TextView>(R.id.tvLoginRedirect)
 
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
-        btnSignup.setOnClickListener {
+        // 🔵 Continue as Client
+        btnClient.setOnClickListener {
 
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
             val confirm = etConfirm.text.toString().trim()
             val name = etName.text.toString().trim()
 
-            // 🔴 Validation
-            if (!cbTerms.isChecked) {
-                tvError.text = "You must accept the terms"
-                tvError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
+            if (!validateInputs(name, email, password, confirm, cbTerms, tvError)) return@setOnClickListener
 
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                tvError.text = "Please fill in all fields"
-                tvError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            if (email.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-                tvError.text = "All fields are required"
-                tvError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                tvError.text = "Invalid email format"
-                tvError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            if (password.length < 8) {
-                tvError.text = "Password must be at least 8 characters"
-                tvError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            if (password != confirm) {
-                tvError.text = "Passwords do not match"
-                tvError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            tvError.visibility = View.GONE
-
-            viewModel.signup(name, email, password)
+            viewModel.signup(name, email, password, "client")
         }
 
+        // 🟢 Continue as Guide
+        btnGuide.setOnClickListener {
+
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString().trim()
+            val confirm = etConfirm.text.toString().trim()
+            val name = etName.text.toString().trim()
+
+            if (!validateInputs(name, email, password, confirm, cbTerms, tvError)) return@setOnClickListener
+
+            viewModel.signup(name, email, password, "guide")
+        }
+
+        // 🔙 Back button
         btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
+        // 🔗 Go to login
         tvLoginRedirect.setOnClickListener {
             findNavController().navigate(
                 R.id.loginFragment,
@@ -96,6 +82,7 @@ class SignupFragment : Fragment() {
             )
         }
 
+        // ✅ Success observer
         viewModel.authState.observe(viewLifecycleOwner) {
             if (it) {
                 Toast.makeText(requireContext(), "Signup Successful", Toast.LENGTH_SHORT).show()
@@ -103,9 +90,54 @@ class SignupFragment : Fragment() {
             }
         }
 
+        // ❌ Error observer
         viewModel.error.observe(viewLifecycleOwner) {
             tvError.text = it
             tvError.visibility = View.VISIBLE
         }
+    }
+
+    // 🔍 Validation function
+    private fun validateInputs(
+        name: String,
+        email: String,
+        password: String,
+        confirm: String,
+        cbTerms: CheckBox,
+        tvError: TextView
+    ): Boolean {
+
+        if (!cbTerms.isChecked) {
+            tvError.text = "You must accept the terms"
+            tvError.visibility = View.VISIBLE
+            return false
+        }
+
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+            tvError.text = "Please fill in all fields"
+            tvError.visibility = View.VISIBLE
+            return false
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tvError.text = "Invalid email format"
+            tvError.visibility = View.VISIBLE
+            return false
+        }
+
+        if (password.length < 8) {
+            tvError.text = "Password must be at least 8 characters"
+            tvError.visibility = View.VISIBLE
+            return false
+        }
+
+        if (password != confirm) {
+            tvError.text = "Passwords do not match"
+            tvError.visibility = View.VISIBLE
+            return false
+        }
+
+        tvError.visibility = View.GONE
+        return true
     }
 }

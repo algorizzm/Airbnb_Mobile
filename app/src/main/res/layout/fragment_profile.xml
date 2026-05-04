@@ -86,6 +86,10 @@
                     android:id="@+id/layoutEditProfileMenu"
                     layout="@layout/edit_profile_menu" />
                 <View style="@style/HikoraDivider" />
+                <include
+                    android:id="@+id/layoutMyBookingsMenu"
+                    layout="@layout/my_bookings_menu" />
+                <View style="@style/HikoraDivider" />
                 <include layout="@layout/my_trails_menu" />
                 <View style="@style/HikoraDivider" />
                 <include layout="@layout/change_password_menu" />

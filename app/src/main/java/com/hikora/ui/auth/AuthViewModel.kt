@@ -28,11 +28,12 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    fun signup(name: String, email: String, password: String) {
+    fun signup(name: String, email: String, password: String, role: String) {
         repository.signup(
             name,
             email,
             password,
+            role, // Pass role as a String
             onSuccess = {
                 _authState.value = true
             },

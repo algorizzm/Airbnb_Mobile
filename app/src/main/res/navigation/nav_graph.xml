@@ -50,6 +50,10 @@
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@+id/editProfileFragment" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_myBookingsFragment"
+            app:destination="@id/myBookingsFragment" />
     </fragment>
 
     <fragment
@@ -61,6 +65,26 @@
         android:id="@+id/hikesFragment"
         android:name="com.hikora.ui.hikes.HikesFragment"
         android:label="Hikes" />
+
+    <fragment
+        android:id="@+id/hikeDetailFragment"
+        android:name="com.hikora.ui.hikes.HikeDetailFragment"
+        android:label="Hike details" />
+
+    <fragment
+        android:id="@+id/createEditHikeFragment"
+        android:name="com.hikora.ui.hikes.CreateEditHikeFragment"
+        android:label="Create or edit hike" />
+
+    <fragment
+        android:id="@+id/applicantsFragment"
+        android:name="com.hikora.ui.hikes.ApplicantsFragment"
+        android:label="Applicants" />
+
+    <fragment
+        android:id="@+id/myBookingsFragment"
+        android:name="com.hikora.ui.hikes.MyBookingsFragment"
+        android:label="My bookings" />
 
     <fragment
         android:id="@+id/reelsFragment"

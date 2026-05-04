@@ -64,6 +64,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     .build()
             )
         }
+
+        binding.layoutMyBookingsMenu.root.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_myBookingsFragment)
+        }
     }
 
     private fun updateUI(user: User) {

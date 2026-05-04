@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hikora.data.model.User
 import com.hikora.data.repository.UserRepository
+import com.hikora.data.session.UserSessionManager
 import kotlinx.coroutines.launch
 
 class ProfileViewModel : ViewModel() {
@@ -32,7 +33,8 @@ class ProfileViewModel : ViewModel() {
             _updateStatus.postValue(success)
 
             if (success) {
-                loadUser() // refresh UI
+                UserSessionManager.refresh()
+                loadUser()
             }
         }
     }

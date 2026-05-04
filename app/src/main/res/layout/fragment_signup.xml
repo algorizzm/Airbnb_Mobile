@@ -162,15 +162,31 @@
                 android:text="I understood the terms and policy."
                 android:layout_marginTop="12dp"/>
 
-            <!-- SIGNUP BUTTON -->
+            <!-- ROLE SELECTION BUTTONS -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue as"
+                android:textColor="#555555"
+                android:layout_marginTop="16dp"/>
+
             <Button
-                android:id="@+id/btnSignup"
+                android:id="@+id/btnClient"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="SIGN UP"
+                android:text="Continue as Client"
                 android:textColor="#FFFFFF"
                 android:background="@drawable/bg_button_primary"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="8dp"/>
+
+            <Button
+                android:id="@+id/btnGuide"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Continue as Guide"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_input"
+                android:layout_marginTop="12dp"/>
 
             <!-- DIVIDER -->
             <TextView
@@ -180,33 +196,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:textColor="#777777"/>
-
-            <!-- SOCIAL -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="12dp">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/google"
-                    android:layout_margin="8dp"/>
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/facebook"
-                    android:layout_margin="8dp"/>
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/phone"
-                    android:layout_margin="8dp"/>
-            </LinearLayout>
 
             <!-- FOOTER -->
             <TextView
