@@ -26,6 +26,21 @@
         android:layout_marginTop="16dp"
         android:padding="12dp" />
 
+    <!-- Difficulty Filter Spinner -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinnerDifficulty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:drawable/btn_dropdown" />
+    </LinearLayout>
+
     <!-- Featured Card -->
     <LinearLayout
         android:id="@+id/cardFeatured"
