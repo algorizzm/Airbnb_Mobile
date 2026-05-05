@@ -25,18 +25,16 @@ class SignupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val etName = view.findViewById<EditText>(R.id.etName)
         val etEmail = view.findViewById<EditText>(R.id.etEmail)
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
         val etConfirm = view.findViewById<EditText>(R.id.etConfirmPassword)
-        val etName = view.findViewById<EditText>(R.id.etName)
 
         val btnClient = view.findViewById<Button>(R.id.btnClient)
         val btnGuide = view.findViewById<Button>(R.id.btnGuide)
 
         val tvError = view.findViewById<TextView>(R.id.tvError)
-        val btnBack = view.findViewById<ImageView>(R.id.btnBackLogin)
-        val cbTerms = view.findViewById<CheckBox>(R.id.cbTerms)
-        val tvLoginRedirect = view.findViewById<TextView>(R.id.tvLoginRedirect)
+        val tvLoginRedirect = view.findViewById<TextView>(R.id.tvFooter)
 
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
@@ -48,7 +46,7 @@ class SignupFragment : Fragment() {
             val confirm = etConfirm.text.toString().trim()
             val name = etName.text.toString().trim()
 
-            if (!validateInputs(name, email, password, confirm, cbTerms, tvError)) return@setOnClickListener
+            if (!validateInputs(name, email, password, confirm, tvError)) return@setOnClickListener
 
             viewModel.signup(name, email, password, "client")
         }
@@ -61,14 +59,9 @@ class SignupFragment : Fragment() {
             val confirm = etConfirm.text.toString().trim()
             val name = etName.text.toString().trim()
 
-            if (!validateInputs(name, email, password, confirm, cbTerms, tvError)) return@setOnClickListener
+            if (!validateInputs(name, email, password, confirm, tvError)) return@setOnClickListener
 
             viewModel.signup(name, email, password, "guide")
-        }
-
-        // 🔙 Back button
-        btnBack.setOnClickListener {
-            findNavController().navigateUp()
         }
 
         // 🔗 Go to login
@@ -103,15 +96,8 @@ class SignupFragment : Fragment() {
         email: String,
         password: String,
         confirm: String,
-        cbTerms: CheckBox,
         tvError: TextView
     ): Boolean {
-
-        if (!cbTerms.isChecked) {
-            tvError.text = "You must accept the terms"
-            tvError.visibility = View.VISIBLE
-            return false
-        }
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
             tvError.text = "Please fill in all fields"

@@ -74,7 +74,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val difficulties = listOf("All", "Easy", "Moderate", "Hard", "Expert")
 
         // Only run if spinner exists in XML
-        binding.spinnerDifficulty?.let { spinner ->
+        binding.spinnerDifficulty.let { spinner ->
             spinner.adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,

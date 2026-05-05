@@ -28,13 +28,13 @@ class LoginFragment : Fragment() {
 
         val etEmail = view.findViewById<EditText>(R.id.etEmail)
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
-        val btnLogin = view.findViewById<Button>(R.id.btnLogin)
+        val btnContinue = view.findViewById<Button>(R.id.btnContinue)
         val tvError = view.findViewById<TextView>(R.id.tvError)
-        val btnSignup = view.findViewById<TextView>(R.id.btnGoSignup)
+        val tvSignupRedirect = view.findViewById<TextView>(R.id.tvFooter)
 
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
-        btnLogin.setOnClickListener {
+        btnContinue.setOnClickListener {
 
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
             viewModel.login(email, password)
         }
 
-        btnSignup.setOnClickListener {
+        tvSignupRedirect.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signupFragment)
         }
 

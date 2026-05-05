@@ -1,0 +1,23 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- solid dark base -->
+    <item>
+        <shape>
+            <solid android:color="#121212"/>
+        </shape>
+    </item>
+
+    <!-- your gradient on top -->
+    <item>
+        <shape>
+            <gradient
+                android:angle="90"
+                android:type="linear"
+                android:startColor="#5528A458"
+                android:centerColor="#121212"
+                android:centerY="0.2"
+                android:endColor="#121212" />
+        </shape>
+    </item>
+
+</layer-list>
