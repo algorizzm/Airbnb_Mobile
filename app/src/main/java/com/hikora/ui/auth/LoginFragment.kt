@@ -73,10 +73,10 @@ class LoginFragment : Fragment() {
                 viewModel.resetAuthState()
 
                 findNavController().navigate(
-                    R.id.action_signupFragment_to_loginFragment,
+                    R.id.action_loginFragment_to_homeFragment,
                     null,
                     androidx.navigation.NavOptions.Builder()
-                        .setPopUpTo(R.id.signupFragment, true)
+                        .setPopUpTo(R.id.loginFragment, true)
                         .build()
                 )
             }
