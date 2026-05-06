@@ -35,9 +35,16 @@ class AuthRepository {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { result ->
 
-                val uid = result.user?.uid ?: return@addOnSuccessListener
+                val user = result.user
 
-                val user = User(
+                if (user == null) {
+                    onFailure(Exception("User creation failed: user is null"))
+                    return@addOnSuccessListener
+                }
+
+                val uid = user.uid
+
+                val userData = User(
                     id = uid,
                     name = name,
                     email = email,
@@ -47,7 +54,7 @@ class AuthRepository {
                 FirebaseFirestore.getInstance()
                     .collection("users")
                     .document(uid)
-                    .set(user)
+                    .set(userData)
                     .addOnSuccessListener {
                         onSuccess()
                     }

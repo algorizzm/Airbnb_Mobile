@@ -16,16 +16,20 @@ class AuthViewModel : ViewModel() {
     val error: LiveData<String> = _error
 
     fun login(email: String, password: String) {
-        repository.login(
-            email,
-            password,
-            onSuccess = {
-                _authState.value = true
-            },
-            onFailure = { exception ->
-                _error.value = exception.message ?: "Login failed"
-            }
-        )
+        try {
+            repository.login(
+                email,
+                password,
+                onSuccess = {
+                    _authState.postValue(true)
+                },
+                onFailure = { exception ->
+                    _error.postValue(exception.message ?: "Login failed")
+                }
+            )
+        } catch (e: Exception) {
+            _error.postValue(e.message ?: "Login crashed")
+        }
     }
 
     fun signup(name: String, email: String, password: String, role: String) {
@@ -33,13 +37,18 @@ class AuthViewModel : ViewModel() {
             name,
             email,
             password,
-            role, // Pass role as a String
+            role,
             onSuccess = {
-                _authState.value = true
+                _authState.postValue(true)
             },
-            onFailure = { exception ->
-                _error.value = exception.message ?: "Signup failed"
+            onFailure = {
+                _error.postValue(it.message ?: "Signup failed")
             }
         )
     }
+    fun resetAuthState() {
+        _authState.value = false
+    }
+
 }
+

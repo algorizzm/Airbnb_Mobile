@@ -1,126 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#0B3D2E"
-    android:padding="20dp">
+    android:background="#151515">
 
-    <!-- Greeting -->
-    <TextView
-        android:id="@+id/tvGreeting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello, Hiker 👋"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-
-    <!-- Search -->
-    <EditText
-        android:id="@+id/etSearch"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Search hikes..."
-        android:background="@android:drawable/editbox_background"
-        android:layout_marginTop="16dp"
-        android:padding="12dp" />
-
-    <!-- Difficulty Filter Spinner -->
+    <!-- 🔝 Top Nav Bar (Fixed, NOT scrollable) -->
     <LinearLayout
+        android:id="@+id/topNavBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/spinnerDifficulty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:drawable/btn_dropdown" />
-    </LinearLayout>
-
-    <!-- Featured Card -->
-    <LinearLayout
-        android:id="@+id/cardFeatured"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#FFFFFF">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Featured Hike"
-            android:textStyle="bold"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mt. Pulag"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sea of Clouds Experience"
-            android:layout_marginTop="4dp" />
-
-    </LinearLayout>
-
-    <!-- Quick Actions -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quick Actions"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:orientation="horizontal"
-        android:layout_marginTop="12dp">
+        android:gravity="center_vertical"
+        android:background="#3B434B"
+        android:paddingHorizontal="20dp">
 
-        <Button
-            android:id="@+id/btnBook"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Book Hike" />
+        <!-- Avatar -->
+        <FrameLayout
+            android:id="@+id/avatarContainer"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle">
 
-        <Button
-            android:id="@+id/btnGuides"
+            <TextView
+                android:id="@+id/tvAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="HH"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="12sp" />
+        </FrameLayout>
+
+        <!-- Spacer -->
+        <View
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Find Guide" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Messages -->
+        <ImageView
+            android:id="@+id/imgMessages"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_message"
+            android:contentDescription="Messages"
+            android:layout_marginEnd="20dp" />
+
+        <!-- Notifications -->
+        <ImageView
+            android:id="@+id/imgNotifications"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_notification"
+            android:contentDescription="Notifications" />
+
     </LinearLayout>
 
-    <!-- 🔥 NEW: Hikes Section Title -->
-    <TextView
-        android:id="@+id/tvHikesTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Popular Hikes"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="24dp" />
-
-    <!-- 🔥 NEW: RecyclerView -->
+    <!-- 🔥 Scrollable Feed -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerHikes"
+        android:id="@+id/homeRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="12dp" />
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:scrollbars="none" />
 
 </LinearLayout>
