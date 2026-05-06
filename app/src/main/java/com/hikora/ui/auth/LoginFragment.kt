@@ -68,13 +68,15 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.authState.observe(viewLifecycleOwner) {
-            if (it) {
-                Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+            if (it == true && isAdded) {
+
+                viewModel.resetAuthState()
+
                 findNavController().navigate(
-                    R.id.homeFragment,
+                    R.id.action_signupFragment_to_loginFragment,
                     null,
                     androidx.navigation.NavOptions.Builder()
-                        .setPopUpTo(R.id.loginFragment, true)
+                        .setPopUpTo(R.id.signupFragment, true)
                         .build()
                 )
             }

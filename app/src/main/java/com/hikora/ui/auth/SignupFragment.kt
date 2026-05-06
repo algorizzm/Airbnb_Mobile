@@ -9,7 +9,11 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import com.hikora.R
+
+
+
 
 class SignupFragment : Fragment() {
 
@@ -30,8 +34,8 @@ class SignupFragment : Fragment() {
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
         val etConfirm = view.findViewById<EditText>(R.id.etConfirmPassword)
 
-        val btnClient = view.findViewById<Button>(R.id.btnClient)
-        val btnGuide = view.findViewById<Button>(R.id.btnGuide)
+        val btnClient = view.findViewById<MaterialButton>(R.id.btnClient)
+        val btnGuide = view.findViewById<MaterialButton>(R.id.btnGuide)
 
         val tvError = view.findViewById<TextView>(R.id.tvError)
         val tvLoginRedirect = view.findViewById<TextView>(R.id.tvFooter)
@@ -41,15 +45,16 @@ class SignupFragment : Fragment() {
         // 🔵 Continue as Client
         btnClient.setOnClickListener {
 
+            val name = etName.text.toString().trim()
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
             val confirm = etConfirm.text.toString().trim()
-            val name = etName.text.toString().trim()
 
             if (!validateInputs(name, email, password, confirm, tvError)) return@setOnClickListener
 
             viewModel.signup(name, email, password, "client")
         }
+
 
         // 🟢 Continue as Guide
         btnGuide.setOnClickListener {
@@ -67,7 +72,7 @@ class SignupFragment : Fragment() {
         // 🔗 Go to login
         tvLoginRedirect.setOnClickListener {
             findNavController().navigate(
-                R.id.loginFragment,
+                R.id.action_signupFragment_to_loginFragment,
                 null,
                 androidx.navigation.NavOptions.Builder()
                     .setPopUpTo(R.id.signupFragment, true)
@@ -76,21 +81,24 @@ class SignupFragment : Fragment() {
         }
 
         // ✅ Success observer
-        viewModel.authState.observe(viewLifecycleOwner) {
-            if (it) {
-                Toast.makeText(requireContext(), "Signup Successful", Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
-            }
+        viewModel.authState.observe(viewLifecycleOwner) { success ->
+            if (success != true) return@observe
+
+            if (!isAdded) return@observe
+
+            viewModel.resetAuthState()
+
+            findNavController().navigate(
+                R.id.action_signupFragment_to_loginFragment,
+                null,
+                androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.signupFragment, true)
+                    .build()
+            )
         }
 
-        // ❌ Error observer
-        viewModel.error.observe(viewLifecycleOwner) {
-            tvError.text = it
-            tvError.visibility = View.VISIBLE
         }
     }
-
-    // 🔍 Validation function
     private fun validateInputs(
         name: String,
         email: String,
@@ -125,5 +133,4 @@ class SignupFragment : Fragment() {
 
         tvError.visibility = View.GONE
         return true
-    }
 }
