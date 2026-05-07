@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.verdant.R
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
@@ -12,14 +13,22 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
         view.postDelayed({
 
-            val bundle = Bundle().apply {
-                putInt("layoutId", R.layout.fragment_onboarding)
-            }
+            val currentUser = FirebaseAuth.getInstance().currentUser
 
-            findNavController().navigate(
-                R.id.onboardingFragment,
-                bundle
-            )
+            if (currentUser != null) {
+                // Already logged in
+                findNavController().navigate(R.id.main_graph)
+            } else {
+                // Not logged in -> onboarding
+                val bundle = Bundle().apply {
+                    putInt("layoutId", R.layout.fragment_onboarding)
+                }
+
+                findNavController().navigate(
+                    R.id.onboardingFragment,
+                    bundle
+                )
+            }
 
         }, 1000)
     }
