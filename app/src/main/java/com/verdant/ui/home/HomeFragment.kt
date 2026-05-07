@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.verdant.R
+import com.verdant.data.model.FeedItem
 import com.verdant.data.model.HikePost
 import com.verdant.databinding.FragmentHomeBinding
 import com.verdant.ui.home.adapter.PostAdapter
+import androidx.navigation.fragment.findNavController
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -17,7 +19,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentHomeBinding.bind(view)
@@ -37,13 +42,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView(role: String?) {
 
+        // =================================================
+        // DUMMY POSTS
+        // =================================================
+
         val dummyHikes = listOf(
+
             HikePost(
                 username = "James Roldan",
                 date = "Apr 9, 2026",
                 time = "10:32 AM",
                 location = "Paceo Arcenas",
-                title = "Starbuks",
+                title = "STARBUKS HIKE!",
                 distance = "12.5 km",
                 elevation = "980 m",
                 duration = "5h 20m",
@@ -53,12 +63,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     R.drawable.sample_hike
                 )
             ),
+
             HikePost(
                 username = "James Roldan",
                 date = "Apr 9, 2026",
                 time = "10:32 AM",
                 location = "Paceo Arcenas",
-                title = "Starbuks",
+                title = "STARBUKS HIKE!",
                 distance = "12.5 km",
                 elevation = "980 m",
                 duration = "5h 20m",
@@ -70,13 +81,40 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             )
         )
 
+        // =================================================
+        // FEED ITEMS
+        // =================================================
+
+        val feedItems = mutableListOf<FeedItem>()
+
+        // First Item = CTA
+        feedItems.add(FeedItem.CTA)
+
+        // Add Posts
+        feedItems.addAll(
+            dummyHikes.map {
+                FeedItem.Post(it)
+            }
+        )
+
+        // =================================================
+        // RECYCLER VIEW
+        // =================================================
+
         binding.homeRecyclerView.layoutManager =
             LinearLayoutManager(requireContext())
 
         binding.homeRecyclerView.adapter =
             PostAdapter(
-                hikes = dummyHikes,
-                userRole = role
+                items = feedItems,
+                userRole = role,
+
+                onHikeClick = {
+
+                    findNavController().navigate(
+                        R.id.action_homeFragment_to_hikesFragment
+                    )
+                }
             )
     }
 

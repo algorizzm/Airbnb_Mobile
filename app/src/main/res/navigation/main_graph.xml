@@ -8,7 +8,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.verdant.ui.home.HomeFragment"
-        android:label="Home" />
+        android:label="Home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_hikesFragment"
+            app:destination="@id/hikeFragment" />
+
+    </fragment>
 
     <!-- Explore -->
     <fragment
