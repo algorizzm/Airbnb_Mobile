@@ -7,14 +7,14 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/hikesFragment"
+        android:id="@+id/exploreFragment"
         android:icon="@android:drawable/ic_menu_compass"
-        android:title="Hikes" />
+        android:title="Explore" />
 
     <item
-        android:id="@+id/reelsFragment"
+        android:id="@+id/hikeFragment"
         android:icon="@android:drawable/ic_media_play"
-        android:title="Reels" />
+        android:title="hike" />
 
     <item
         android:id="@+id/messagesFragment"

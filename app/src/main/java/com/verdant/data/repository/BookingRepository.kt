@@ -1,0 +1,103 @@
+package com.verdant.data.repository
+
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.verdant.data.model.Booking
+import com.verdant.utils.BookingStatus
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
+
+class BookingRepository(
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+) {
+
+    private val bookingsCol get() = db.collection("bookings")
+
+    fun observeBookingsForHike(hikeId: String): Flow<List<Booking>> = callbackFlow {
+        val reg = bookingsCol
+            .whereEqualTo("hikeId", hikeId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val list = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(Booking::class.java)?.copy(id = doc.id)
+                }.orEmpty()
+                    .sortedByDescending { it.createdAt?.seconds ?: 0 }
+                trySend(list)
+            }
+        awaitClose { reg.remove() }
+    }
+
+    fun observeBookingsForUser(userId: String): Flow<List<Booking>> = callbackFlow {
+        val reg = bookingsCol
+            .whereEqualTo("userId", userId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val list = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(Booking::class.java)?.copy(id = doc.id)
+                }.orEmpty()
+                    .sortedByDescending { it.createdAt?.seconds ?: 0 }
+                trySend(list)
+            }
+        awaitClose { reg.remove() }
+    }
+
+    suspend fun findActiveBookingForUserOnHike(hikeId: String, userId: String): Booking? {
+        val snap = runCatching {
+            bookingsCol
+                .whereEqualTo("hikeId", hikeId)
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+        }.getOrNull() ?: return null
+        return snap.documents
+            .mapNotNull { it.toObject(Booking::class.java)?.copy(id = it.id) }
+            .firstOrNull {
+                it.status == BookingStatus.PENDING || it.status == BookingStatus.APPROVED
+            }
+    }
+
+    suspend fun countApprovedForHike(hikeId: String): Int = runCatching {
+        val snap = bookingsCol
+            .whereEqualTo("hikeId", hikeId)
+            .whereEqualTo("status", BookingStatus.APPROVED)
+            .get()
+            .await()
+        snap.size()
+    }.getOrDefault(0)
+
+    suspend fun createPendingBooking(
+        hikeId: String,
+        userId: String,
+        userName: String
+    ): Result<String> = runCatching {
+        if (findActiveBookingForUserOnHike(hikeId, userId) != null) {
+            error("You already have an application for this hike.")
+        }
+        val ref = bookingsCol.document()
+        ref.set(
+            mapOf(
+                "hikeId" to hikeId,
+                "userId" to userId,
+                "userName" to userName,
+                "status" to BookingStatus.PENDING,
+                "createdAt" to Timestamp.now()
+            )
+        ).await()
+        ref.id
+    }
+
+    suspend fun updateBookingStatus(bookingId: String, status: String): Result<Unit> = runCatching {
+        bookingsCol.document(bookingId).update("status", status).await()
+    }
+
+    suspend fun cancelBooking(bookingId: String): Result<Unit> =
+        updateBookingStatus(bookingId, BookingStatus.CANCELLED)
+}

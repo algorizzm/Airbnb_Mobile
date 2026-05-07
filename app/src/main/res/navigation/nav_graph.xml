@@ -2,102 +2,15 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/public_nested_graph">
 
-    <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.hikora.ui.main.SplashFragment"
-        android:label="Launcher" />
+    <!-- Public flow: Splash + Onboarding -->
+    <include app:graph="@navigation/public_graph" />
 
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.hikora.ui.auth.LoginFragment"
-        android:label="Login">
+    <!-- Auth flow: Login + Signup -->
+    <include app:graph="@navigation/auth_graph" />
 
-        <action
-            android:id="@+id/action_loginFragment_to_signupFragment"
-            app:destination="@id/signupFragment" />
-
-        <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/signupFragment"
-        android:name="com.hikora.ui.auth.SignupFragment"
-        android:label="Signup">
-
-        <action
-            android:id="@+id/action_signupFragment_to_loginFragment"
-            app:destination="@+id/loginFragment" />
-
-        <action
-            android:id="@+id/action_signupFragment_to_homeFragment"
-            app:destination="@+id/homeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.hikora.ui.home.HomeFragment"
-        android:label="Home" />
-
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.hikora.ui.profile.ProfileFragment"
-        android:label="Profile">
-
-        <action
-            android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-
-        <action
-            android:id="@+id/action_profileFragment_to_editProfileFragment"
-            app:destination="@+id/editProfileFragment" />
-
-        <action
-            android:id="@+id/action_profileFragment_to_myBookingsFragment"
-            app:destination="@id/myBookingsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/editProfileFragment"
-        android:name="com.hikora.ui.profile.EditProfileFragment"
-        android:label="Edit Profile" />
-
-    <fragment
-        android:id="@+id/hikesFragment"
-        android:name="com.hikora.ui.hikes.HikesFragment"
-        android:label="Hikes" />
-
-    <fragment
-        android:id="@+id/hikeDetailFragment"
-        android:name="com.hikora.ui.hikes.HikeDetailFragment"
-        android:label="Hike details" />
-
-    <fragment
-        android:id="@+id/createEditHikeFragment"
-        android:name="com.hikora.ui.hikes.CreateEditHikeFragment"
-        android:label="Create or edit hike" />
-
-    <fragment
-        android:id="@+id/applicantsFragment"
-        android:name="com.hikora.ui.hikes.ApplicantsFragment"
-        android:label="Applicants" />
-
-    <fragment
-        android:id="@+id/myBookingsFragment"
-        android:name="com.hikora.ui.hikes.MyBookingsFragment"
-        android:label="My bookings" />
-
-    <fragment
-        android:id="@+id/reelsFragment"
-        android:name="com.hikora.ui.reels.ReelsFragment"
-        android:label="Reels" />
-
-    <fragment
-        android:id="@+id/messagesFragment"
-        android:name="com.hikora.ui.messages.MessagesFragment"
-        android:label="Messages" />
+    <!-- Main flow: Bottom tabs + their destinations -->
+    <include app:graph="@navigation/main_graph" />
 
 </navigation>

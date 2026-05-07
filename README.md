@@ -1,7 +1,7 @@
-# Hikora
+# Verdant
 ### Hiking Event Booking Application for Cebu
 
-Hikora is a mobile application designed to help hikers discover, join, and organize hiking events across Cebu. The platform connects hikers, guides, and event organizers in a centralized system where users can browse trails, book hikes, and manage outdoor adventures easily.
+Verdant is a mobile application designed to help hikers discover, join, and organize hiking events across Cebu. The platform connects hikers, guides, and event organizers in a centralized system where users can browse trails, book hikes, and manage outdoor adventures easily.
 
 This project is being developed using **Android Studio with Kotlin** and follows an **Agile development process with sprint cycles from March to May**.
 
@@ -9,7 +9,7 @@ This project is being developed using **Android Studio with Kotlin** and follows
 
 # Project Objectives
 
-The main objective of Hikora is to create a mobile platform that allows users to:
+The main objective of Verdant is to create a mobile platform that allows users to:
 
 - Discover hiking trails in Cebu
 - Book hiking events
@@ -21,7 +21,7 @@ The main objective of Hikora is to create a mobile platform that allows users to
 
 # User Roles
 
-Hikora supports multiple user roles within the system:
+Verdant supports multiple user roles within the system:
 
 ### Hiker
 Regular users who want to browse trails and book hiking events.
@@ -215,7 +215,7 @@ Additional contributors may be added as the project progresses.
 This project is created for academic purposes.
 ### Hiking Event Booking Application for Cebu
 
-Hikora is a mobile application designed to help hikers discover, join, and organize hiking events across Cebu. The platform connects hikers, guides, and event organizers in a centralized system where users can browse trails, book hikes, and manage outdoor adventures easily.
+Verdant is a mobile application designed to help hikers discover, join, and organize hiking events across Cebu. The platform connects hikers, guides, and event organizers in a centralized system where users can browse trails, book hikes, and manage outdoor adventures easily.
 
 This project is being developed using **Android Studio with Kotlin** and follows an **Agile development process with sprint cycles from March to May**.
 
@@ -223,7 +223,7 @@ This project is being developed using **Android Studio with Kotlin** and follows
 
 # Project Objectives
 
-The main objective of Hikora is to create a mobile platform that allows users to:
+The main objective of Verdant is to create a mobile platform that allows users to:
 
 - Discover hiking trails in Cebu
 - Book hiking events
@@ -235,7 +235,7 @@ The main objective of Hikora is to create a mobile platform that allows users to
 
 # User Roles
 
-Hikora supports multiple user roles within the system:
+Verdant supports multiple user roles within the system:
 
 ### Hiker
 Regular users who want to browse trails and book hiking events.

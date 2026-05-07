@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "63757711746",
-    "project_id": "hikora-ad740",
-    "storage_bucket": "hikora-ad740.firebasestorage.app"
+    "project_number": "152376547882",
+    "project_id": "verdant-71e11",
+    "storage_bucket": "verdant-71e11.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:63757711746:android:667cc2f9e12b106586f79b",
+        "mobilesdk_app_id": "1:152376547882:android:aa19ff06f38529eac00153",
         "android_client_info": {
-          "package_name": "com.hikora"
+          "package_name": "com.verdant"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDEV4bF1P5jAxsSLk_fHBNrqBd0AZMzihc"
+          "current_key": "AIzaSyADWeOH6EhvemrdXL_jbzaffMVdsmevp78"
         }
       ],
       "services": {

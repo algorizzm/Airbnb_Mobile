@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/public_nested_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.verdant.ui.main.SplashFragment"
+        android:label="Launcher">
+
+        <action
+            android:id="@+id/action_splashFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.verdant.ui.main.OnboardingFragment"
+        android:label="Onboarding">
+
+        <argument
+            android:name="layoutId"
+            app:argType="reference"
+            android:defaultValue="@layout/fragment_onboarding" />
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_homeFragment"
+            app:destination="@id/main_graph" />
+    </fragment>
+
+</navigation>

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.hikora"
+    namespace = "com.verdant"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.hikora"
+        applicationId = "com.verdant"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

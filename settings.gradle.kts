@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Hikora"
+rootProject.name = "Verdant"
 include(":app")
  

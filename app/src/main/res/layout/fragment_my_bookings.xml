@@ -16,6 +16,24 @@
         app:title="My bookings"
         app:titleTextColor="@android:color/white" />
 
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="16dp"
+        android:text=""
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="#333333" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerBookings"
         android:layout_width="match_parent"
