@@ -30,7 +30,7 @@
 
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/auth_graph" />
     </fragment>
 
     <!-- Hikes -->

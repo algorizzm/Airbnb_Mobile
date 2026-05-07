@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                     destId = item.itemId,
                     args = null,
                     navOptions = null,
-                    isProtected = true
+                    isProtected = false
                 )
                 false
             } else {

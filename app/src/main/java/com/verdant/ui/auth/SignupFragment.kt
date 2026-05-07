@@ -107,7 +107,7 @@ class SignupFragment : Fragment() {
                 )
             } else {
                 findNavController().navigate(
-                    R.id.homeFragment,
+                    R.id.main_graph,
                     null,
                     navOptions { popUpTo(R.id.signupFragment) { inclusive = true } }
                 )
