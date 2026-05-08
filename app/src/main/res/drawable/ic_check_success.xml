@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Large green circle with a white checkmark — booking success hero icon -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Green filled circle -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M48,0 A48,48 0 1 1 48,96 A48,48 0 1 1 48,0 Z" />
+    <!-- White checkmark -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M26,50 L40,64 L70,34" />
+</vector>

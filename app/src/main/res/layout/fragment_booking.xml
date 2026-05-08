@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SCROLLABLE BODY
+         ═══════════════════════════════════════════════════════════ -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="88dp"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ─────────────────────────────────────────────────
+                 HERO IMAGE  (full-width, ~260dp tall)
+                 ───────────────────────────────────────────────── -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="260dp">
+
+                <!-- Hike cover photo -->
+                <ImageView
+                    android:id="@+id/imgHikeCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_hike"
+                    android:contentDescription="Hike cover photo" />
+
+                <!-- Subtle bottom-fade so text below reads cleanly -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_onboarding_overlay" />
+
+                <!-- Back button (top-left) -->
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="14dp"
+                    android:layout_gravity="top|start"
+                    android:src="@drawable/ic_chevron_left"
+                    android:background="@drawable/bg_translucent_circle"
+                    android:padding="8dp"
+                    android:contentDescription="Back" />
+
+                <!-- Favourite button (top-right) -->
+                <ImageView
+                    android:id="@+id/btnFavourite"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="14dp"
+                    android:layout_gravity="top|end"
+                    android:src="@drawable/ic_heart"
+                    android:background="@drawable/bg_translucent_circle"
+                    android:padding="8dp"
+                    android:contentDescription="Save to favourites" />
+
+                <!-- Difficulty pill (bottom-left) -->
+                <TextView
+                    android:id="@+id/tvDifficultyBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:layout_margin="14dp"
+                    android:background="@drawable/bg_difficulty_pill"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="5dp"
+                    android:text="Easy"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
+
+                <!-- Spots left pill (bottom-right) -->
+                <TextView
+                    android:id="@+id/tvSpotsLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="14dp"
+                    android:background="@drawable/bg_spots_pill"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="5dp"
+                    android:text="20 Spots Left"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+            </FrameLayout>
+
+            <!-- ─────────────────────────────────────────────────
+                 CONTENT CARD  (dark rounded surface)
+                 ───────────────────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#1A1A1A"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp">
+
+                <!-- Hike name -->
+                <TextView
+                    android:id="@+id/tvHikeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mt. Pulag Hike"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
+
+                <!-- Location row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_trail"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="Location" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Benguet, Philippines"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <!-- Description -->
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Experience the sea of clouds and breathtaking sunrise at the highest peak in Luzon. Perfect for beginners."
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="3dp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <!-- ── Stat tiles row ── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="8dp">
+
+                    <!-- Duration tile -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_dark"
+                        android:padding="10dp"
+                        android:layout_marginEnd="6dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_calendar"
+                            android:contentDescription="Duration" />
+
+                        <TextView
+                            android:id="@+id/tvDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="2 Days"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/poppins_bold" />
+
+                        <TextView
+                            android:id="@+id/tvDurationSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 Night"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- Distance tile -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_dark"
+                        android:padding="10dp"
+                        android:layout_marginEnd="6dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_distance"
+                            android:contentDescription="Distance" />
+
+                        <TextView
+                            android:id="@+id/tvDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="12km"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/poppins_bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Distance"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- Elevation tile -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_dark"
+                        android:padding="10dp"
+                        android:layout_marginEnd="6dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_elevation"
+                            android:contentDescription="Elevation" />
+
+                        <TextView
+                            android:id="@+id/tvElevation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="1,486 MSL"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/poppins_bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Elevation"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- Difficulty tile -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_dark"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_difficulty"
+                            android:contentDescription="Difficulty" />
+
+                        <TextView
+                            android:id="@+id/tvDifficulty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Easy"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/poppins_bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Difficult"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ─────────────────────────────────────────────────
+                 INCLUSIONS CARD
+                 ───────────────────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dark_card"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inclusions"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Inclusion item helper: icon + label repeated -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                        android:src="@drawable/ic_check_circle" android:layout_marginEnd="10dp"
+                        android:contentDescription="Included" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Guide and Assistant" android:textColor="#CCFFFFFF"
+                        android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                        android:src="@drawable/ic_check_circle" android:layout_marginEnd="10dp"
+                        android:contentDescription="Included" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Environmental Fees" android:textColor="#CCFFFFFF"
+                        android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                        android:src="@drawable/ic_check_circle" android:layout_marginEnd="10dp"
+                        android:contentDescription="Included" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Registration" android:textColor="#CCFFFFFF"
+                        android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                        android:src="@drawable/ic_check_circle" android:layout_marginEnd="10dp"
+                        android:contentDescription="Included" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="First Aid Kit" android:textColor="#CCFFFFFF"
+                        android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                        android:src="@drawable/ic_check_circle" android:layout_marginEnd="10dp"
+                        android:contentDescription="Included" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Certificate" android:textColor="#CCFFFFFF"
+                        android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ─────────────────────────────────────────────────
+                 MEET-UP POINT CARD
+                 ───────────────────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dark_card"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:padding="16dp">
+
+                <!-- Meet-up point row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_trail"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="Meet-up point" />
+
+                    <TextView
+                        android:id="@+id/tvMeetupPoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Meet-up Point"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <!-- Jump-off row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_trail"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="Jump-off point" />
+
+                    <TextView
+                        android:id="@+id/tvJumpOff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jump-off: Ranger Station, Kabayan, Benguet"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <!-- Assembly time row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="18dp"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:layout_marginEnd="10dp" />
+
+                    <TextView
+                        android:id="@+id/tvAssemblyTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5:00 AM"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ─────────────────────────────────────────────────
+                 PRICE CARD
+                 ───────────────────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dark_card"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price per Person"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="₱ 2,200.00"
+                    android:textColor="#02D083"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BOOK NOW  — pinned to bottom
+         ═══════════════════════════════════════════════════════════ -->
+    <Button
+        android:id="@+id/btnBookNow"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_button_green"
+        android:text="Book Now"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        app:backgroundTint="@null" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

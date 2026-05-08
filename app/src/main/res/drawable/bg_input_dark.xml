@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dark input field background matching the Edit Profile / Change Password form fields -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#2A2A2A" />
+    <corners android:radius="12dp" />
+</shape>

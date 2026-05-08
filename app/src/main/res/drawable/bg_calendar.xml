@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dark green background for the calendar grid card -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#0F2318" />
+    <corners android:radius="16dp" />
+</shape>

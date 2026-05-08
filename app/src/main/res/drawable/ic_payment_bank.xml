@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bank transfer icon — dark circle with bank/building outline -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- Dark circle background -->
+    <path android:fillColor="#2A2A2A"
+        android:pathData="M20,0 A20,20 0 1 1 20,40 A20,20 0 1 1 20,0 Z"/>
+    <!-- Bank building outline -->
+    <path android:fillColor="@android:color/transparent"
+        android:strokeColor="#02D083" android:strokeWidth="1.6"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M10,30 L30,30 M10,18 L30,18 M20,12 L30,18 L10,18 Z"/>
+    <path android:fillColor="@android:color/transparent"
+        android:strokeColor="#02D083" android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M13,18 L13,30 M17,18 L17,30 M23,18 L23,30 M27,18 L27,30"/>
+</vector>

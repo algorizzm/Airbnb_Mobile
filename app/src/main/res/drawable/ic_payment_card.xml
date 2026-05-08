@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Credit/Debit card icon with orange/yellow gradient-style background -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- Orange background -->
+    <path android:fillColor="#E65100"
+        android:pathData="M4,0 L36,0 A4,4 0 0 1 40,4 L40,36 A4,4 0 0 1 36,40 L4,40 A4,4 0 0 1 0,36 L0,4 A4,4 0 0 1 4,0 Z"/>
+    <!-- Card outline -->
+    <path android:fillColor="@android:color/transparent"
+        android:strokeColor="#FFFFFF" android:strokeWidth="1.8"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M7,13 L33,13 A2,2 0 0 1 35,15 L35,27 A2,2 0 0 1 33,29 L7,29 A2,2 0 0 1 5,27 L5,15 A2,2 0 0 1 7,13 Z"/>
+    <!-- Stripe -->
+    <path android:fillColor="#FFFFFF" android:pathData="M5,17 L35,17 L35,21 L5,21 Z"/>
+    <!-- Chip -->
+    <path android:fillColor="#FFD600"
+        android:pathData="M9,23 L15,23 A1,1 0 0 1 16,24 L16,27 A1,1 0 0 1 15,28 L9,28 A1,1 0 0 1 8,27 L8,24 A1,1 0 0 1 9,23 Z"/>
+</vector>

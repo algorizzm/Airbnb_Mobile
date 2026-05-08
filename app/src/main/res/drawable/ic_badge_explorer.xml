@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Achievement badge: Trail Explorer — green hexagon with number -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="44dp"
+    android:height="44dp"
+    android:viewportWidth="44"
+    android:viewportHeight="44">
+    <path android:fillColor="#2E7D32"
+        android:pathData="M22,2 L38,11 L38,33 L22,42 L6,33 L6,11 Z"/>
+    <path android:fillColor="@android:color/transparent"
+        android:strokeColor="#FFFFFF" android:strokeWidth="1.6"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M15,28 A7,7 0 1 1 29,28 A7,7 0 1 1 15,28"/>
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M20,22 L20,28 L24,28"/>
+</vector>

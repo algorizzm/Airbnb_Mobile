@@ -1,149 +1,576 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    android:background="#121212"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ========================================================= -->
-        <!-- GUEST STATE UI -->
-        <!-- ========================================================= -->
-
+        <!-- GUEST STATE -->
         <LinearLayout
             android:id="@+id/layoutGuest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="48dp"
+            android:gravity="center_horizontal"
+            android:padding="24dp"
+            android:paddingTop="80dp"
             android:visibility="gone">
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/bg_circle" />
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/bg_circle"
+                android:contentDescription="Guest avatar" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="You're browsing as a guest"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="20dp"
+                android:text="Browsing as Guest"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:fontFamily="@font/poppins_bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Create an account to sync your data, personalize your experience, and access all app features."
-                android:textAlignment="center"
-                android:textColor="#666666"
-                android:textSize="16sp" />
+                android:text="Create an account to access all features."
+                android:textColor="#80FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_regular" />
 
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Login" />
+                android:layout_height="52dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_button_green"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
 
             <Button
                 android:id="@+id/btnSignup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
-                android:text="Sign Up" />
+                android:background="@drawable/bg_button_outline_green"
+                android:text="Sign Up"
+                android:textAllCaps="false"
+                android:textColor="#02D083"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
 
         </LinearLayout>
 
-        <!-- ========================================================= -->
-        <!-- AUTHENTICATED PROFILE UI -->
-        <!-- ========================================================= -->
-
+        <!-- AUTHENTICATED PROFILE -->
         <LinearLayout
             android:id="@+id/layoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
-            <!-- Profile Header -->
+            <!-- Banner + Avatar -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
 
+                <ImageView
+                    android:id="@+id/imgBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_hike_placeholder"
+                    android:contentDescription="Profile banner" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_profile_banner_overlay" />
+
+                <!-- Top action buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="top"
+                    android:paddingTop="44dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <ImageButton
+                        android:id="@+id/btnBack"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle"
+                        android:src="@drawable/ic_back"
+                        android:contentDescription="Back"
+                        android:padding="8dp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:id="@+id/btnNotification"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle"
+                        android:src="@drawable/ic_notification_bell"
+                        android:contentDescription="Notifications"
+                        android:padding="8dp"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnSettings"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle"
+                        android:src="@drawable/ic_settings"
+                        android:contentDescription="Settings"
+                        android:padding="8dp" />
+
+                </LinearLayout>
+
+                <!-- Avatar + upload button -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="-40dp">
+
+                    <ImageView
+                        android:id="@+id/imgAvatar"
+                        android:layout_width="88dp"
+                        android:layout_height="88dp"
+                        android:background="@drawable/bg_avatar_border"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bg_circle"
+                        android:contentDescription="Profile photo"
+                        android:padding="3dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnUploadPhoto"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="bottom|end"
+                        android:background="@drawable/bg_button_green"
+                        android:src="@drawable/ic_upload"
+                        android:contentDescription="Upload photo"
+                        android:padding="5dp"
+                        app:backgroundTint="@null" />
+
+                </FrameLayout>
+
+            </FrameLayout>
+
+            <!-- Name + username -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imgProfile"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/bg_circle" />
+                android:paddingTop="52dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <TextView
-                    android:id="@+id/txtUserName"
+                    android:id="@+id/tvFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="User Name"
-                    android:textColor="@android:color/black"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:text="Juan dela Cruz"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/poppins_bold" />
 
                 <TextView
-                    android:id="@+id/txtUserEmail"
+                    android:id="@+id/tvUsername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="user@email.com"
-                    android:textColor="#666666"
-                    android:textSize="15sp" />
+                    android:text="@juandelacruz"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_regular" />
 
             </LinearLayout>
 
-            <!-- Divider -->
-
-            <View
+            <!-- Stats row -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="24dp"
-                android:background="#DDDDDD" />
-
-            <!-- Example Settings Section -->
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Account"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="4dp">
 
-            <!-- Add your existing profile/account items here -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_stat_card"
+                    android:padding="12dp"
+                    android:layout_marginEnd="6dp">
 
-            <!-- Sign Out -->
+                    <TextView
+                        android:id="@+id/tvStatHikes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12"
+                        android:textColor="#02D083"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/poppins_bold" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hikes"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_stat_card"
+                    android:padding="12dp"
+                    android:layout_marginEnd="6dp">
+
+                    <TextView
+                        android:id="@+id/tvStatDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="48km"
+                        android:textColor="#02D083"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Distance"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_stat_card"
+                    android:padding="12dp"
+                    android:layout_marginEnd="6dp">
+
+                    <TextView
+                        android:id="@+id/tvStatTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="36h"
+                        android:textColor="#02D083"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time Hiked"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_stat_card"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/tvStatSummits"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:textColor="#02D083"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Summits"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- About card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dark_card"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="About"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/btnEditBio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Bio"
+                        android:textColor="#02D083"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvBio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Passionate hiker and nature lover. Always chasing the next summit and the best sunrise views."
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="13sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:fontFamily="@font/poppins_regular" />
+
+            </LinearLayout>
+
+            <!-- Recent Hikes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Recent Hikes"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/tvSeeAllHikes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="See All"
+                        android:textColor="#02D083"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                </LinearLayout>
+
+                <!-- Hike thumbnails row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp">
+
+                        <ImageView
+                            android:id="@+id/imgRecentHike1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_hike_placeholder"
+                            android:contentDescription="Recent hike 1" />
+
+                        <TextView
+                            android:id="@+id/tvRecentHike1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:background="#99000000"
+                            android:padding="6dp"
+                            android:text="Mt. Pulag"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp">
+
+                        <ImageView
+                            android:id="@+id/imgRecentHike2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_hike_placeholder"
+                            android:contentDescription="Recent hike 2" />
+
+                        <TextView
+                            android:id="@+id/tvRecentHike2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:background="#99000000"
+                            android:padding="6dp"
+                            android:text="Mt. Apo"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/imgRecentHike3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_hike_placeholder"
+                            android:contentDescription="Recent hike 3" />
+
+                        <TextView
+                            android:id="@+id/tvRecentHike3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:background="#99000000"
+                            android:padding="6dp"
+                            android:text="Mt. Kanlaon"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- My Bookings -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="My Bookings"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/tvSeeAllBookings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="See All"
+                        android:textColor="#02D083"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBookings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+            </LinearLayout>
+
+            <!-- Logout button -->
             <Button
-                android:id="@+id/btnSignOut"
+                android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Sign Out" />
+                android:layout_height="52dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/bg_button_outline_red"
+                android:text="Log Out"
+                android:textAllCaps="false"
+                android:textColor="#FF4444"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
 
         </LinearLayout>
 

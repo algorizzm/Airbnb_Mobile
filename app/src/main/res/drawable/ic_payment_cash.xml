@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hand holding cash / pay on arrival icon -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- Green rounded background -->
+    <path android:fillColor="#1A6B3C" android:pathData="M4,4 L36,4 A4,4 0 0 1 40,8 L40,32 A4,4 0 0 1 36,36 L4,36 A4,4 0 0 1 0,32 L0,8 A4,4 0 0 1 4,4 Z"/>
+    <!-- Dollar / bill outline -->
+    <path android:fillColor="@android:color/transparent"
+        android:strokeColor="#02D083" android:strokeWidth="1.6"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M10,15 L30,15 L30,27 L10,27 Z"/>
+    <path android:fillColor="@android:color/transparent"
+        android:strokeColor="#02D083" android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M20,18 A2,2 0 1 1 20,24 A2,2 0 1 1 20,18"/>
+    <path android:fillColor="@android:color/transparent"
+        android:strokeColor="#02D083" android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:pathData="M10,19 L13,19 M27,19 L30,19 M10,23 L13,23 M27,23 L30,23"/>
+</vector>

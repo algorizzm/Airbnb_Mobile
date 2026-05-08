@@ -1,0 +1,557 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212">
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         TOP BAR
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="#121212">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_chevron_left"
+            android:padding="6dp"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Payment Method"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center" />
+
+        <View android:layout_width="36dp" android:layout_height="36dp" />
+
+    </LinearLayout>
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         SCROLLABLE BODY
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:paddingBottom="96dp"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp">
+
+            <!-- â”€â”€ Booking Summary card â”€â”€ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dark_card"
+                android:padding="14dp"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Booking Summary"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Hike row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imgHikeThumbnail"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sample_hike"
+                        android:background="@drawable/bg_dark_card"
+                        android:contentDescription="Hike thumbnail" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+
+                        <TextView
+                            android:id="@+id/tvHikeName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mt. Pulag Hike"
+                            android:textColor="@android:color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/poppins_bold" />
+
+                        <!-- Date + time row -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="4dp">
+
+                            <TextView
+                                android:id="@+id/tvBookingDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="September 19, 2021"
+                                android:textColor="#B3FFFFFF"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="  &#183;  "
+                                android:textColor="#80FFFFFF"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvBookingTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5:00 AM"
+                                android:textColor="#B3FFFFFF"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular" />
+
+                        </LinearLayout>
+
+                        <!-- Participants + price row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="4dp">
+
+                            <TextView
+                                android:id="@+id/tvParticipants"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="1 Participant"
+                                android:textColor="#B3FFFFFF"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular" />
+
+                            <TextView
+                                android:id="@+id/tvBookingPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="&#8369; 2,200.00"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/poppins_bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- â”€â”€ Section label â”€â”€ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Payment Method"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginBottom="14dp" />
+
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+                 CASH PAYMENT group
+                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cash Payment"
+                android:textColor="#02D083"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Pay on arrival row -->
+            <LinearLayout
+                android:id="@+id/rowCash"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_payment_method_row"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_payment_cash"
+                    android:layout_marginEnd="14dp"
+                    android:contentDescription="Cash payment" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pay on arrival (Cash)"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pay in cash at the jump-off point"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="2dp" />
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:id="@+id/radioCash"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:button="@null"
+                    android:background="@drawable/bg_radio_unselected"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+                 ONLINE PAYMENT group
+                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Online Payment"
+                android:textColor="#02D083"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <!-- GCash row -->
+            <LinearLayout
+                android:id="@+id/rowGcash"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_payment_method_row"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_payment_gcash"
+                    android:layout_marginEnd="14dp"
+                    android:contentDescription="GCash" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gcash"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pay securely using Gcash"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="2dp" />
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:id="@+id/radioGcash"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:button="@null"
+                    android:background="@drawable/bg_radio_unselected"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <!-- PayMaya row -->
+            <LinearLayout
+                android:id="@+id/rowPaymaya"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_payment_method_row"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_payment_paymaya"
+                    android:layout_marginEnd="14dp"
+                    android:contentDescription="PayMaya" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PayMaya"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pay securely using PayMaya"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="2dp" />
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:id="@+id/radioPaymaya"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:button="@null"
+                    android:background="@drawable/bg_radio_unselected"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <!-- Credit / Debit Card row -->
+            <LinearLayout
+                android:id="@+id/rowCard"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_payment_method_row"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_payment_card"
+                    android:layout_marginEnd="14dp"
+                    android:contentDescription="Credit or Debit Card" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Credit / Debit Card"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Visa, Mastercard, JCB"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="2dp" />
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:id="@+id/radioCard"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:button="@null"
+                    android:background="@drawable/bg_radio_unselected"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <!-- Bank Transfer row -->
+            <LinearLayout
+                android:id="@+id/rowBank"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_payment_method_row"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_payment_bank"
+                    android:layout_marginEnd="14dp"
+                    android:contentDescription="Bank Transfer" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bank Transfer"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pay via BPI, BDO, Metrobank, etc."
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="2dp" />
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:id="@+id/radioBank"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:button="@null"
+                    android:background="@drawable/bg_radio_unselected"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <!-- â”€â”€ Amount to Pay row â”€â”€ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_dark_card"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Amount to Pay"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
+
+                <TextView
+                    android:id="@+id/tvAmountToPay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&#8369; 2,200.00"
+                    android:textColor="#02D083"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         CONFIRM BOOKING â€” pinned to bottom
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <Button
+        android:id="@+id/btnConfirmBooking"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_button_green"
+        android:text="Confirm Booking"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        app:backgroundTint="@null" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

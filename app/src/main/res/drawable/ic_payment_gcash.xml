@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GCash-style blue rounded square with "G" -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- Blue background -->
+    <path android:fillColor="#0070E0"
+        android:pathData="M4,0 L36,0 A4,4 0 0 1 40,4 L40,36 A4,4 0 0 1 36,40 L4,40 A4,4 0 0 1 0,36 L0,4 A4,4 0 0 1 4,0 Z"/>
+    <!-- "G" letter -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M22,14 A9,9 0 1 0 29,21 L22,21 L22,18 L32,18 L32,21 A12,12 0 1 1 20,8 A12,12 0 0 1 30,12.5 Z"/>
+</vector>

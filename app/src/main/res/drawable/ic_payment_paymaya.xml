@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PayMaya-style white rounded square with teal/green leaf mark -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- White background -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M4,0 L36,0 A4,4 0 0 1 40,4 L40,36 A4,4 0 0 1 36,40 L4,40 A4,4 0 0 1 0,36 L0,4 A4,4 0 0 1 4,0 Z"/>
+    <!-- Teal leaf / P mark -->
+    <path android:fillColor="#00B4A0"
+        android:pathData="M14,28 L14,12 A8,8 0 0 1 22,12 A8,8 0 0 1 22,28 L18,28 L18,20 A4,4 0 0 0 18,12 Z"/>
+    <path android:fillColor="#007A6E"
+        android:pathData="M22,12 A8,8 0 0 1 22,28 L18,28 L18,20 A4,4 0 0 0 22,20 Z"/>
+</vector>

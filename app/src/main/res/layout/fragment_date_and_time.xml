@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212">
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="#121212">
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_chevron_left"
+            android:padding="6dp"
+            android:contentDescription="Back" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Select Date &amp; Time"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center" />
+        <View android:layout_width="36dp" android:layout_height="36dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:paddingBottom="96dp"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp">
+
+            <!-- Hike summary card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_dark_card"
+                android:padding="14dp"
+                android:layout_marginBottom="20dp">
+                <ImageView
+                    android:id="@+id/imgHikeThumbnail"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_hike"
+                    android:background="@drawable/bg_dark_card"
+                    android:contentDescription="Hike thumbnail" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="14dp">
+                    <TextView
+                        android:id="@+id/tvHikeName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mt. Pulag Hike"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="4dp">
+                        <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:src="@drawable/ic_trail"
+                            android:layout_marginEnd="4dp"
+                            android:contentDescription="Location" />
+                        <TextView
+                            android:id="@+id/tvHikeLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Benguet, Philippines"
+                            android:textColor="#B3FFFFFF"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_regular" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Select Date label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Calendar card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_calendar"
+                android:padding="16dp"
+                android:layout_marginBottom="20dp">
+
+                <!-- Month navigation -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+                    <ImageView
+                        android:id="@+id/btnPrevMonth"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_chevron_left"
+                        android:padding="6dp"
+                        android:contentDescription="Previous month" />
+                    <TextView
+                        android:id="@+id/tvMonthYear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="September 2021"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center" />
+                    <ImageView
+                        android:id="@+id/btnNextMonth"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:padding="6dp"
+                        android:contentDescription="Next month" />
+                </LinearLayout>
+
+                <!-- Day-of-week headers -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="6dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="SUN" android:textColor="#80FFFFFF" android:textSize="10sp" android:fontFamily="@font/poppins_bold" android:textStyle="bold" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="MON" android:textColor="#80FFFFFF" android:textSize="10sp" android:fontFamily="@font/poppins_bold" android:textStyle="bold" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="TUE" android:textColor="#80FFFFFF" android:textSize="10sp" android:fontFamily="@font/poppins_bold" android:textStyle="bold" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="WED" android:textColor="#80FFFFFF" android:textSize="10sp" android:fontFamily="@font/poppins_bold" android:textStyle="bold" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="THU" android:textColor="#80FFFFFF" android:textSize="10sp" android:fontFamily="@font/poppins_bold" android:textStyle="bold" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="FRI" android:textColor="#80FFFFFF" android:textSize="10sp" android:fontFamily="@font/poppins_bold" android:textStyle="bold" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="SAT" android:textColor="#80FFFFFF" android:textSize="10sp" android:fontFamily="@font/poppins_bold" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Week 1 -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="1"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="2"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="3"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="4"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="5"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="6"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="7"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <!-- Week 2 -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="8"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="9"  android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="10" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="11" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="12" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="13" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="14" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <!-- Week 3 (19 selected) -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="15" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="16" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="17" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="18" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                        <View android:layout_width="34dp" android:layout_height="34dp" android:layout_gravity="center" android:background="@drawable/bg_selected_day" />
+                        <TextView android:id="@+id/tvSelectedDay" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="19" android:textColor="@android:color/white" android:textSize="13sp" android:textStyle="bold" android:fontFamily="@font/poppins_bold" />
+                    </FrameLayout>
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="20" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="21" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <!-- Week 4 -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="22" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="23" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="24" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="25" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="26" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="27" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="28" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+
+                <!-- Week 5 -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="29" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="30" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="31" android:textColor="#80FFFFFF" android:textSize="13sp" android:fontFamily="@font/poppins_regular" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Select Time label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Time"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginBottom="10dp" />
+
+            <!-- 5:00 AM - SELECTED -->
+            <LinearLayout
+                android:id="@+id/slotFiveAm"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_time_slot_selected"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:focusable="true">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5:00 AM"
+                        android:textColor="#02D083"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(Recommended)"
+                        android:textColor="#02D083"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_check_circle_green"
+                    android:contentDescription="Selected" />
+            </LinearLayout>
+
+            <!-- 6:00 AM -->
+            <LinearLayout
+                android:id="@+id/slotSixAm"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_time_slot_normal"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="6:00 AM"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+            </LinearLayout>
+
+            <!-- 7:00 AM -->
+            <LinearLayout
+                android:id="@+id/slotSevenAm"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_time_slot_normal"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="7:00 AM"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+            </LinearLayout>
+
+            <!-- Participants row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_dark_card"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="10dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Participants"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+                <TextView
+                    android:id="@+id/btnDecrement"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_counter_btn"
+                    android:text="&#8722;"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Decrease participants" />
+                <TextView
+                    android:id="@+id/tvParticipantCount"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center" />
+                <TextView
+                    android:id="@+id/btnIncrement"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_counter_btn"
+                    android:text="+"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Increase participants" />
+            </LinearLayout>
+
+            <!-- Total Price row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_dark_card"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="16dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total Price"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+                <TextView
+                    android:id="@+id/tvTotalPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&#8369; 2,200.00"
+                    android:textColor="#02D083"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Continue to Payment pinned to bottom -->
+    <Button
+        android:id="@+id/btnContinueToPayment"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_button_green"
+        android:text="Continue to Payment"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        app:backgroundTint="@null" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

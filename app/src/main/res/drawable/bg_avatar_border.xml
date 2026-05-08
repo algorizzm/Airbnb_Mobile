@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Circular avatar with a dark green border -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#1A6B3C" />
+    <stroke android:width="2dp" android:color="#02D083" />
+</shape>
