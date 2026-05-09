@@ -38,8 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:paddingBottom="96dp"
-        android:clipToPadding="false"
         android:fillViewport="true">
 
         <LinearLayout
@@ -407,24 +405,23 @@
                     android:fontFamily="@font/poppins_bold" />
             </LinearLayout>
 
+            <!-- Continue to Payment button inside scroll -->
+            <Button
+                android:id="@+id/btnContinueToPayment"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_button_green"
+                android:text="Continue to Payment"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
+
         </LinearLayout>
     </ScrollView>
-
-    <!-- Continue to Payment pinned to bottom -->
-    <Button
-        android:id="@+id/btnContinueToPayment"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/bg_button_green"
-        android:text="Continue to Payment"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/poppins_bold"
-        app:backgroundTint="@null" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

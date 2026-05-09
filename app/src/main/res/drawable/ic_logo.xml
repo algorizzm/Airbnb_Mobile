@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="362dp"
+    android:height="447dp"
+    android:viewportWidth="362"
+    android:viewportHeight="447">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#0B3D2E"
+        android:pathData="M181,30 m-150,0 a150,150 0 1,0 300,0 a150,150 0 1,0 -300,0"/>
+
+    <!-- Mountain range - back peak (left) -->
+    <path
+        android:fillColor="#1A6B4A"
+        android:pathData="M60,230 L130,110 L200,230 Z"/>
+
+    <!-- Mountain range - main peak (center, tallest) -->
+    <path
+        android:fillColor="#02D083"
+        android:pathData="M110,230 L181,60 L252,230 Z"/>
+
+    <!-- Mountain range - back peak (right) -->
+    <path
+        android:fillColor="#1A6B4A"
+        android:pathData="M162,230 L232,120 L302,230 Z"/>
+
+    <!-- Snow cap on main peak -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M181,60 L162,110 L200,110 Z"/>
+
+    <!-- Ground / base line -->
+    <path
+        android:fillColor="#0B3D2E"
+        android:pathData="M50,230 L312,230 L312,250 L50,250 Z"/>
+
+    <!-- Sun / moon circle top right -->
+    <path
+        android:fillColor="#F5C518"
+        android:pathData="M270,90 m-22,0 a22,22 0 1,0 44,0 a22,22 0 1,0 -44,0"/>
+
+    <!-- App name text area - HIKORA wordmark (stylized H shape) -->
+    <!-- H left bar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M80,290 L80,360 L96,360 L96,290 Z"/>
+    <!-- H right bar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M120,290 L120,360 L136,360 L136,290 Z"/>
+    <!-- H crossbar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M80,318 L136,318 L136,332 L80,332 Z"/>
+
+    <!-- I -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M148,290 L148,360 L164,360 L164,290 Z"/>
+
+    <!-- K -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M176,290 L176,360 L192,360 L192,330 L214,360 L232,360 L206,322 L230,290 L212,290 L192,316 L192,290 Z"/>
+
+    <!-- O -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M244,290 m0,35 a20,35 0 1,0 40,0 a20,35 0 1,0 -40,0"/>
+    <path
+        android:fillColor="#0B3D2E"
+        android:pathData="M250,290 m0,35 a14,28 0 1,0 28,0 a14,28 0 1,0 -28,0"/>
+
+    <!-- R -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M296,290 L296,360 L312,360 L312,332 L326,360 L344,360 L328,330 C340,326 344,318 344,308 C344,296 336,290 322,290 Z M312,304 L320,304 C326,304 328,307 328,312 C328,317 326,320 320,320 L312,320 Z"/>
+
+    <!-- A -->
+    <path
+        android:fillColor="#02D083"
+        android:pathData="M356,290 L336,360 L352,360 L356,346 L376,346 L380,360 L396,360 L376,290 Z M360,334 L366,310 L372,334 Z"/>
+
+    <!-- Tagline dots -->
+    <path
+        android:fillColor="#02D083"
+        android:pathData="M140,390 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"/>
+    <path
+        android:fillColor="#02D083"
+        android:pathData="M181,390 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"/>
+    <path
+        android:fillColor="#02D083"
+        android:pathData="M222,390 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"/>
+
+</vector>

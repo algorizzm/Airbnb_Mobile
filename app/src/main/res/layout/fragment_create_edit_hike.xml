@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="#121212"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#0B301F"
+        android:background="#121212"
         app:navigationIcon="@drawable/ic_chevron_left"
-        app:navigationIconTint="@android:color/white"
+        app:navigationIconTint="#02D083"
         app:title="Hike"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="#FFFFFF" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,131 +28,175 @@
             android:padding="16dp">
 
             <!-- Title -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Title"
-                app:hintTextColor="@color/text_secondary">
+                android:text="Title"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginBottom="4dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:inputType="textCapWords"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="Enter title"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
 
             <!-- Description -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/etDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Description"
-                app:hintTextColor="@color/text_secondary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:background="@drawable/bg_edittext_border"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="Enter description"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:fontFamily="@font/poppins_regular" />
 
             <!-- Location -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Location"
-                app:hintTextColor="@color/text_secondary">
+                android:text="Location"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etLocation"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:inputType="text"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="Enter location"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
 
             <!-- Difficulty -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Difficulty"
-                app:hintTextColor="@color/text_secondary">
+                android:text="Difficulty"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDifficulty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etDifficulty"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:inputType="text"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="e.g. Easy, Moderate, Hard"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
 
             <!-- Distance -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Distance (km)"
-                app:hintTextColor="@color/text_secondary">
+                android:text="Distance (km)"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDistanceKm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etDistanceKm"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:inputType="numberDecimal"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="0.0"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
 
             <!-- Price -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Price"
-                app:hintTextColor="@color/text_secondary">
+                android:text="Price"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etPrice"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:inputType="numberDecimal"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="0.00"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
 
             <!-- Max Participants -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Max participants"
-                app:hintTextColor="@color/text_secondary">
+                android:text="Max Participants"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etMaxParticipants"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etMaxParticipants"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="0"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
 
             <!-- Status -->
             <TextView
@@ -160,31 +204,45 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="Status"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginBottom="4dp" />
 
             <Spinner
                 android:id="@+id/spinnerStatus"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp" />
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:backgroundTint="#02D083"
+                android:popupBackground="#1A1A1A" />
 
-            <!-- Buttons -->
-            <com.google.android.material.button.MaterialButton
+            <!-- Save button -->
+            <Button
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Save" />
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button_green"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
 
-            <com.google.android.material.button.MaterialButton
+            <!-- Delete button -->
+            <Button
                 android:id="@+id/btnDelete"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:text="Delete hike"
-                android:textColor="#C62828"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_button_outline_red"
+                android:text="Delete Hike"
+                android:textAllCaps="false"
+                android:textColor="#FF4444"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
                 android:visibility="gone" />
 
         </LinearLayout>

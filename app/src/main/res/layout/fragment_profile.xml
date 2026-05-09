@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212"
-    android:fillViewport="true">
+    android:clipToPadding="false"
+    android:paddingBottom="90dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,80 +83,93 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <!-- Banner + Avatar -->
-            <FrameLayout
+            <!-- Banner + Avatar wrapper — RelativeLayout lets avatar overlap the banner edge -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/imgBanner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/img_hike_placeholder"
-                    android:contentDescription="Profile banner" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_profile_banner_overlay" />
-
-                <!-- Top action buttons -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="top"
-                    android:paddingTop="44dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
-
-                    <ImageButton
-                        android:id="@+id/btnBack"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_circle"
-                        android:src="@drawable/ic_back"
-                        android:contentDescription="Back"
-                        android:padding="8dp" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
-
-                    <ImageButton
-                        android:id="@+id/btnNotification"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_circle"
-                        android:src="@drawable/ic_notification_bell"
-                        android:contentDescription="Notifications"
-                        android:padding="8dp"
-                        android:layout_marginEnd="8dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnSettings"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_circle"
-                        android:src="@drawable/ic_settings"
-                        android:contentDescription="Settings"
-                        android:padding="8dp" />
-
-                </LinearLayout>
-
-                <!-- Avatar + upload button -->
+                <!-- Banner (220dp tall) -->
                 <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="-40dp">
+                    android:id="@+id/bannerFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_alignParentTop="true">
+
+                    <!-- Banner image -->
+                    <ImageView
+                        android:id="@+id/imgBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_hike_placeholder"
+                        android:contentDescription="Profile banner" />
+
+                    <!-- Gradient overlay -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_profile_banner_overlay" />
+
+                    <!-- Top action buttons row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="top"
+                        android:paddingTop="44dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
+
+                        <ImageButton
+                            android:id="@+id/btnBack"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_circle"
+                            android:src="@drawable/ic_back"
+                            android:contentDescription="Back"
+                            android:padding="8dp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <ImageButton
+                            android:id="@+id/btnNotification"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_circle"
+                            android:src="@drawable/ic_notification_bell"
+                            android:contentDescription="Notifications"
+                            android:padding="8dp"
+                            android:layout_marginEnd="8dp" />
+
+                        <ImageButton
+                            android:id="@+id/btnSettings"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_circle"
+                            android:src="@drawable/ic_settings"
+                            android:contentDescription="Settings"
+                            android:padding="8dp" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <!-- Avatar + upload — positioned to straddle the banner bottom edge -->
+                <FrameLayout
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_below="@id/bannerFrame"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-44dp"
+                    android:elevation="8dp">
 
                     <ImageView
                         android:id="@+id/imgAvatar"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:background="@drawable/bg_avatar_border"
                         android:scaleType="centerCrop"
                         android:src="@drawable/bg_circle"
@@ -174,15 +189,15 @@
 
                 </FrameLayout>
 
-            </FrameLayout>
+            </RelativeLayout>
 
-            <!-- Name + username -->
+            <!-- Name + username + location — padded to clear the overlapping avatar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
-                android:paddingTop="52dp"
+                android:paddingTop="56dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
@@ -204,6 +219,32 @@
                     android:textSize="13sp"
                     android:fontFamily="@font/poppins_regular" />
 
+                <!-- Location row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="6dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_trail"
+                        android:tint="#80FFFFFF"
+                        android:contentDescription="Location" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Philippines"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <!-- Stats row -->
@@ -211,9 +252,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="20dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="16dp"
                 android:paddingBottom="4dp">
 
                 <LinearLayout
@@ -223,8 +264,19 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:background="@drawable/bg_stat_card"
-                    android:padding="12dp"
-                    android:layout_marginEnd="6dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:layout_marginEnd="5dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_hikes"
+                        android:tint="#02D083"
+                        android:contentDescription="Hikes icon"
+                        android:layout_marginBottom="4dp" />
 
                     <TextView
                         android:id="@+id/tvStatHikes"
@@ -232,15 +284,16 @@
                         android:layout_height="wrap_content"
                         android:text="12"
                         android:textColor="#02D083"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/poppins_bold" />
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:maxLines="1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hikes"
                         android:textColor="#80FFFFFF"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:fontFamily="@font/poppins_regular" />
 
                 </LinearLayout>
@@ -252,24 +305,36 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:background="@drawable/bg_stat_card"
-                    android:padding="12dp"
-                    android:layout_marginEnd="6dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:layout_marginEnd="5dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_distance"
+                        android:tint="#02D083"
+                        android:contentDescription="Distance icon"
+                        android:layout_marginBottom="4dp" />
 
                     <TextView
                         android:id="@+id/tvStatDistance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="48km"
+                        android:text="86.4km"
                         android:textColor="#02D083"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/poppins_bold" />
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:maxLines="1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Distance"
                         android:textColor="#80FFFFFF"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:fontFamily="@font/poppins_regular" />
 
                 </LinearLayout>
@@ -281,24 +346,36 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:background="@drawable/bg_stat_card"
-                    android:padding="12dp"
-                    android:layout_marginEnd="6dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:layout_marginEnd="5dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_elevation"
+                        android:tint="#02D083"
+                        android:contentDescription="Time icon"
+                        android:layout_marginBottom="4dp" />
 
                     <TextView
                         android:id="@+id/tvStatTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="36h"
+                        android:text="24h 35m"
                         android:textColor="#02D083"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/poppins_bold" />
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:maxLines="1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Time Hiked"
+                        android:text="Time hiked"
                         android:textColor="#80FFFFFF"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:fontFamily="@font/poppins_regular" />
 
                 </LinearLayout>
@@ -310,23 +387,35 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:background="@drawable/bg_stat_card"
-                    android:padding="12dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_check_circle"
+                        android:tint="#02D083"
+                        android:contentDescription="Summits icon"
+                        android:layout_marginBottom="4dp" />
 
                     <TextView
                         android:id="@+id/tvStatSummits"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5"
+                        android:text="4"
                         android:textColor="#02D083"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/poppins_bold" />
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:maxLines="1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Summits"
                         android:textColor="#80FFFFFF"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:fontFamily="@font/poppins_regular" />
 
                 </LinearLayout>
@@ -364,9 +453,14 @@
                         android:id="@+id/btnEditBio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Edit Bio"
+                        android:background="@drawable/bg_button_outline_green"
+                        android:text="EDIT BIO"
                         android:textColor="#02D083"
-                        android:textSize="13sp"
+                        android:textSize="11sp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
                         android:fontFamily="@font/poppins_medium" />
 
                 </LinearLayout>
@@ -413,7 +507,7 @@
                         android:id="@+id/tvSeeAllHikes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="See All"
+                        android:text="View All"
                         android:textColor="#02D083"
                         android:textSize="13sp"
                         android:fontFamily="@font/poppins_medium" />
@@ -428,7 +522,7 @@
 
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="130dp"
                         android:layout_weight="1"
                         android:layout_marginEnd="6dp">
 
@@ -440,23 +534,38 @@
                             android:src="@drawable/img_hike_placeholder"
                             android:contentDescription="Recent hike 1" />
 
-                        <TextView
-                            android:id="@+id/tvRecentHike1"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:background="#99000000"
-                            android:padding="6dp"
-                            android:text="Mt. Pulag"
-                            android:textColor="@android:color/white"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/poppins_regular" />
+                            android:background="#CC000000"
+                            android:orientation="vertical"
+                            android:padding="6dp">
+
+                            <TextView
+                                android:id="@+id/tvRecentHike1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Mt. Pulag"
+                                android:textColor="#FFFFFF"
+                                android:textSize="11sp"
+                                android:fontFamily="@font/poppins_bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Jan 12 · 8.2km"
+                                android:textColor="#80FFFFFF"
+                                android:textSize="10sp"
+                                android:fontFamily="@font/poppins_regular" />
+
+                        </LinearLayout>
 
                     </FrameLayout>
 
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="130dp"
                         android:layout_weight="1"
                         android:layout_marginEnd="6dp">
 
@@ -468,23 +577,38 @@
                             android:src="@drawable/img_hike_placeholder"
                             android:contentDescription="Recent hike 2" />
 
-                        <TextView
-                            android:id="@+id/tvRecentHike2"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:background="#99000000"
-                            android:padding="6dp"
-                            android:text="Mt. Apo"
-                            android:textColor="@android:color/white"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/poppins_regular" />
+                            android:background="#CC000000"
+                            android:orientation="vertical"
+                            android:padding="6dp">
+
+                            <TextView
+                                android:id="@+id/tvRecentHike2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Mt. Apo"
+                                android:textColor="#FFFFFF"
+                                android:textSize="11sp"
+                                android:fontFamily="@font/poppins_bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Feb 3 · 12.5km"
+                                android:textColor="#80FFFFFF"
+                                android:textSize="10sp"
+                                android:fontFamily="@font/poppins_regular" />
+
+                        </LinearLayout>
 
                     </FrameLayout>
 
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="130dp"
                         android:layout_weight="1">
 
                         <ImageView
@@ -495,17 +619,32 @@
                             android:src="@drawable/img_hike_placeholder"
                             android:contentDescription="Recent hike 3" />
 
-                        <TextView
-                            android:id="@+id/tvRecentHike3"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:background="#99000000"
-                            android:padding="6dp"
-                            android:text="Mt. Kanlaon"
-                            android:textColor="@android:color/white"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/poppins_regular" />
+                            android:background="#CC000000"
+                            android:orientation="vertical"
+                            android:padding="6dp">
+
+                            <TextView
+                                android:id="@+id/tvRecentHike3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Mt. Kanlaon"
+                                android:textColor="#FFFFFF"
+                                android:textSize="11sp"
+                                android:fontFamily="@font/poppins_bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Mar 20 · 9.8km"
+                                android:textColor="#80FFFFFF"
+                                android:textSize="10sp"
+                                android:fontFamily="@font/poppins_regular" />
+
+                        </LinearLayout>
 
                     </FrameLayout>
 
@@ -513,47 +652,304 @@
 
             </LinearLayout>
 
-            <!-- My Bookings -->
+            <!-- Achievements section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="16dp">
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Achievements"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingBottom="12dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!-- Badge 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_achievement_badge"
+                            android:src="@drawable/ic_badge_first_hike"
+                            android:padding="10dp"
+                            android:contentDescription="First Hike badge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="First Hike"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- Badge 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_achievement_badge"
+                            android:src="@drawable/ic_badge_explorer"
+                            android:padding="10dp"
+                            android:contentDescription="Explorer badge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Explorer"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- Badge 3 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_achievement_badge"
+                            android:src="@drawable/ic_badge_distance"
+                            android:padding="10dp"
+                            android:contentDescription="Distance badge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="50km Club"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- Badge 4 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_achievement_badge"
+                            android:src="@drawable/ic_badge_night"
+                            android:padding="10dp"
+                            android:contentDescription="Night Hiker badge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Night Hiker"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- Badge 5 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_achievement_badge"
+                            android:src="@drawable/ic_badge_sunrise"
+                            android:padding="10dp"
+                            android:contentDescription="Sunrise badge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Sunrise"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Settings rows -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dark_card"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp">
+
+                <!-- Account Information -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:paddingBottom="12dp">
+                    android:background="@drawable/bg_settings_row_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_account_info"
+                        android:tint="#02D083"
+                        android:contentDescription="Account Information" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="My Bookings"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
-                        android:fontFamily="@font/poppins_bold" />
-
-                    <TextView
-                        android:id="@+id/tvSeeAllBookings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="See All"
-                        android:textColor="#02D083"
-                        android:textSize="13sp"
+                        android:layout_marginStart="12dp"
+                        android:text="Account Information"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
                         android:fontFamily="@font/poppins_medium" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:tint="#80FFFFFF"
+                        android:contentDescription="Navigate" />
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvBookings"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:layout_height="1dp"
+                    android:background="#2A2A2A"
+                    android:layout_marginStart="50dp" />
+
+                <!-- Notifications -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_settings_row_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_notification"
+                        android:tint="#02D083"
+                        android:contentDescription="Notifications" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:text="Notifications"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:tint="#80FFFFFF"
+                        android:contentDescription="Navigate" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#2A2A2A"
+                    android:layout_marginStart="50dp" />
+
+                <!-- Privacy & Security -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_settings_row_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_privacy"
+                        android:tint="#02D083"
+                        android:contentDescription="Privacy and Security" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:text="Privacy &amp; Security"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:tint="#80FFFFFF"
+                        android:contentDescription="Navigate" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

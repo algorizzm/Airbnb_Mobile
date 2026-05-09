@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#151515">
+    android:background="#121212">
 
     <!-- 🔝 Top Nav Bar -->
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="#3B434B"
+        android:background="#1A1A1A"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
@@ -50,6 +50,7 @@
             android:layout_marginEnd="20dp"
             android:padding="2dp"
             android:src="@drawable/ic_message"
+            android:tint="#FFFFFF"
             android:contentDescription="Messages" />
 
         <!-- Notifications -->
@@ -60,6 +61,7 @@
             android:layout_marginEnd="20dp"
             android:padding="2dp"
             android:src="@drawable/ic_notification"
+            android:tint="#FFFFFF"
             android:contentDescription="Notifications" />
 
         <!-- Settings -->
@@ -69,6 +71,7 @@
             android:layout_height="22dp"
             android:padding="2dp"
             android:src="@drawable/ic_settings"
+            android:tint="#FFFFFF"
             android:contentDescription="Settings" />
 
     </LinearLayout>

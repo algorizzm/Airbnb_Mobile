@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     android:background="#121212">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         TOP BAR
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- TOP BAR -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:background="#121212">
 
         <ImageView
@@ -41,25 +40,22 @@
 
     </LinearLayout>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         SCROLLABLE BODY
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- SCROLLABLE BODY -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:paddingBottom="96dp"
-        android:clipToPadding="false"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:paddingTop="12dp">
 
-            <!-- â”€â”€ Booking Summary card â”€â”€ -->
+            <!-- Booking Summary card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,7 +74,6 @@
                     android:fontFamily="@font/poppins_bold"
                     android:layout_marginBottom="12dp" />
 
-                <!-- Hike row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,7 +106,6 @@
                             android:textStyle="bold"
                             android:fontFamily="@font/poppins_bold" />
 
-                        <!-- Date + time row -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -131,7 +125,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="  &#183;  "
+                                android:text="  ·  "
                                 android:textColor="#80FFFFFF"
                                 android:textSize="12sp" />
 
@@ -146,7 +140,6 @@
 
                         </LinearLayout>
 
-                        <!-- Participants + price row -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -182,7 +175,7 @@
 
             </LinearLayout>
 
-            <!-- â”€â”€ Section label â”€â”€ -->
+            <!-- Select Payment Method label -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -193,9 +186,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:layout_marginBottom="14dp" />
 
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 CASH PAYMENT group
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- Cash Payment group -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -206,7 +197,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Pay on arrival row -->
             <LinearLayout
                 android:id="@+id/rowCash"
                 android:layout_width="match_parent"
@@ -214,7 +204,8 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_payment_method_row"
-                android:paddingHorizontal="14dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:layout_marginBottom="16dp"
                 android:clickable="true"
                 android:focusable="true">
@@ -262,9 +253,7 @@
 
             </LinearLayout>
 
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 ONLINE PAYMENT group
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- Online Payment group -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -275,7 +264,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <!-- GCash row -->
+            <!-- GCash -->
             <LinearLayout
                 android:id="@+id/rowGcash"
                 android:layout_width="match_parent"
@@ -283,7 +272,8 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_payment_method_row"
-                android:paddingHorizontal="14dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true">
@@ -304,7 +294,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gcash"
+                        android:text="GCash"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -313,7 +303,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pay securely using Gcash"
+                        android:text="Pay securely using GCash"
                         android:textColor="#80FFFFFF"
                         android:textSize="11sp"
                         android:fontFamily="@font/poppins_regular"
@@ -331,7 +321,7 @@
 
             </LinearLayout>
 
-            <!-- PayMaya row -->
+            <!-- PayMaya -->
             <LinearLayout
                 android:id="@+id/rowPaymaya"
                 android:layout_width="match_parent"
@@ -339,7 +329,8 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_payment_method_row"
-                android:paddingHorizontal="14dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true">
@@ -387,7 +378,7 @@
 
             </LinearLayout>
 
-            <!-- Credit / Debit Card row -->
+            <!-- Credit / Debit Card -->
             <LinearLayout
                 android:id="@+id/rowCard"
                 android:layout_width="match_parent"
@@ -395,7 +386,8 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_payment_method_row"
-                android:paddingHorizontal="14dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true">
@@ -443,7 +435,7 @@
 
             </LinearLayout>
 
-            <!-- Bank Transfer row -->
+            <!-- Bank Transfer -->
             <LinearLayout
                 android:id="@+id/rowBank"
                 android:layout_width="match_parent"
@@ -451,7 +443,8 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_payment_method_row"
-                android:paddingHorizontal="14dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:layout_marginBottom="20dp"
                 android:clickable="true"
                 android:focusable="true">
@@ -499,14 +492,15 @@
 
             </LinearLayout>
 
-            <!-- â”€â”€ Amount to Pay row â”€â”€ -->
+            <!-- Amount to Pay row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_dark_card"
-                android:paddingHorizontal="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:layout_marginBottom="16dp">
 
                 <TextView
@@ -531,27 +525,24 @@
 
             </LinearLayout>
 
+            <!-- Confirm Booking button -->
+            <Button
+                android:id="@+id/btnConfirmBooking"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_button_green"
+                android:text="Confirm Booking"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
+
         </LinearLayout>
 
     </ScrollView>
-
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         CONFIRM BOOKING â€” pinned to bottom
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    <Button
-        android:id="@+id/btnConfirmBooking"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/bg_button_green"
-        android:text="Confirm Booking"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/poppins_bold"
-        app:backgroundTint="@null" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

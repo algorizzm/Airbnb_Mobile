@@ -48,9 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:paddingBottom="100dp">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -561,27 +559,23 @@
 
             </LinearLayout>
 
+            <!-- Save Changes button inside scroll -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSaveChanges"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_button_green"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Save Changes"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </ScrollView>
-
-    <!-- ── Save Changes button pinned to bottom ── -->
-    <Button
-        android:id="@+id/btnSaveChanges"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/bg_button_green"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Save Changes"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:layout_anchor="@+id/scrollView2"
-        app:layout_anchorGravity="bottom|center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

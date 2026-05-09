@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="#121212"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#0B301F"
+        android:background="#121212"
         app:navigationIcon="@drawable/ic_chevron_left"
-        app:navigationIconTint="@android:color/white"
-        app:title="Hike details"
-        app:titleTextColor="@android:color/white" />
+        app:navigationIconTint="#02D083"
+        app:title="Hike Details"
+        app:titleTextColor="#FFFFFF" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -28,162 +28,203 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.google.android.material.card.MaterialCardView
+            <!-- Details card -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                android:background="@drawable/bg_dark_card"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
+                    android:fontFamily="@font/poppins_bold" />
 
-                    <TextView
-                        android:id="@+id/tvTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#0B301F"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_regular" />
 
-                    <TextView
-                        android:id="@+id/tvStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="#607D8B"
-                        android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_medium" />
 
-                    <TextView
-                        android:id="@+id/tvLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textColor="#0B301F"
-                        android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/tvDifficulty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
 
-                    <TextView
-                        android:id="@+id/tvDifficulty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
 
-                    <TextView
-                        android:id="@+id/tvDistance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#02D083"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_bold" />
 
-                    <TextView
-                        android:id="@+id/tvPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvMaxParticipants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
 
-                    <TextView
-                        android:id="@+id/tvMaxParticipants"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Description"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Description"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
 
-                    <TextView
-                        android:id="@+id/tvDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="#424242"
-                        android:textSize="14sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Guide"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Guide"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvGuideName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
 
-                    <TextView
-                        android:id="@+id/tvGuideName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvBookingStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#02D083"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:visibility="gone" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tvBookingStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.button.MaterialButton
+            <!-- Action buttons -->
+            <Button
                 android:id="@+id/btnApply"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
-                android:text="Apply to hike"
+                android:background="@drawable/bg_button_green"
+                android:text="Apply to Hike"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
                 android:visibility="gone" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnCancelApplication"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:text="Cancel application"
+                android:background="@drawable/bg_button_outline_green"
+                android:text="Cancel Application"
+                android:textAllCaps="false"
+                android:textColor="#02D083"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
                 android:visibility="gone" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnLeaveHike"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:text="Leave hike"
+                android:background="@drawable/bg_button_outline_green"
+                android:text="Leave Hike"
+                android:textAllCaps="false"
+                android:textColor="#02D083"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
                 android:visibility="gone" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnEdit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
-                android:text="Edit hike"
+                android:background="@drawable/bg_button_green"
+                android:text="Edit Hike"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
                 android:visibility="gone" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnApplicants"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:text="View applicants"
+                android:background="@drawable/bg_button_outline_green"
+                android:text="View Applicants"
+                android:textAllCaps="false"
+                android:textColor="#02D083"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
                 android:visibility="gone" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnDeleteHike"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:text="Delete hike"
-                android:textColor="#C62828"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_button_outline_red"
+                android:text="Delete Hike"
+                android:textAllCaps="false"
+                android:textColor="#FF4444"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
                 android:visibility="gone" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

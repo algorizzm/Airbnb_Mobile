@@ -3,9 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#121212">
 
-    <!-- NAV HOST -->
+    <!-- NAV HOST — fills space above the nav bar -->
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -14,19 +15,137 @@
         app:navGraph="@navigation/nav_graph"
         app:defaultNavHost="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toTopOf="@id/navBarBg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- BOTTOM NAV -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
+    <!-- NAV BAR BACKGROUND (dark rounded bar, 68dp tall) -->
+    <LinearLayout
+        android:id="@+id/navBarBg"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled"
+        android:layout_height="68dp"
+        android:background="@drawable/bg_nav_bar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Home -->
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navIconHome"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_home"
+                android:tint="#FFFFFF"
+                android:contentDescription="Home" />
+
+        </LinearLayout>
+
+        <!-- Explore / Search -->
+        <LinearLayout
+            android:id="@+id/navExplore"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navIconExplore"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_hikes"
+                android:tint="#AAAAAA"
+                android:contentDescription="Explore" />
+
+        </LinearLayout>
+
+        <!-- Center FAB placeholder (takes up space so FAB sits centered) -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <!-- Messages -->
+        <LinearLayout
+            android:id="@+id/navMessages"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navIconMessages"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_messages"
+                android:tint="#AAAAAA"
+                android:contentDescription="Messages" />
+
+        </LinearLayout>
+
+        <!-- Profile avatar -->
+        <LinearLayout
+            android:id="@+id/navProfile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navIconProfile"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/bg_circle"
+                android:background="@drawable/bg_avatar_circle"
+                android:scaleType="centerCrop"
+                android:contentDescription="Profile" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Center FAB — floats above the bar, centered horizontally -->
+    <FrameLayout
+        android:id="@+id/navFab"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:background="@drawable/bg_fab_green"
+        android:elevation="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@id/navBarBg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_logo"
+            android:tint="#FFFFFF"
+            android:contentDescription="Hike" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
