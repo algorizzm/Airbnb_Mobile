@@ -27,22 +27,34 @@ class HikesViewModel(
     private val _difficultyFilter = MutableStateFlow<String?>(null)
     val difficultyFilter: StateFlow<String?> = _difficultyFilter.asStateFlow()
 
+    private val _minDistance = MutableStateFlow<Double?>(null)
+    private val _maxDistance = MutableStateFlow<Double?>(null)
+    private val _maxPrice = MutableStateFlow<Double?>(null)
+    private val _maxDuration = MutableStateFlow<Double?>(null)
+
     private val _toast = MutableStateFlow<String?>(null)
     val toast: StateFlow<String?> = _toast.asStateFlow()
 
     val displayHikes: StateFlow<List<Hike>> = combine(
         _allHikes,
         _searchQuery,
-        _difficultyFilter
-    ) { hikes, query, difficulty ->
+        _difficultyFilter,
+        combine(_minDistance, _maxDistance, _maxPrice, _maxDuration) { minD, maxD, maxP, maxDur ->
+            FilterState(minD, maxD, maxP, maxDur)
+        }
+    ) { hikes, query, difficulty, filters ->
         hikes.filter { hike ->
             val q = query.trim()
             val matchesQuery = q.isEmpty() ||
-                hike.title.contains(q, ignoreCase = true) ||
-                hike.location.contains(q, ignoreCase = true)
+                    hike.title.contains(q, ignoreCase = true) ||
+                    hike.location.contains(q, ignoreCase = true)
             val matchesDifficulty = difficulty.isNullOrBlank() ||
-                hike.difficulty.equals(difficulty, ignoreCase = true)
-            matchesQuery && matchesDifficulty
+                    hike.difficulty.equals(difficulty, ignoreCase = true)
+            val matchesMinDist = filters.minDistance == null || hike.distanceKm >= filters.minDistance
+            val matchesMaxDist = filters.maxDistance == null || hike.distanceKm <= filters.maxDistance
+            val matchesPrice = filters.maxPrice == null || hike.price <= filters.maxPrice
+            val matchesDuration = filters.maxDuration == null || hike.durationHours <= filters.maxDuration
+            matchesQuery && matchesDifficulty && matchesMinDist && matchesMaxDist && matchesPrice && matchesDuration
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
@@ -58,15 +70,19 @@ class HikesViewModel(
         }
     }
 
-    fun setSearchQuery(value: String) {
-        _searchQuery.value = value
-    }
+    fun setSearchQuery(value: String) { _searchQuery.value = value }
+    fun setDifficultyFilter(value: String?) { _difficultyFilter.value = value }
+    fun setMinDistance(value: Double?) { _minDistance.value = value }
+    fun setMaxDistance(value: Double?) { _maxDistance.value = value }
+    fun setMaxPrice(value: Double?) { _maxPrice.value = value }
+    fun setMaxDuration(value: Double?) { _maxDuration.value = value }
 
-    fun setDifficultyFilter(value: String?) {
-        _difficultyFilter.value = value
-    }
+    fun consumeToast() { _toast.value = null }
 
-    fun consumeToast() {
-        _toast.value = null
-    }
+    private data class FilterState(
+        val minDistance: Double?,
+        val maxDistance: Double?,
+        val maxPrice: Double?,
+        val maxDuration: Double?
+    )
 }

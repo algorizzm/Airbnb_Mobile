@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         fun navigateTo(destId: Int) {
             if (destId in protectedTabs && !AuthManager.isAuthenticated()) {
+<<<<<<< Updated upstream
                 ProtectedNav.navigate(
                     navController = navController,
                     destId = destId,
@@ -69,6 +70,22 @@ class MainActivity : AppCompatActivity() {
                     navOptions = null,
                     isProtected = false
                 )
+=======
+                val navHostFragment = supportFragmentManager
+                    .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
+                if (currentFragment != null) {
+                    com.verdant.core.ui.GuestPromptDialog.show(currentFragment.childFragmentManager)
+                } else {
+                    ProtectedNav.navigate(
+                        navController = navController,
+                        destId = destId,
+                        args = null,
+                        navOptions = null,
+                        isProtected = false
+                    )
+                }
+>>>>>>> Stashed changes
             } else {
                 navController.navigate(destId, null, navOptions(destId))
             }
@@ -89,10 +106,18 @@ class MainActivity : AppCompatActivity() {
                 R.id.splashFragment,
                 R.id.onboardingFragment
             )
+<<<<<<< Updated upstream
 
             customNavBar.visibility =
                 if (destination.id in authScreens) View.GONE else View.VISIBLE
 
+=======
+
+            val showNav = destination.id !in authScreens
+            customNavBar.visibility = if (showNav) View.VISIBLE else View.GONE
+            navFab.visibility       = if (showNav) View.VISIBLE else View.GONE
+
+>>>>>>> Stashed changes
             // Reset all to inactive
             val inactive = 0xFFAAAAAA.toInt()
             val active   = 0xFF02D083.toInt()

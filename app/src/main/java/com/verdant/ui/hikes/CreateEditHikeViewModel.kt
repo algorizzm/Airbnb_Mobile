@@ -1,10 +1,12 @@
 package com.verdant.ui.hikes
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.verdant.data.model.Hike
+import com.verdant.data.remote.StorageService
 import com.verdant.data.repository.HikeRepository
 import com.verdant.data.session.UserSessionManager
 import com.verdant.core.auth.AuthState
@@ -23,8 +25,10 @@ data class CreateEditHikeFormState(
     val difficulty: String = "",
     val distanceKm: String = "",
     val price: String = "",
+    val durationHours: String = "",
     val maxParticipants: String = "",
     val status: String = HikeStatus.OPEN,
+    val imageUrl: String = "",
     val isEditMode: Boolean = false,
     val loading: Boolean = false,
     val message: String? = null,
@@ -33,7 +37,8 @@ data class CreateEditHikeFormState(
 
 class CreateEditHikeViewModel(
     private val existingHikeId: String?,
-    private val hikeRepository: HikeRepository = HikeRepository()
+    private val hikeRepository: HikeRepository = HikeRepository(),
+    private val storageService: StorageService = StorageService()
 ) : ViewModel() {
 
     private val _form = MutableStateFlow(CreateEditHikeFormState(isEditMode = !existingHikeId.isNullOrBlank()))
@@ -73,8 +78,10 @@ class CreateEditHikeViewModel(
                         difficulty = hike.difficulty,
                         distanceKm = hike.distanceKm.toString(),
                         price = hike.price.toString(),
+                        durationHours = hike.durationHours.toString(),
                         maxParticipants = hike.maxParticipants.toString(),
                         status = hike.status,
+                        imageUrl = hike.imageUrl,
                         isEditMode = true,
                         loading = false
                     )
@@ -115,6 +122,24 @@ class CreateEditHikeViewModel(
 
     fun updateStatus(v: String) {
         _form.value = _form.value.copy(status = v)
+    }
+
+    fun updateDurationHours(v: String) {
+        _form.value = _form.value.copy(durationHours = v)
+    }
+
+    fun uploadImage(uri: Uri) {
+        viewModelScope.launch {
+            _form.value = _form.value.copy(loading = true)
+            val tempId = existingHikeId ?: System.currentTimeMillis().toString()
+            storageService.uploadHikeImage(tempId, uri)
+                .onSuccess { url ->
+                    _form.value = _form.value.copy(loading = false, imageUrl = url)
+                }
+                .onFailure {
+                    _form.value = _form.value.copy(loading = false, message = "Image upload failed: ${it.message}")
+                }
+        }
     }
 
     fun save() {
@@ -158,10 +183,12 @@ class CreateEditHikeViewModel(
                 difficulty = f.difficulty.trim().ifBlank { "Moderate" },
                 distanceKm = distance,
                 price = price,
+                durationHours = f.durationHours.toDoubleOrNull() ?: 0.0,
                 guideId = user.id,
                 guideName = user.name.ifBlank { user.email },
                 maxParticipants = maxP,
                 status = f.status.ifBlank { HikeStatus.OPEN },
+                imageUrl = f.imageUrl,
                 createdAt = Timestamp.now()
             )
 

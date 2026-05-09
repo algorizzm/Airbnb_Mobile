@@ -33,7 +33,7 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentHikeDetailBinding.bind(view)
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
 
@@ -44,12 +44,7 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
             val state = AuthManager.stateSnapshot()
             return when (state) {
                 AuthState.Guest -> {
-                    ProtectedNav.navigate(
-                        navController = findNavController(),
-                        destId = intendedDestId,
-                        args = intendedArgs,
-                        isProtected = true
-                    )
+                    com.verdant.core.ui.GuestPromptDialog.show(childFragmentManager)
                     false
                 }
                 is AuthState.Loading -> {

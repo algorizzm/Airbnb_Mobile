@@ -565,7 +565,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
                 android:background="@drawable/bg_button_green"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Save Changes"
@@ -573,6 +572,20 @@
                 android:textColor="#000000"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
+            <!-- Sign Out button -->
+            <Button
+                android:id="@+id/btnSignOut"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_button_outline_red"
+                android:text="Sign Out"
+                android:textAllCaps="false"
+                android:textColor="#FF4444"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
 
         </LinearLayout>
 

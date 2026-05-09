@@ -41,7 +41,7 @@ class ApplicantsFragment : Fragment(R.layout.fragment_applicants) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentApplicantsBinding.bind(view)
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
 

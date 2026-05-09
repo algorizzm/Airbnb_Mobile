@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.verdant.R
-import com.verdant.core.auth.AuthManager
 import com.verdant.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -17,60 +16,53 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: ProfileViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
-
         _binding = FragmentProfileBinding.bind(view)
 
         observeAuthState()
-
         setupGuestActions()
+<<<<<<< Updated upstream
+=======
+        setupTopBar()
+>>>>>>> Stashed changes
     }
 
     private fun observeAuthState() {
-
         viewModel.isGuest.observe(viewLifecycleOwner) { isGuest ->
-
-            if (isGuest) {
-
-                showGuestUi()
-
-            } else {
-
-                showProfileUi()
-            }
+            if (isGuest) showGuestUi() else showProfileUi()
         }
     }
 
     private fun showGuestUi() {
-
         binding.layoutGuest.visibility = View.VISIBLE
         binding.layoutProfile.visibility = View.GONE
     }
 
     private fun showProfileUi() {
-
         binding.layoutGuest.visibility = View.GONE
         binding.layoutProfile.visibility = View.VISIBLE
     }
 
     private fun setupGuestActions() {
-
         binding.btnLogin.setOnClickListener {
-
             findNavController().navigate(R.id.auth_graph)
         }
-
         binding.btnSignup.setOnClickListener {
-
             findNavController().navigate(R.id.auth_graph)
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    private fun setupTopBar() {
+        binding.btnSettings.setOnClickListener {
+            findNavController().navigate(R.id.settingsFragment)
+        }
+    }
+
+>>>>>>> Stashed changes
     override fun onDestroyView() {
-
         super.onDestroyView()
-
         _binding = null
     }
 }

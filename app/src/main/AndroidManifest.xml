@@ -4,6 +4,9 @@
 
     <!-- ✅ REQUIRED (VERY IMPORTANT for Firebase / API / AuthRepository) -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:name=".VerdantApplication"
@@ -31,3 +34,9 @@
     </application>
 
 </manifest>
+
+
+
+
+
+

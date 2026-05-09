@@ -1,10 +1,13 @@
 package com.verdant.ui.hikes
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.verdant.R
 import com.verdant.databinding.FragmentCreateEditHikeBinding
 import com.verdant.utils.HikeStatus
@@ -29,15 +33,26 @@ class CreateEditHikeFragment : Fragment(R.layout.fragment_create_edit_hike) {
         CreateEditHikeViewModel.Factory(existingHikeId)
     }
 
+    private val imagePickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val uri = result.data?.data ?: return@registerForActivityResult
+            viewModel.uploadImage(uri)
+            binding.imgHikePreview.visibility = View.VISIBLE
+            Glide.with(this).load(uri).centerCrop().into(binding.imgHikePreview)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCreateEditHikeBinding.bind(view)
 
         val isEdit = existingHikeId != null
-        binding.toolbar.title = if (isEdit) "Edit hike" else "Create hike"
+        binding.tvTitle.text = if (isEdit) "Edit Hike" else "Create Hike"
         binding.btnDelete.visibility = if (isEdit) View.VISIBLE else View.GONE
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
 
@@ -54,14 +69,19 @@ class CreateEditHikeFragment : Fragment(R.layout.fragment_create_edit_hike) {
         binding.etDifficulty.doAfterTextChanged { viewModel.updateDifficulty(it?.toString().orEmpty()) }
         binding.etDistanceKm.doAfterTextChanged { viewModel.updateDistanceKm(it?.toString().orEmpty()) }
         binding.etPrice.doAfterTextChanged { viewModel.updatePrice(it?.toString().orEmpty()) }
+        binding.etDurationHours.doAfterTextChanged { viewModel.updateDurationHours(it?.toString().orEmpty()) }
         binding.etMaxParticipants.doAfterTextChanged { viewModel.updateMaxParticipants(it?.toString().orEmpty()) }
 
         binding.spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, id: Long) {
                 viewModel.updateStatus(statusOptions[position])
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
+
+        binding.btnUploadImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
+            imagePickerLauncher.launch(intent)
         }
 
         binding.btnSave.setOnClickListener { viewModel.save() }
@@ -82,6 +102,9 @@ class CreateEditHikeFragment : Fragment(R.layout.fragment_create_edit_hike) {
                         binding.etDistanceKm.setText(form.distanceKm)
                     }
                     if (binding.etPrice.text?.toString() != form.price) binding.etPrice.setText(form.price)
+                    if (binding.etDurationHours.text?.toString() != form.durationHours) {
+                        binding.etDurationHours.setText(form.durationHours)
+                    }
                     if (binding.etMaxParticipants.text?.toString() != form.maxParticipants) {
                         binding.etMaxParticipants.setText(form.maxParticipants)
                     }
@@ -90,8 +113,17 @@ class CreateEditHikeFragment : Fragment(R.layout.fragment_create_edit_hike) {
                         binding.spinnerStatus.setSelection(idx, false)
                     }
 
+                    if (form.imageUrl.isNotBlank()) {
+                        binding.imgHikePreview.visibility = View.VISIBLE
+                        Glide.with(this@CreateEditHikeFragment)
+                            .load(form.imageUrl)
+                            .centerCrop()
+                            .into(binding.imgHikePreview)
+                    }
+
                     binding.btnSave.isEnabled = !form.loading
                     binding.btnDelete.isEnabled = !form.loading
+                    binding.btnUploadImage.isEnabled = !form.loading
 
                     form.message?.let {
                         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()

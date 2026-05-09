@@ -6,15 +6,38 @@
     android:background="#121212"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <!-- Top bar -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#121212"
-        app:navigationIcon="@drawable/ic_chevron_left"
-        app:navigationIconTint="#02D083"
-        app:title="Hike"
-        app:titleTextColor="#FFFFFF" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="44dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:src="@drawable/ic_chevron_left"
+            android:tint="#FFFFFF"
+            android:contentDescription="Back"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Create Hike"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins_bold" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -174,6 +197,30 @@
                 android:paddingEnd="16dp"
                 android:fontFamily="@font/poppins_regular" />
 
+            <!-- Duration -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duration (hours)"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/etDurationHours"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_edittext_border"
+                android:inputType="numberDecimal"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:hint="0.0"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
+
             <!-- Max Participants -->
             <TextView
                 android:layout_width="wrap_content"
@@ -216,6 +263,38 @@
                 android:background="@drawable/bg_edittext_border"
                 android:backgroundTint="#02D083"
                 android:popupBackground="#1A1A1A" />
+
+            <!-- Hike Image -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hike Image"
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
+
+            <ImageView
+                android:id="@+id/imgHikePreview"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_hike_placeholder"
+                android:contentDescription="Hike image preview"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnUploadImage"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_button_outline_green"
+                android:text="Upload Image"
+                android:textAllCaps="false"
+                android:textColor="#02D083"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null" />
 
             <!-- Save button -->
             <Button

@@ -120,29 +120,20 @@
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp">
 
-                        <ImageButton
-                            android:id="@+id/btnBack"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_circle"
-                            android:src="@drawable/ic_back"
-                            android:contentDescription="Back"
-                            android:padding="8dp" />
-
                         <View
                             android:layout_width="0dp"
                             android:layout_height="1dp"
                             android:layout_weight="1" />
 
                         <ImageButton
-                            android:id="@+id/btnNotification"
+                            android:id="@+id/btnNotifications"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
+                            android:layout_marginEnd="8dp"
                             android:background="@drawable/bg_circle"
-                            android:src="@drawable/ic_notification_bell"
+                            android:src="@drawable/ic_notification"
                             android:contentDescription="Notifications"
-                            android:padding="8dp"
-                            android:layout_marginEnd="8dp" />
+                            android:padding="8dp" />
 
                         <ImageButton
                             android:id="@+id/btnSettings"
@@ -333,47 +324,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Distance"
-                        android:textColor="#80FFFFFF"
-                        android:textSize="10sp"
-                        android:fontFamily="@font/poppins_regular" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/bg_stat_card"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_marginEnd="5dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_elevation"
-                        android:tint="#02D083"
-                        android:contentDescription="Time icon"
-                        android:layout_marginBottom="4dp" />
-
-                    <TextView
-                        android:id="@+id/tvStatTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="24h 35m"
-                        android:textColor="#02D083"
-                        android:textSize="13sp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:maxLines="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Time hiked"
                         android:textColor="#80FFFFFF"
                         android:textSize="10sp"
                         android:fontFamily="@font/poppins_regular" />
@@ -820,6 +770,7 @@
 
             </LinearLayout>
 
+<<<<<<< Updated upstream
             <!-- Settings rows -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -968,6 +919,8 @@
                 android:fontFamily="@font/poppins_bold"
                 app:backgroundTint="@null" />
 
+=======
+>>>>>>> Stashed changes
         </LinearLayout>
 
     </LinearLayout>

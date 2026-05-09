@@ -14,7 +14,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.verdant.R
+import com.verdant.core.auth.AuthState
 import com.verdant.core.navigation.ProtectedNav
+import com.verdant.data.session.UserSessionManager
 import com.verdant.databinding.FragmentHikesBinding
 import com.verdant.ui.hikes.adapter.HikeAdapter
 import kotlinx.coroutines.launch
@@ -38,7 +40,12 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
         binding.recyclerHikes.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerHikes.adapter = adapter
 
-        binding.toolbar.setNavigationOnClickListener(null)
+        binding.btnNotifications.setOnClickListener {
+            findNavController().navigate(R.id.notificationsFragment)
+        }
+        binding.btnSettings.setOnClickListener {
+            findNavController().navigate(R.id.settingsFragment)
+        }
 
         binding.etSearch.doAfterTextChanged { text ->
             viewModel.setSearchQuery(text?.toString().orEmpty())
@@ -52,11 +59,22 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
         )
         binding.spinnerDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, id: Long) {
-                val value = difficulties[position]
-                viewModel.setDifficultyFilter(if (position == 0) null else value)
+                viewModel.setDifficultyFilter(if (position == 0) null else difficulties[position])
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
+
+        binding.etMinDistance.doAfterTextChanged {
+            viewModel.setMinDistance(it?.toString()?.toDoubleOrNull())
+        }
+        binding.etMaxDistance.doAfterTextChanged {
+            viewModel.setMaxDistance(it?.toString()?.toDoubleOrNull())
+        }
+        binding.etMaxPrice.doAfterTextChanged {
+            viewModel.setMaxPrice(it?.toString()?.toDoubleOrNull())
+        }
+        binding.etMaxDuration.doAfterTextChanged {
+            viewModel.setMaxDuration(it?.toString()?.toDoubleOrNull())
         }
 
         binding.fabCreateHike.setOnClickListener {
@@ -64,15 +82,24 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
                 navController = findNavController(),
                 destId = R.id.createEditHikeFragment,
                 args = Bundle(),
-                isProtected = true
+                isProtected = true,
+                fragmentManager = childFragmentManager
             )
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    UserSessionManager.authState.collect { state ->
+                        val visible = if (state is AuthState.Guest) View.GONE else View.VISIBLE
+                        binding.btnNotifications.visibility = visible
+                        binding.btnSettings.visibility = visible
+                    }
+                }
+                launch {
                     viewModel.displayHikes.collect { list ->
                         adapter.submitList(list)
+                        binding.tvEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
                     }
                 }
                 launch {

@@ -75,5 +75,55 @@
         android:name="com.verdant.ui.messages.MessagesFragment"
         android:label="Messages" />
 
+    <!-- Settings -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.verdant.ui.settings.SettingsFragment"
+        android:label="Settings">
+
+        <action
+            android:id="@+id/action_settingsFragment_to_accountInformationFragment"
+            app:destination="@id/accountInformationFragment" />
+
+        <action
+            android:id="@+id/action_settingsFragment_to_privacySecurityFragment"
+            app:destination="@id/privacySecurityFragment" />
+
+        <action
+            android:id="@+id/action_settingsFragment_to_notificationsFragment"
+            app:destination="@id/notificationSettingsFragment" />
+
+    </fragment>
+
+    <!-- Account Information -->
+    <fragment
+        android:id="@+id/accountInformationFragment"
+        android:name="com.verdant.ui.settings.AccountInformationFragment"
+        android:label="Account Information" />
+
+    <!-- Privacy & Security -->
+    <fragment
+        android:id="@+id/privacySecurityFragment"
+        android:name="com.verdant.ui.settings.PrivacySecurityFragment"
+        android:label="Privacy and Security" />
+
+    <!-- Notification Settings (from Settings screen) -->
+    <fragment
+        android:id="@+id/notificationSettingsFragment"
+        android:name="com.verdant.ui.settings.NotificationsFragment"
+        android:label="Notification Settings" />
+
+    <!-- Notification Inbox (from main screen bell icon) -->
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.verdant.ui.notifications.NotificationInboxFragment"
+        android:label="Notifications" />
+
+    <!-- Change Password -->
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.verdant.ui.settings.ChangePasswordFragment"
+        android:label="Change Password" />
+
 </navigation>
 

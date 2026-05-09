@@ -31,7 +31,7 @@ class MyBookingsFragment : Fragment(R.layout.fragment_my_bookings) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMyBookingsBinding.bind(view)
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
 

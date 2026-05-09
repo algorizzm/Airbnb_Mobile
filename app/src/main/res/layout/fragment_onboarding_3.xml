@@ -7,6 +7,12 @@
     android:background="#0A1F0F">
 
     <!-- Background hero image -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/onboarding3photo"
+        android:scaleType="centerCrop"
+        android:contentDescription="Group of hikers on a snowy mountain" />
 
     <!-- Dark gradient overlay (transparent top → dark bottom) -->
     <View

@@ -10,9 +10,11 @@ data class Hike(
     val difficulty: String = "",
     val distanceKm: Double = 0.0,
     val price: Double = 0.0,
+    val durationHours: Double = 0.0,
     val guideId: String = "",
     val guideName: String = "",
     val maxParticipants: Int = 0,
     val status: String = "open",
+    val imageUrl: String = "",
     val createdAt: Timestamp? = null
 )
