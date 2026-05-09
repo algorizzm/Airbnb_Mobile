@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navIconMessages: ImageView
     private lateinit var navIconProfile: ImageView
 
-    private lateinit var customNavBar: FrameLayout
+    private lateinit var customNavBar: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         // Bind views
-        customNavBar   = findViewById(R.id.customNavBar)
+        customNavBar   = findViewById(R.id.navBarBg)
         navHome        = findViewById(R.id.navHome)
         navExplore     = findViewById(R.id.navExplore)
         navFab         = findViewById(R.id.navFab)

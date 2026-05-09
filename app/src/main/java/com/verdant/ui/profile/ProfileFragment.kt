@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.verdant.R
 import com.verdant.core.auth.AuthManager
@@ -26,8 +25,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         observeAuthState()
 
         setupGuestActions()
-
-        setupLogout()
     }
 
     private fun observeAuthState() {
@@ -67,24 +64,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.btnSignup.setOnClickListener {
 
             findNavController().navigate(R.id.auth_graph)
-        }
-    }
-
-    private fun setupLogout() {
-
-        binding.btnSignOut.setOnClickListener {
-
-            AuthManager.signOut()
-
-            viewModel.logout()
-
-            findNavController().navigate(
-                R.id.auth_graph,
-                null,
-                NavOptions.Builder()
-                    .setPopUpTo(R.id.auth_graph, true)
-                    .build()
-            )
         }
     }
 
