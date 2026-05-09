@@ -21,10 +21,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         observeAuthState()
         setupGuestActions()
-<<<<<<< Updated upstream
-=======
+
+
         setupTopBar()
->>>>>>> Stashed changes
+
     }
 
     private fun observeAuthState() {
@@ -52,15 +52,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-<<<<<<< Updated upstream
-=======
+
     private fun setupTopBar() {
         binding.btnSettings.setOnClickListener {
             findNavController().navigate(R.id.settingsFragment)
         }
     }
 
->>>>>>> Stashed changes
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

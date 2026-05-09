@@ -770,7 +770,7 @@
 
             </LinearLayout>
 
-<<<<<<< Updated upstream
+
             <!-- Settings rows -->
             <LinearLayout
                 android:layout_width="match_parent"
