@@ -33,18 +33,29 @@ class UserRepository {
         auth.signOut()
     }
 
-    fun updateUserName(newName: String, onResult: (Boolean) -> Unit) {
+    fun updateUserBio(
+        newBio: String,
+        onResult: (Boolean) -> Unit
+    ) {
+
         val uid = auth.currentUser?.uid
 
         if (uid == null) {
+
             onResult(false)
             return
         }
 
         db.collection("users")
             .document(uid)
-            .update("name", newName)
-            .addOnSuccessListener { onResult(true) }
-            .addOnFailureListener { onResult(false) }
+            .update("bio", newBio)
+            .addOnSuccessListener {
+
+                onResult(true)
+            }
+            .addOnFailureListener {
+
+                onResult(false)
+            }
     }
 }

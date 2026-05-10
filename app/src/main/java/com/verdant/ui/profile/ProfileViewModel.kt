@@ -3,79 +3,118 @@ package com.verdant.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.verdant.core.auth.AuthManager
-import com.verdant.data.model.User
+import androidx.lifecycle.asLiveData
+import com.verdant.core.auth.AuthState
 import com.verdant.data.repository.UserRepository
 import com.verdant.data.session.UserSessionManager
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
 
 class ProfileViewModel : ViewModel() {
 
     private val repository = UserRepository()
 
-    private val _user = MutableLiveData<User?>()
-    val user: LiveData<User?> = _user
+    /**
+     * =========================
+     * USER STATE
+     * =========================
+     */
 
-    private val _isGuest = MutableLiveData<Boolean>()
-    val isGuest: LiveData<Boolean> = _isGuest
+    // Uses cached session user instead of re-fetching every time
+    val user = UserSessionManager.currentUser.asLiveData()
+
+    // Observe auth state globally
+    val isGuest = UserSessionManager.authState
+        .map { state -> state is AuthState.Guest }
+        .asLiveData()
+
+    /**
+     * =========================
+     * UI STATE
+     * =========================
+     */
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
 
     private val _updateStatus = MutableLiveData<Boolean>()
     val updateStatus: LiveData<Boolean> = _updateStatus
 
-    private val _logoutStatus = MutableLiveData<Boolean>()
-    val logoutStatus: LiveData<Boolean> = _logoutStatus
+    /**
+     * =========================
+     * NAVIGATION EVENTS
+     * =========================
+     */
+    private val _navigateToAuth = MutableLiveData<Unit>()
+    val navigateToAuth: LiveData<Unit> = _navigateToAuth
 
-    init {
-        checkAuthState()
+    private val _navigateToSettings = MutableLiveData<Unit>()
+    val navigateToSettings: LiveData<Unit> = _navigateToSettings
+
+    /**
+     * =========================
+     * REFRESH PROFILE
+     * =========================
+     */
+    fun refreshProfile() {
+
+        _loading.value = true
+
+        UserSessionManager.refresh()
+
+        _loading.postValue(false)
     }
 
-    private fun checkAuthState() {
-        val authenticated = AuthManager.isAuthenticated()
+    /**
+     * =========================
+     * UPDATE BIO
+     * =========================
+     */
+    fun updateBio(newBio: String) {
 
-        _isGuest.value = !authenticated
+        _loading.value = true
 
-        if (authenticated) {
-            loadUser()
-        }
-    }
+        repository.updateUserBio(newBio) { success ->
 
-    fun loadUser() {
-        repository.getCurrentUser { user ->
-            _user.postValue(user)
-        }
-    }
-
-    fun updateName(newName: String) {
-        repository.updateUserName(newName) { success ->
-
+            _loading.postValue(false)
             _updateStatus.postValue(success)
 
             if (success) {
+
+                // Refresh cached session user
                 UserSessionManager.refresh()
-                loadUser()
+
+            } else {
+
+                _errorMessage.postValue("Failed to update bio")
             }
         }
     }
 
-    fun logout() {
+    /**
+     * =========================
+     * CLICK EVENTS
+     * =========================
+     */
+    fun onLoginClicked() {
+        _navigateToAuth.value = Unit
+    }
 
-        viewModelScope.launch {
+    fun onSignupClicked() {
+        _navigateToAuth.value = Unit
+    }
 
-            try {
+    fun onSettingsClicked() {
+        _navigateToSettings.value = Unit
+    }
 
-                repository.clearUserSession()
-
-                _logoutStatus.postValue(true)
-
-                _user.postValue(null)
-
-                _isGuest.postValue(true)
-
-            } catch (e: Exception) {
-
-                _logoutStatus.postValue(false)
-            }
-        }
+    /**
+     * =========================
+     * CLEAR ERROR
+     * =========================
+     */
+    fun clearError() {
+        _errorMessage.value = null
     }
 }
