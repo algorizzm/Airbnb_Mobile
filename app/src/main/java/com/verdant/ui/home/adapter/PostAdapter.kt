@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.verdant.data.model.FeedItem
 import com.verdant.data.model.HikePost
+import com.verdant.core.ui.AvatarHelper
 import com.verdant.databinding.ItemHomeCtaBinding
 import com.verdant.databinding.ItemPostBinding
 import com.verdant.utils.Permissions
@@ -136,6 +137,14 @@ class PostAdapter(
             tvDate.text = "${hike.date} at ${hike.time}"
             tvLoc.text = "@${hike.location}"
             tvTitle.text = hike.title
+
+            // Avatar initials — no real photo URL on HikePost (static feed)
+            AvatarHelper.bind(
+                imgView   = imgProfile,
+                tvInitial = tvPostInitial,
+                name      = hike.username,
+                imageUrl  = null
+            )
 
             tvStats.text =
                 "${hike.distance} • ${hike.elevation} • ${hike.duration}"

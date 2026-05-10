@@ -1,24 +1,31 @@
 package com.verdant.ui.profile
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.Manifest
+import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
+import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.android.material.snackbar.Snackbar
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.verdant.R
-import com.verdant.data.model.User
+import com.verdant.core.ui.AvatarHelper
 import com.verdant.databinding.FragmentProfileBinding
+import com.verdant.ui.hikes.HikesFragment
+import com.verdant.ui.hikes.UserBookingRow
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -27,310 +34,243 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val viewModel: ProfileViewModel by viewModels()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?
-    ) {
-        super.onViewCreated(view, savedInstanceState)
+    // "avatar" or "banner"
+    private var pendingPickTarget = "avatar"
 
-        _binding = FragmentProfileBinding.bind(view)
-
-        setupClickListeners()
-        observeViewModel()
+    // ── Gallery picker ───────────────────────────────────────────────────────
+    private val imagePickerLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri ?: return@registerForActivityResult
+        when (pendingPickTarget) {
+            "avatar" -> {
+                binding.tvAvatarInitial.visibility = View.GONE
+                Glide.with(this).load(uri).circleCrop().into(binding.imgAvatar)
+                viewModel.uploadAvatar(uri)
+            }            "banner" -> {
+                Glide.with(this).load(uri).centerCrop().into(binding.imgBanner)
+                viewModel.uploadBanner(uri)
+            }
+        }
     }
 
-    /**
-     * =========================
-     * CLICK LISTENERS
-     * =========================
-     */
-    private fun setupClickListeners() {
+    // ── Permission launcher ──────────────────────────────────────────────────
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) openGallery()
+        else Toast.makeText(requireContext(), "Gallery permission denied", Toast.LENGTH_SHORT).show()
+    }
 
-        binding.btnLogin.setOnClickListener {
-            viewModel.onLoginClicked()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentProfileBinding.bind(view)
 
-        binding.btnSignup.setOnClickListener {
-            viewModel.onSignupClicked()
-        }
+        setupTopBar()
+        setupGuestActions()
+        setupImagePickers()
+        setupBioEdit()
+        setupHikeNavigation()
+        observeState()
+    }
 
+    // ── Top bar ──────────────────────────────────────────────────────────────
+    private fun setupTopBar() {
         binding.btnSettings.setOnClickListener {
-            viewModel.onSettingsClicked()
+            findNavController().navigate(R.id.settingsFragment)
         }
-
         binding.btnNotifications.setOnClickListener {
-
-            // TODO
+            findNavController().navigate(R.id.notificationsFragment)
         }
+    }
 
+    // ── Guest buttons ────────────────────────────────────────────────────────
+    private fun setupGuestActions() {
+        binding.btnLogin.setOnClickListener { findNavController().navigate(R.id.auth_graph) }
+        binding.btnSignup.setOnClickListener { findNavController().navigate(R.id.auth_graph) }
+    }
+
+    // ── Avatar + Banner pickers ──────────────────────────────────────────────
+    private fun setupImagePickers() {
+        // Tapping the avatar circle or the small upload button both open gallery
+        binding.imgAvatar.setOnClickListener {
+            pendingPickTarget = "avatar"
+            requestGalleryPermissionOrOpen()
+        }
         binding.btnUploadPhoto.setOnClickListener {
-
-            // TODO
+            pendingPickTarget = "avatar"
+            requestGalleryPermissionOrOpen()
         }
+        // Tapping the banner opens gallery for banner
+        binding.imgBanner.setOnClickListener {
+            pendingPickTarget = "banner"
+            requestGalleryPermissionOrOpen()
+        }
+    }
 
+    private fun requestGalleryPermissionOrOpen() {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            Manifest.permission.READ_MEDIA_IMAGES
+        else
+            Manifest.permission.READ_EXTERNAL_STORAGE
+
+        if (ContextCompat.checkSelfPermission(requireContext(), permission)
+            == PackageManager.PERMISSION_GRANTED
+        ) openGallery()
+        else permissionLauncher.launch(permission)
+    }
+
+    private fun openGallery() = imagePickerLauncher.launch("image/*")
+
+    // ── Edit Bio ─────────────────────────────────────────────────────────────
+    private fun setupBioEdit() {
         binding.btnEditBio.setOnClickListener {
+            val currentBio = viewModel.state.value.user?.bio ?: ""
 
-            val currentBio =
-                viewModel.user.value?.bio ?: ""
-
-            val editText = EditText(requireContext()).apply {
-
+            val input = EditText(requireContext()).apply {
                 setText(currentBio)
-                hint = "Tell people about yourself..."
-                setPadding(50, 40, 50, 40)
+                hint = "Tell us about yourself…"
+                maxLines = 5
+                inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                        android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
+            }
+
+            val container = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.VERTICAL
+                val pad = (20 * resources.displayMetrics.density).toInt()
+                setPadding(pad, pad / 2, pad, 0)
+                addView(input)
             }
 
             AlertDialog.Builder(requireContext())
                 .setTitle("Edit Bio")
-                .setView(editText)
+                .setView(container)
                 .setPositiveButton("Save") { _, _ ->
-
-                    val newBio = editText.text.toString().trim()
-
+                    val newBio = input.text.toString().trim()
                     viewModel.updateBio(newBio)
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
         }
+    }
 
+    // ── Recent hikes thumbnails ──────────────────────────────────────────────
+    private fun setupHikeNavigation() {
         binding.tvSeeAllHikes.setOnClickListener {
-
-            // TODO
+            findNavController().navigate(R.id.myBookingsFragment)
         }
     }
 
-    /**
-     * =========================
-     * OBSERVE VIEWMODEL
-     * =========================
-     */
-    private fun observeViewModel() {
-
-        viewModel.isGuest.observe(viewLifecycleOwner) { isGuest ->
-
-            if (isGuest) {
-
-                showGuestState()
-
-            } else {
-
-                binding.layoutGuest.visibility = View.GONE
-                binding.layoutProfile.visibility = View.VISIBLE
-            }
-        }
-
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-
-            user?.let {
-
-                showAuthenticatedState(it)
-            }
-        }
-
-        viewModel.navigateToAuth.observe(viewLifecycleOwner) {
-
-            findNavController().navigate(R.id.auth_graph)
-        }
-
-        viewModel.navigateToSettings.observe(viewLifecycleOwner) {
-
-            findNavController().navigate(R.id.settingsFragment)
-        }
-
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-
-            // Optional:
-            // show/hide progress bar here
-        }
-
-        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
-
-            if (!message.isNullOrEmpty()) {
-
-                Snackbar.make(
-                    binding.root,
-                    message,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-
-                viewModel.clearError()
-            }
-        }
-
-        viewModel.updateStatus.observe(viewLifecycleOwner) { success ->
-
-            if (success) {
-
-                Snackbar.make(
-                    binding.root,
-                    "Bio updated",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    /**
-     * =========================
-     * GUEST UI
-     * =========================
-     */
-    private fun showGuestState() {
-
-        binding.layoutGuest.visibility = View.VISIBLE
-        binding.layoutProfile.visibility = View.GONE
-    }
-
-    /**
-     * =========================
-     * AUTHENTICATED UI
-     * =========================
-     */
-    private fun showAuthenticatedState(user: User) {
-
-        binding.layoutGuest.visibility = View.GONE
-        binding.layoutProfile.visibility = View.VISIBLE
-
-        bindProfileInfo(user)
-        bindStats(user)
-        bindProfileImage(user)
-        bindRecentHikes(user)
-        bindAchievements(user)
-    }
-
-    /**
-     * =========================
-     * PROFILE INFO
-     * =========================
-     */
-    private fun bindProfileInfo(user: User) {
-
-        binding.tvFullName.text = user.name
-
-        binding.tvUsername.text =
-            "@${user.name.lowercase().replace(" ", "")}"
-
-        binding.tvBio.text =
-            if (!user.bio.isNullOrBlank()) {
-                user.bio
-            } else {
-                "No bio yet"
-            }
-    }
-
-    /**
-     * =========================
-     * STATS
-     * =========================
-     */
-    private fun bindStats(user: User) {
-
-        binding.tvStatHikes.text =
-            user.totalHikes.toString()
-
-        binding.tvStatDistance.text =
-            "${user.totalDistance}km"
-
-        binding.tvStatSummits.text =
-            user.totalSummits.toString()
-    }
-
-    /**
-     * =========================
-     * PROFILE IMAGE
-     * =========================
-     */
-    private fun createLetterAvatar(letter: String): Drawable {
-
-        val size = 200
-
-        val bitmap = Bitmap.createBitmap(
-            size,
-            size,
-            Bitmap.Config.ARGB_8888
+    private fun bindRecentHikes(rows: List<UserBookingRow>) {
+        val slots = listOf(
+            Triple(binding.cardRecentHike1, binding.imgRecentHike1, binding.tvRecentHike1),
+            Triple(binding.cardRecentHike2, binding.imgRecentHike2, binding.tvRecentHike2),
+            Triple(binding.cardRecentHike3, binding.imgRecentHike3, binding.tvRecentHike3)
         )
 
-        val canvas = Canvas(bitmap)
-
-        // Background circle
-        val paint = Paint().apply {
-            color = Color.parseColor("#02D083")
-            isAntiAlias = true
+        slots.forEachIndexed { i, (card, img, title) ->
+            val row = rows.getOrNull(i)
+            if (row != null) {
+                title.text = row.hikeTitle
+                if (row.hikeImageUrl.isNotBlank()) {
+                    Glide.with(this)
+                        .load(row.hikeImageUrl)
+                        .centerCrop()
+                        .placeholder(R.drawable.img_hike_placeholder)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(img)
+                } else {
+                    img.setImageResource(R.drawable.img_hike_placeholder)
+                }
+                card.setOnClickListener {
+                    val bundle = Bundle().apply {
+                        putString(HikesFragment.ARG_HIKE_ID, row.booking.hikeId)
+                    }
+                    findNavController().navigate(R.id.hikeDetailFragment, bundle)
+                }
+                card.visibility = View.VISIBLE
+            } else {
+                card.visibility = View.GONE
+            }
         }
 
-        canvas.drawCircle(
-            size / 2f,
-            size / 2f,
-            size / 2f,
-            paint
-        )
+        // Show section only when there is at least one real booking
+        binding.layoutRecentHikes.visibility =
+            if (rows.isNotEmpty()) View.VISIBLE else View.GONE
+    }
 
-        // Letter paint
-        val textPaint = Paint().apply {
-            color = Color.BLACK
-            textSize = 90f
-            textAlign = Paint.Align.CENTER
-            isFakeBoldText = true
-            isAntiAlias = true
+    // ── State observer ───────────────────────────────────────────────────────
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+
+                    // Guest / authenticated toggle
+                    if (state.isGuest) {
+                        binding.layoutGuest.visibility = View.VISIBLE
+                        binding.layoutProfile.visibility = View.GONE
+                        bindRecentHikes(emptyList())
+                        return@collect
+                    }
+                    binding.layoutGuest.visibility = View.GONE
+                    binding.layoutProfile.visibility = View.VISIBLE
+
+                    // User fields
+                    state.user?.let { user ->
+                        binding.tvFullName.text = user.name.ifBlank { "—" }
+                        binding.tvUsername.text =
+                            if (user.name.isNotBlank())
+                                "@${user.name.lowercase().replace(" ", "")}"
+                            else "—"
+                        binding.tvBio.text =
+                            user.bio?.takeIf { it.isNotBlank() } ?: "No bio yet."
+                        binding.tvStatHikes.text = user.totalHikes.toString()
+                        binding.tvStatDistance.text = "%.1fkm".format(user.totalDistance)
+                        binding.tvStatSummits.text = user.totalSummits.toString()
+
+                        // Avatar — use AvatarHelper for consistent colored initials
+                        AvatarHelper.bind(
+                            imgView  = binding.imgAvatar,
+                            tvInitial = binding.tvAvatarInitial,
+                            name     = user.name,
+                            imageUrl = user.profileImage
+                        )
+
+                        // Banner
+                        if (user.bannerImage.isNotBlank()) {
+                            Glide.with(this@ProfileFragment)
+                                .load(user.bannerImage)
+                                .centerCrop()
+                                .placeholder(R.drawable.img_hike_placeholder)
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .into(binding.imgBanner)
+                        }
+                    }
+
+                    // Upload spinners
+                    binding.progressAvatar.visibility =
+                        if (state.avatarUploading) View.VISIBLE else View.GONE
+                    binding.progressBanner.visibility =
+                        if (state.bannerUploading) View.VISIBLE else View.GONE
+
+                    // Notification badge
+                    val badge = state.unreadCount
+                    binding.tvNotifBadge.visibility = if (badge > 0) View.VISIBLE else View.GONE
+                    if (badge > 0) {
+                        binding.tvNotifBadge.text = if (badge > 99) "99+" else badge.toString()
+                    }
+
+                    // Recent hikes
+                    bindRecentHikes(state.recentHikes)
+
+                    // Toast
+                    state.message?.let {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                        viewModel.consumeMessage()
+                    }
+                }
+            }
         }
-
-        val xPos = size / 2f
-        val yPos =
-            size / 2f - (textPaint.descent() + textPaint.ascent()) / 2
-
-        canvas.drawText(letter, xPos, yPos, textPaint)
-
-        return BitmapDrawable(resources, bitmap)
-    }
-
-    private fun bindProfileImage(user: User) {
-
-        // If user has uploaded image, use it
-        if (user.profileImage.isNotEmpty()) {
-
-            Glide.with(requireContext())
-                .load(user.profileImage)
-                .placeholder(R.drawable.bg_circle)
-                .error(R.drawable.bg_circle)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(binding.imgAvatar)
-
-        } else {
-
-            // Get first letter from email
-            val firstLetter = user.email
-                .trim()
-                .firstOrNull()
-                ?.uppercase() ?: "?"
-
-            // Create text drawable
-            val drawable = createLetterAvatar(firstLetter)
-
-            binding.imgAvatar.setImageDrawable(drawable)
-        }
-    }
-
-    /**
-     * =========================
-     * RECENT HIKES
-     * =========================
-     */
-    private fun bindRecentHikes(user: User) {
-
-        binding.tvRecentHike1.text = "Mt. Pulag"
-        binding.tvRecentHike2.text = "Mt. Apo"
-        binding.tvRecentHike3.text = "Mt. Kanlaon"
-    }
-
-    /**
-     * =========================
-     * ACHIEVEMENTS
-     * =========================
-     */
-    private fun bindAchievements(user: User) {
-
-        // TODO
     }
 
     override fun onDestroyView() {

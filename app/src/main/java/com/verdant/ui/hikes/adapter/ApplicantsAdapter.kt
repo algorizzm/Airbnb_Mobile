@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.verdant.data.model.Booking
 import com.verdant.databinding.ItemApplicantBinding
+import com.verdant.core.ui.AvatarHelper
 import com.verdant.utils.BookingStatus
 
 class ApplicantsAdapter(
@@ -37,8 +38,16 @@ class ApplicantsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(booking: Booking, canManage: Boolean) {
-            binding.tvUserName.text = booking.userName.ifBlank { booking.userId }
+            val name = booking.userName.ifBlank { booking.userId }
+            binding.tvUserName.text = name
             binding.tvStatus.text = "Status: ${booking.status}"
+
+            AvatarHelper.bind(
+                imgView   = binding.imgApplicantAvatar,
+                tvInitial = binding.tvApplicantInitial,
+                name      = name,
+                imageUrl  = null
+            )
             val showActions = canManage && booking.status == BookingStatus.PENDING
             binding.actionsRow.visibility = if (showActions) View.VISIBLE else View.GONE
             binding.btnApprove.setOnClickListener { onApprove(booking) }

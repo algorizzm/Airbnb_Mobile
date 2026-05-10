@@ -1,120 +1,280 @@
 package com.verdant.ui.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.net.Uri
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.verdant.core.auth.AuthManager
 import com.verdant.core.auth.AuthState
+import com.verdant.data.model.AppNotification
+import com.verdant.data.model.User
+import com.verdant.data.remote.StorageService
+import com.verdant.data.repository.BookingRepository
+import com.verdant.data.repository.HikeRepository
+import com.verdant.data.repository.NotificationRepository
 import com.verdant.data.repository.UserRepository
 import com.verdant.data.session.UserSessionManager
-import kotlinx.coroutines.flow.map
+import com.verdant.ui.hikes.UserBookingRow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
-class ProfileViewModel : ViewModel() {
+data class ProfileUiState(
+    val user: User? = null,
+    val isGuest: Boolean = false,
+    val avatarUploading: Boolean = false,
+    val bannerUploading: Boolean = false,
+    val notifications: List<AppNotification> = emptyList(),
+    val unreadCount: Int = 0,
+    val recentHikes: List<UserBookingRow> = emptyList(),
+    val message: String? = null
+)
 
-    private val repository = UserRepository()
+class ProfileViewModel(
+    private val userRepo: UserRepository = UserRepository(),
+    private val storageService: StorageService = StorageService(),
+    private val notifRepo: NotificationRepository = NotificationRepository(),
+    private val bookingRepo: BookingRepository = BookingRepository(),
+    private val hikeRepo: HikeRepository = HikeRepository()
+) : ViewModel() {
 
-    /**
-     * =========================
-     * USER STATE
-     * =========================
-     */
+    private val _state = MutableStateFlow(ProfileUiState())
+    val state: StateFlow<ProfileUiState> = _state.asStateFlow()
 
-    // Uses cached session user instead of re-fetching every time
-    val user = UserSessionManager.currentUser.asLiveData()
+    // Legacy accessor
+    val isGuest get() = _state.value.isGuest
 
-    // Observe auth state globally
-    val isGuest = UserSessionManager.authState
-        .map { state -> state is AuthState.Guest }
-        .asLiveData()
+    // Prevent duplicate collectors
+    private var notificationsStarted = false
+    private var hikesStarted = false
 
-    /**
-     * =========================
-     * UI STATE
-     * =========================
-     */
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
-
-    private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> = _errorMessage
-
-    private val _updateStatus = MutableLiveData<Boolean>()
-    val updateStatus: LiveData<Boolean> = _updateStatus
-
-    /**
-     * =========================
-     * NAVIGATION EVENTS
-     * =========================
-     */
-    private val _navigateToAuth = MutableLiveData<Unit>()
-    val navigateToAuth: LiveData<Unit> = _navigateToAuth
-
-    private val _navigateToSettings = MutableLiveData<Unit>()
-    val navigateToSettings: LiveData<Unit> = _navigateToSettings
-
-    /**
-     * =========================
-     * REFRESH PROFILE
-     * =========================
-     */
-    fun refreshProfile() {
-
-        _loading.value = true
-
-        UserSessionManager.refresh()
-
-        _loading.postValue(false)
+    init {
+        observeSession()
     }
 
-    /**
-     * =========================
-     * UPDATE BIO
-     * =========================
-     */
-    fun updateBio(newBio: String) {
+    // ─────────────────────────────────────────────────────────────────────────
+    // Session / User
+    // ─────────────────────────────────────────────────────────────────────────
 
-        _loading.value = true
+    private fun observeSession() {
 
-        repository.updateUserBio(newBio) { success ->
+        viewModelScope.launch {
 
-            _loading.postValue(false)
-            _updateStatus.postValue(success)
+            UserSessionManager.currentUser.collect { user ->
 
-            if (success) {
+                _state.value = _state.value.copy(
+                    user = user,
+                    isGuest = user == null
+                )
 
-                // Refresh cached session user
-                UserSessionManager.refresh()
+                if (user != null) {
 
-            } else {
+                    if (!notificationsStarted) {
+                        notificationsStarted = true
 
-                _errorMessage.postValue("Failed to update bio")
+                        observeNotifications()
+                        observeUnreadCount()
+                    }
+
+                    if (!hikesStarted) {
+                        hikesStarted = true
+
+                        observeRecentHikes()
+                    }
+                }
             }
         }
     }
 
-    /**
-     * =========================
-     * CLICK EVENTS
-     * =========================
-     */
-    fun onLoginClicked() {
-        _navigateToAuth.value = Unit
+    // ─────────────────────────────────────────────────────────────────────────
+    // Recent hikes
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private fun observeRecentHikes() {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+
+            combine(
+                bookingRepo.observeBookingsForUser(uid),
+                hikeRepo.observeHikes()
+            ) { bookings, hikes ->
+
+                bookings.take(3).map { booking ->
+
+                    val hike = hikes.firstOrNull {
+                        it.id == booking.hikeId
+                    }
+
+                    UserBookingRow(
+                        booking = booking,
+                        hikeTitle = hike?.title ?: "Hike",
+                        hikeImageUrl = hike?.imageUrl ?: "",
+                        hikeLocation = hike?.location ?: ""
+                    )
+                }
+            }.collect { rows ->
+
+                _state.value = _state.value.copy(
+                    recentHikes = rows
+                )
+            }
+        }
     }
 
-    fun onSignupClicked() {
-        _navigateToAuth.value = Unit
+    // ─────────────────────────────────────────────────────────────────────────
+    // Notifications
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private fun observeNotifications() {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+
+            notifRepo.observeNotifications(uid)
+                .collect { list ->
+
+                    _state.value = _state.value.copy(
+                        notifications = list
+                    )
+                }
+        }
     }
 
-    fun onSettingsClicked() {
-        _navigateToSettings.value = Unit
+    private fun observeUnreadCount() {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+
+            notifRepo.unreadCount(uid)
+                .collect { count ->
+
+                    _state.value = _state.value.copy(
+                        unreadCount = count
+                    )
+                }
+        }
     }
 
-    /**
-     * =========================
-     * CLEAR ERROR
-     * =========================
-     */
-    fun clearError() {
-        _errorMessage.value = null
+    fun markAllNotificationsRead() {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+            notifRepo.markAllRead(uid)
+        }
     }
+
+    fun markNotificationRead(notificationId: String) {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+            notifRepo.markRead(uid, notificationId)
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Avatar upload
+    // ─────────────────────────────────────────────────────────────────────────
+
+    fun uploadAvatar(uri: Uri) {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+
+            _state.value = _state.value.copy(
+                avatarUploading = true
+            )
+
+            storageService.uploadAvatar(uid, uri)
+                .onSuccess { url ->
+
+                    userRepo.updateAvatar(uid, url)
+
+                    _state.value = _state.value.copy(
+                        avatarUploading = false
+                    )
+                }
+                .onFailure {
+
+                    _state.value = _state.value.copy(
+                        avatarUploading = false,
+                        message = "Avatar upload failed: ${it.message}"
+                    )
+                }
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Banner upload
+    // ─────────────────────────────────────────────────────────────────────────
+
+    fun uploadBanner(uri: Uri) {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+
+            _state.value = _state.value.copy(
+                bannerUploading = true
+            )
+
+            storageService.uploadBanner(uid, uri)
+                .onSuccess { url ->
+
+                    userRepo.updateBanner(uid, url)
+
+                    _state.value = _state.value.copy(
+                        bannerUploading = false
+                    )
+                }
+                .onFailure {
+
+                    _state.value = _state.value.copy(
+                        bannerUploading = false,
+                        message = "Banner upload failed: ${it.message}"
+                    )
+                }
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Bio edit
+    // ─────────────────────────────────────────────────────────────────────────
+
+    fun updateBio(bio: String) {
+
+        val uid = currentUid() ?: return
+
+        viewModelScope.launch {
+
+            userRepo.updateBio(uid, bio)
+                .onFailure {
+
+                    _state.value = _state.value.copy(
+                        message = "Failed to save bio: ${it.message}"
+                    )
+                }
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Misc
+    // ─────────────────────────────────────────────────────────────────────────
+
+    fun consumeMessage() {
+
+        _state.value = _state.value.copy(
+            message = null
+        )
+    }
+
+    private fun currentUid(): String? =
+        (AuthManager.stateSnapshot() as? AuthState.Authenticated)?.uid
 }

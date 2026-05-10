@@ -12,6 +12,7 @@ class UserRepository {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
+
     private val usersCol get() = db.collection("users")
 
     fun getCurrentUser(onResult: (User?) -> Unit) {
@@ -22,11 +23,10 @@ class UserRepository {
             return
         }
 
-        db.collection("users")
-            .document(uid)
+        usersCol.document(uid)
             .get()
             .addOnSuccessListener { document ->
-                val user = document.toObject(User::class.java)
+                val user = document.toObject(User::class.java)?.copy(id = uid)
                 onResult(user)
             }
             .addOnFailureListener {
@@ -35,20 +35,30 @@ class UserRepository {
     }
 
     fun observeUser(userId: String): Flow<User?> = callbackFlow {
-        val registration = usersCol.document(userId).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                close(error)
-                return@addSnapshotListener
+        val registration = usersCol.document(userId)
+            .addSnapshotListener { snapshot, error ->
+
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                val user = snapshot
+                    ?.toObject(User::class.java)
+                    ?.copy(id = userId)
+
+                trySend(user)
             }
-            val user = snapshot?.toObject(User::class.java)
-            trySend(user)
-        }
+
         awaitClose { registration.remove() }
     }
 
     suspend fun getUser(userId: String): Result<User> = runCatching {
         val doc = usersCol.document(userId).get().await()
-        doc.toObject(User::class.java) ?: error("User not found")
+
+        doc.toObject(User::class.java)
+            ?.copy(id = userId)
+            ?: error("User not found")
     }
 
     fun clearUserSession() {
@@ -63,22 +73,45 @@ class UserRepository {
         val uid = auth.currentUser?.uid
 
         if (uid == null) {
-
             onResult(false)
             return
         }
 
-        db.collection("users")
-            .document(uid)
+        usersCol.document(uid)
             .update("bio", newBio)
             .addOnSuccessListener {
-
                 onResult(true)
             }
             .addOnFailureListener {
-
                 onResult(false)
             }
+    }
+
+    suspend fun updateBio(
+        uid: String,
+        bio: String
+    ): Result<Unit> = runCatching {
+        usersCol.document(uid)
+            .update("bio", bio)
+            .await()
+    }
+
+    suspend fun updateAvatar(
+        uid: String,
+        url: String
+    ): Result<Unit> = runCatching {
+        usersCol.document(uid)
+            .update("profileImage", url)
+            .await()
+    }
+
+    suspend fun updateBanner(
+        uid: String,
+        url: String
+    ): Result<Unit> = runCatching {
+        usersCol.document(uid)
+            .update("bannerImage", url)
+            .await()
     }
 
     suspend fun updateUserStats(
@@ -87,13 +120,18 @@ class UserRepository {
         totalDistanceAdd: Double = 0.0,
         summitsAdd: Int = 0
     ): Result<Unit> = runCatching {
-        val user = getUser(userId).getOrNull() ?: error("User not found")
-        usersCol.document(userId).update(
-            mapOf(
-                "totalHikes" to (user.totalHikes + totalHikesAdd),
-                "totalDistance" to (user.totalDistance + totalDistanceAdd),
-                "totalSummits" to (user.totalSummits + summitsAdd)
+
+        val user = getUser(userId).getOrNull()
+            ?: error("User not found")
+
+        usersCol.document(userId)
+            .update(
+                mapOf(
+                    "totalHikes" to (user.totalHikes + totalHikesAdd),
+                    "totalDistance" to (user.totalDistance + totalDistanceAdd),
+                    "totalSummits" to (user.totalSummits + summitsAdd)
+                )
             )
-        ).await()
+            .await()
     }
 }

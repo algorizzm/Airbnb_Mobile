@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.verdant.R
 import com.verdant.core.auth.AuthState
 import com.verdant.data.model.AppNotification
+import com.verdant.data.repository.NotificationRepository
 import com.verdant.data.session.UserSessionManager
 import com.verdant.databinding.FragmentNotificationInboxBinding
 import kotlinx.coroutines.launch
@@ -20,22 +21,27 @@ class NotificationInboxFragment : Fragment(R.layout.fragment_notification_inbox)
     private var _binding: FragmentNotificationInboxBinding? = null
     private val binding get() = _binding!!
 
+    private val notifRepo = NotificationRepository()
+    private var currentUid: String? = null
+
     private val adapter = NotificationAdapter { notification ->
-        // TODO: navigate to the relevant screen based on notification.type / notification.refId
+        currentUid?.let { uid ->
+            if (!notification.read) {
+                lifecycleScope.launch { notifRepo.markRead(uid, notification.id) }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentNotificationInboxBinding.bind(view)
 
-        binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        binding.btnBack.setOnClickListener { findNavController().popBackStack() }
 
         binding.btnMarkAllRead.setOnClickListener {
-            // Mark all as read — update list with read = true
-            val marked = adapter.currentList.map { it.copy(read = true) }
-            submitNotifications(marked)
+            currentUid?.let { uid ->
+                lifecycleScope.launch { notifRepo.markAllRead(uid) }
+            }
         }
 
         binding.recyclerNotifications.layoutManager = LinearLayoutManager(requireContext())
@@ -45,8 +51,10 @@ class NotificationInboxFragment : Fragment(R.layout.fragment_notification_inbox)
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 UserSessionManager.authState.collect { state ->
                     if (state is AuthState.Authenticated && state.user != null) {
-                        loadNotifications(state.uid)
+                        currentUid = state.uid
+                        observeNotifications(state.uid)
                     } else {
+                        currentUid = null
                         submitNotifications(emptyList())
                     }
                 }
@@ -54,40 +62,14 @@ class NotificationInboxFragment : Fragment(R.layout.fragment_notification_inbox)
         }
     }
 
-    /**
-     * Loads notifications for the given user.
-     * Currently uses stub data — replace with a real Firestore query when the
-     * notifications collection is ready.
-     */
-    private fun loadNotifications(uid: String) {
-        // Stub: replace with repository call
-        val stubs = listOf(
-            AppNotification(
-                id = "1",
-                type = "booking_approved",
-                title = "Booking Approved",
-                body = "Your application for Mt. Apo Sunrise Hike has been approved.",
-                timestamp = System.currentTimeMillis() - 3_600_000,
-                read = false
-            ),
-            AppNotification(
-                id = "2",
-                type = "hike_update",
-                title = "Hike Update",
-                body = "Dalaguete Trilogy Hike has been updated. Check the new schedule.",
-                timestamp = System.currentTimeMillis() - 86_400_000,
-                read = true
-            ),
-            AppNotification(
-                id = "3",
-                type = "booking_rejected",
-                title = "Booking Rejected",
-                body = "Your application for Osmeña Peak Trail was not accepted.",
-                timestamp = System.currentTimeMillis() - 172_800_000,
-                read = true
-            )
-        )
-        submitNotifications(stubs)
+    private fun observeNotifications(uid: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                notifRepo.observeNotifications(uid).collect { list ->
+                    submitNotifications(list)
+                }
+            }
+        }
     }
 
     private fun submitNotifications(list: List<AppNotification>) {

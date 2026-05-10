@@ -83,17 +83,19 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <!-- Banner + Avatar wrapper — RelativeLayout lets avatar overlap the banner edge -->
+            <!-- Banner + Avatar wrapper -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Banner (220dp tall) -->
+                <!-- Banner (220dp tall) — clickable for upload -->
                 <FrameLayout
                     android:id="@+id/bannerFrame"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    android:layout_alignParentTop="true">
+                    android:layout_alignParentTop="true"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <!-- Banner image -->
                     <ImageView
@@ -110,6 +112,15 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_profile_banner_overlay" />
 
+                    <!-- Banner upload progress -->
+                    <ProgressBar
+                        android:id="@+id/progressBanner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="#02D083"
+                        android:visibility="gone" />
+
                     <!-- Top action buttons row -->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -125,15 +136,36 @@
                             android:layout_height="1dp"
                             android:layout_weight="1" />
 
-                        <ImageButton
-                            android:id="@+id/btnNotifications"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_marginEnd="8dp"
-                            android:background="@drawable/bg_circle"
-                            android:src="@drawable/ic_notification"
-                            android:contentDescription="Notifications"
-                            android:padding="8dp" />
+                        <!-- Notification button with badge -->
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp">
+
+                            <ImageButton
+                                android:id="@+id/btnNotifications"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@drawable/bg_circle"
+                                android:src="@drawable/ic_notification"
+                                android:tint="#FFFFFF"
+                                android:contentDescription="Notifications"
+                                android:padding="8dp" />
+
+                            <TextView
+                                android:id="@+id/tvNotifBadge"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="top|end"
+                                android:background="@drawable/bg_circle"
+                                android:backgroundTint="#FF4444"
+                                android:gravity="center"
+                                android:textColor="#FFFFFF"
+                                android:textSize="9sp"
+                                android:fontFamily="@font/poppins_bold"
+                                android:visibility="gone" />
+
+                        </FrameLayout>
 
                         <ImageButton
                             android:id="@+id/btnSettings"
@@ -141,6 +173,7 @@
                             android:layout_height="36dp"
                             android:background="@drawable/bg_circle"
                             android:src="@drawable/ic_settings"
+                            android:tint="#FFFFFF"
                             android:contentDescription="Settings"
                             android:padding="8dp" />
 
@@ -148,14 +181,16 @@
 
                 </FrameLayout>
 
-                <!-- Avatar + upload — positioned to straddle the banner bottom edge -->
+                <!-- Avatar — clickable for upload -->
                 <FrameLayout
                     android:layout_width="88dp"
                     android:layout_height="88dp"
                     android:layout_below="@id/bannerFrame"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="-44dp"
-                    android:elevation="8dp">
+                    android:elevation="8dp"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <ImageView
                         android:id="@+id/imgAvatar"
@@ -166,6 +201,26 @@
                         android:src="@drawable/bg_circle"
                         android:contentDescription="Profile photo"
                         android:padding="3dp" />
+
+                    <!-- Initials shown when no profile photo is set -->
+                    <TextView
+                        android:id="@+id/tvAvatarInitial"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="28sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:visibility="gone" />
+
+                    <!-- Avatar upload progress -->
+                    <ProgressBar
+                        android:id="@+id/progressAvatar"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="#02D083"
+                        android:visibility="gone" />
 
                     <ImageButton
                         android:id="@+id/btnUploadPhoto"
@@ -430,12 +485,14 @@
 
             <!-- Recent Hikes -->
             <LinearLayout
+                android:id="@+id/layoutRecentHikes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -471,10 +528,14 @@
                     android:orientation="horizontal">
 
                     <FrameLayout
+                        android:id="@+id/cardRecentHike1"
                         android:layout_width="0dp"
                         android:layout_height="130dp"
                         android:layout_weight="1"
-                        android:layout_marginEnd="6dp">
+                        android:layout_marginEnd="6dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
                         <ImageView
                             android:id="@+id/imgRecentHike1"
@@ -514,10 +575,14 @@
                     </FrameLayout>
 
                     <FrameLayout
+                        android:id="@+id/cardRecentHike2"
                         android:layout_width="0dp"
                         android:layout_height="130dp"
                         android:layout_weight="1"
-                        android:layout_marginEnd="6dp">
+                        android:layout_marginEnd="6dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
                         <ImageView
                             android:id="@+id/imgRecentHike2"
@@ -557,9 +622,13 @@
                     </FrameLayout>
 
                     <FrameLayout
+                        android:id="@+id/cardRecentHike3"
                         android:layout_width="0dp"
                         android:layout_height="130dp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
                         <ImageView
                             android:id="@+id/imgRecentHike3"

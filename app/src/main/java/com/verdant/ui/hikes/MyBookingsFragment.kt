@@ -23,9 +23,18 @@ class MyBookingsFragment : Fragment(R.layout.fragment_my_bookings) {
 
     private val viewModel: BookingsViewModel by viewModels()
 
-    private val adapter = UserBookingsAdapter { row ->
-        viewModel.cancelBooking(row.booking)
-    }
+    private val adapter = UserBookingsAdapter(
+        onItemClick = { row ->
+            // Navigate to hike detail so the user can see full info
+            val bundle = Bundle().apply {
+                putString(HikesFragment.ARG_HIKE_ID, row.booking.hikeId)
+            }
+            findNavController().navigate(R.id.hikeDetailFragment, bundle)
+        },
+        onCancelOrLeave = { row ->
+            viewModel.cancelBooking(row.booking)
+        }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,25 +50,45 @@ class MyBookingsFragment : Fragment(R.layout.fragment_my_bookings) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
-                    binding.progressLoading.visibility = if (state.loading) View.VISIBLE else View.GONE
 
-                    val isEmpty = !state.loading && state.rows.isEmpty()
-                    binding.tvStatus.visibility = if (isEmpty) View.VISIBLE else View.GONE
-                    if (isEmpty) {
-                        binding.tvStatus.text = when (state.authState) {
-                            AuthState.Guest -> "Please log in to view your bookings."
-                            is AuthState.Loading -> "Loading your account…"
-                            is AuthState.Authenticated -> {
-                                if (state.authState.user == null) {
-                                    "Finishing account setup…"
-                                } else {
-                                    "No bookings yet."
-                                }
+                    // Loading spinner
+                    binding.progressLoading.visibility =
+                        if (state.loading) View.VISIBLE else View.GONE
+
+                    when {
+                        // Auth/loading message (guest, loading account)
+                        !state.loading && state.rows.isEmpty() &&
+                                state.authState !is AuthState.Authenticated -> {
+                            binding.tvStatus.visibility = View.VISIBLE
+                            binding.layoutEmpty.visibility = View.GONE
+                            binding.recyclerBookings.visibility = View.GONE
+                            binding.tvStatus.text = when (state.authState) {
+                                AuthState.Guest -> "Please log in to view your hike history."
+                                is AuthState.Loading -> "Loading your account…"
+                                else -> ""
                             }
+                        }
+                        // Authenticated but empty
+                        !state.loading && state.rows.isEmpty() -> {
+                            binding.tvStatus.visibility = View.GONE
+                            binding.layoutEmpty.visibility = View.VISIBLE
+                            binding.recyclerBookings.visibility = View.GONE
+                        }
+                        // Has data
+                        state.rows.isNotEmpty() -> {
+                            binding.tvStatus.visibility = View.GONE
+                            binding.layoutEmpty.visibility = View.GONE
+                            binding.recyclerBookings.visibility = View.VISIBLE
+                        }
+                        else -> {
+                            binding.tvStatus.visibility = View.GONE
+                            binding.layoutEmpty.visibility = View.GONE
+                            binding.recyclerBookings.visibility = View.GONE
                         }
                     }
 
                     adapter.submitList(state.rows)
+
                     state.message?.let {
                         toast(it)
                         viewModel.consumeMessage()
