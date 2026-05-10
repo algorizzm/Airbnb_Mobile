@@ -47,16 +47,44 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
             findNavController().navigate(R.id.settingsFragment)
         }
 
+        // ── Filter panel toggle ──────────────────────────────────────────────
+        binding.btnToggleFilters.setOnClickListener {
+            val panel = binding.layoutFilters
+            val chevron = binding.ivFilterChevron
+            if (panel.visibility == View.GONE) {
+                panel.visibility = View.VISIBLE
+                chevron.rotation = 270f   // point up
+            } else {
+                panel.visibility = View.GONE
+                chevron.rotation = 90f    // point down
+            }
+        }
+
+        // ── Clear filters ────────────────────────────────────────────────────
+        binding.tvClearFilters.setOnClickListener {
+            binding.spinnerDifficulty.setSelection(0)
+            binding.etMinDistance.text?.clear()
+            binding.etMaxDistance.text?.clear()
+            binding.etMaxPrice.text?.clear()
+            binding.etMaxDuration.text?.clear()
+            viewModel.setDifficultyFilter(null)
+            viewModel.setMinDistance(null)
+            viewModel.setMaxDistance(null)
+            viewModel.setMaxPrice(null)
+            viewModel.setMaxDuration(null)
+        }
+
         binding.etSearch.doAfterTextChanged { text ->
             viewModel.setSearchQuery(text?.toString().orEmpty())
         }
 
         val difficulties = listOf("All", "Easy", "Moderate", "Hard", "Expert")
-        binding.spinnerDifficulty.adapter = ArrayAdapter(
+        val spinnerAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
+            android.R.layout.simple_spinner_item,
             difficulties
-        )
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+        binding.spinnerDifficulty.adapter = spinnerAdapter
         binding.spinnerDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, id: Long) {
                 viewModel.setDifficultyFilter(if (position == 0) null else difficulties[position])

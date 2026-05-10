@@ -53,162 +53,226 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_edittext_border"
-            android:hint="Search title or location"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#666666"
-            android:textSize="14sp"
-            android:inputType="text"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:fontFamily="@font/poppins_regular" />
-
-        <!-- Difficulty filter -->
+        <!-- Search bar + Filter toggle row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
 
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext_border"
+                android:hint="Search title or location"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:textSize="14sp"
+                android:inputType="text"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <!-- Filter toggle button -->
+            <LinearLayout
+                android:id="@+id/btnToggleFilters"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_edittext_border"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_difficulty"
+                    android:tint="#02D083"
+                    android:contentDescription="Filters" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="Filters"
+                    android:textColor="#02D083"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <ImageView
+                    android:id="@+id/ivFilterChevron"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_chevron_right"
+                    android:tint="#02D083"
+                    android:rotation="90"
+                    android:contentDescription="Toggle filters" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- ── Collapsible filter panel (GONE by default) ── -->
+        <LinearLayout
+            android:id="@+id/layoutFilters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_dark_card"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:visibility="gone">
+
+            <!-- Difficulty -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Difficulty"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:fontFamily="@font/poppins_medium" />
+                android:textColor="#80FFFFFF"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginBottom="4dp" />
 
             <Spinner
                 android:id="@+id/spinnerDifficulty"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:backgroundTint="#02D083"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
                 android:popupBackground="#1A1A1A" />
-        </LinearLayout>
 
-        <!-- Distance filter row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
+            <!-- Distance -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Distance (km)"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:fontFamily="@font/poppins_medium" />
+                android:textColor="#80FFFFFF"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
-            <EditText
-                android:id="@+id/etMinDistance"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_edittext_border"
-                android:hint="Min"
-                android:inputType="numberDecimal"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666666"
-                android:textSize="13sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:fontFamily="@font/poppins_regular" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
+                <EditText
+                    android:id="@+id/etMinDistance"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edittext_border"
+                    android:hint="Min"
+                    android:inputType="numberDecimal"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#666666"
+                    android:textSize="13sp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="–"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/etMaxDistance"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edittext_border"
+                    android:hint="Max"
+                    android:inputType="numberDecimal"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#666666"
+                    android:textSize="13sp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:fontFamily="@font/poppins_regular" />
+
+            </LinearLayout>
+
+            <!-- Max Price -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:text="–"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/etMaxDistance"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_edittext_border"
-                android:hint="Max"
-                android:inputType="numberDecimal"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666666"
-                android:textSize="13sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:fontFamily="@font/poppins_regular" />
-        </LinearLayout>
-
-        <!-- Price + Duration filter row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Max Price"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:fontFamily="@font/poppins_medium" />
+                android:text="Max Price (₱)"
+                android:textColor="#80FFFFFF"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
             <EditText
                 android:id="@+id/etMaxPrice"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
                 android:background="@drawable/bg_edittext_border"
-                android:hint="₱"
+                android:hint="e.g. 500"
                 android:inputType="numberDecimal"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#666666"
                 android:textSize="13sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:fontFamily="@font/poppins_regular" />
 
+            <!-- Max Duration -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
-                android:text="Max Hrs"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:fontFamily="@font/poppins_medium" />
+                android:text="Max Duration (hrs)"
+                android:textColor="#80FFFFFF"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
             <EditText
                 android:id="@+id/etMaxDuration"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
                 android:background="@drawable/bg_edittext_border"
-                android:hint="hrs"
+                android:hint="e.g. 8"
                 android:inputType="numberDecimal"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#666666"
                 android:textSize="13sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:fontFamily="@font/poppins_regular" />
+
+            <!-- Clear filters -->
+            <TextView
+                android:id="@+id/tvClearFilters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Clear filters"
+                android:textColor="#FF4444"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="4dp" />
+
         </LinearLayout>
 
         <!-- Empty state -->
@@ -228,10 +292,11 @@
             android:id="@+id/recyclerHikes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:clipToPadding="false"
             android:paddingBottom="88dp" />
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -244,4 +309,5 @@
         android:src="@android:drawable/ic_input_add"
         app:tint="@android:color/white"
         app:backgroundTint="#02D083" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

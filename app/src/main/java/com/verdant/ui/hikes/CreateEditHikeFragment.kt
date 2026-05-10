@@ -1,11 +1,9 @@
 package com.verdant.ui.hikes
 
-import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
@@ -34,14 +32,13 @@ class CreateEditHikeFragment : Fragment(R.layout.fragment_create_edit_hike) {
     }
 
     private val imagePickerLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val uri = result.data?.data ?: return@registerForActivityResult
-            viewModel.uploadImage(uri)
-            binding.imgHikePreview.visibility = View.VISIBLE
-            Glide.with(this).load(uri).centerCrop().into(binding.imgHikePreview)
-        }
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri ?: return@registerForActivityResult
+        binding.layoutImageHint.visibility = View.GONE
+        binding.progressImage.visibility = View.VISIBLE
+        Glide.with(this).load(uri).centerCrop().into(binding.imgHikePreview)
+        viewModel.uploadImage(uri)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,88 +47,125 @@ class CreateEditHikeFragment : Fragment(R.layout.fragment_create_edit_hike) {
 
         val isEdit = existingHikeId != null
         binding.tvTitle.text = if (isEdit) "Edit Hike" else "Create Hike"
+        binding.btnSave.text = if (isEdit) "Save Changes" else "Publish Hike"
         binding.btnDelete.visibility = if (isEdit) View.VISIBLE else View.GONE
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        val statusOptions = listOf(HikeStatus.OPEN, HikeStatus.CLOSED)
-        binding.spinnerStatus.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            statusOptions
-        )
+        // ── Image picker ─────────────────────────────────────────────────────
+        binding.imgPickerArea.setOnClickListener {
+            imagePickerLauncher.launch("image/*")
+        }
 
+        // ── Text fields ──────────────────────────────────────────────────────
         binding.etTitle.doAfterTextChanged { viewModel.updateTitle(it?.toString().orEmpty()) }
         binding.etDescription.doAfterTextChanged { viewModel.updateDescription(it?.toString().orEmpty()) }
         binding.etLocation.doAfterTextChanged { viewModel.updateLocation(it?.toString().orEmpty()) }
-        binding.etDifficulty.doAfterTextChanged { viewModel.updateDifficulty(it?.toString().orEmpty()) }
         binding.etDistanceKm.doAfterTextChanged { viewModel.updateDistanceKm(it?.toString().orEmpty()) }
         binding.etPrice.doAfterTextChanged { viewModel.updatePrice(it?.toString().orEmpty()) }
         binding.etDurationHours.doAfterTextChanged { viewModel.updateDurationHours(it?.toString().orEmpty()) }
         binding.etMaxParticipants.doAfterTextChanged { viewModel.updateMaxParticipants(it?.toString().orEmpty()) }
 
-        binding.spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, id: Long) {
-                viewModel.updateStatus(statusOptions[position])
+        // ── Difficulty chips ─────────────────────────────────────────────────
+        binding.chipGroupDifficulty.setOnCheckedStateChangeListener { _, checkedIds ->
+            val difficulty = when (checkedIds.firstOrNull()) {
+                R.id.chipEasy     -> "Easy"
+                R.id.chipModerate -> "Moderate"
+                R.id.chipHard     -> "Hard"
+                R.id.chipExpert   -> "Expert"
+                else              -> "Moderate"
             }
-            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+            viewModel.updateDifficulty(difficulty)
         }
 
-        binding.btnUploadImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
-            imagePickerLauncher.launch(intent)
+        // ── Status chips ─────────────────────────────────────────────────────
+        binding.chipGroupStatus.setOnCheckedStateChangeListener { _, checkedIds ->
+            val status = when (checkedIds.firstOrNull()) {
+                R.id.chipOpen   -> HikeStatus.OPEN
+                R.id.chipClosed -> HikeStatus.CLOSED
+                else            -> HikeStatus.OPEN
+            }
+            viewModel.updateStatus(status)
         }
 
+        // ── Save ─────────────────────────────────────────────────────────────
         binding.btnSave.setOnClickListener { viewModel.save() }
-        binding.btnDelete.setOnClickListener { viewModel.deleteHike() }
 
+        // ── Delete with confirmation ──────────────────────────────────────────
+        binding.btnDelete.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Delete Hike")
+                .setMessage("This will permanently delete the hike and all its bookings. This cannot be undone.")
+                .setPositiveButton("Delete") { _, _ -> viewModel.deleteHike() }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+
+        // ── Observe state ─────────────────────────────────────────────────────
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.form.collect { form ->
-                    if (binding.etTitle.text?.toString() != form.title) binding.etTitle.setText(form.title)
-                    if (binding.etDescription.text?.toString() != form.description) {
-                        binding.etDescription.setText(form.description)
-                    }
-                    if (binding.etLocation.text?.toString() != form.location) binding.etLocation.setText(form.location)
-                    if (binding.etDifficulty.text?.toString() != form.difficulty) {
-                        binding.etDifficulty.setText(form.difficulty)
-                    }
-                    if (binding.etDistanceKm.text?.toString() != form.distanceKm) {
-                        binding.etDistanceKm.setText(form.distanceKm)
-                    }
-                    if (binding.etPrice.text?.toString() != form.price) binding.etPrice.setText(form.price)
-                    if (binding.etDurationHours.text?.toString() != form.durationHours) {
-                        binding.etDurationHours.setText(form.durationHours)
-                    }
-                    if (binding.etMaxParticipants.text?.toString() != form.maxParticipants) {
-                        binding.etMaxParticipants.setText(form.maxParticipants)
-                    }
-                    val idx = statusOptions.indexOf(form.status).coerceAtLeast(0)
-                    if (binding.spinnerStatus.selectedItemPosition != idx) {
-                        binding.spinnerStatus.setSelection(idx, false)
-                    }
 
+                    // Text fields — only update if different to avoid cursor jumping
+                    if (binding.etTitle.text?.toString() != form.title)
+                        binding.etTitle.setText(form.title)
+                    if (binding.etDescription.text?.toString() != form.description)
+                        binding.etDescription.setText(form.description)
+                    if (binding.etLocation.text?.toString() != form.location)
+                        binding.etLocation.setText(form.location)
+                    if (binding.etDistanceKm.text?.toString() != form.distanceKm)
+                        binding.etDistanceKm.setText(form.distanceKm)
+                    if (binding.etPrice.text?.toString() != form.price)
+                        binding.etPrice.setText(form.price)
+                    if (binding.etDurationHours.text?.toString() != form.durationHours)
+                        binding.etDurationHours.setText(form.durationHours)
+                    if (binding.etMaxParticipants.text?.toString() != form.maxParticipants)
+                        binding.etMaxParticipants.setText(form.maxParticipants)
+
+                    // Difficulty chip
+                    val diffChipId = when (form.difficulty.lowercase()) {
+                        "easy"   -> R.id.chipEasy
+                        "hard"   -> R.id.chipHard
+                        "expert" -> R.id.chipExpert
+                        else     -> R.id.chipModerate
+                    }
+                    if (binding.chipGroupDifficulty.checkedChipId != diffChipId)
+                        binding.chipGroupDifficulty.check(diffChipId)
+
+                    // Status chip
+                    val statusChipId = if (form.status == HikeStatus.CLOSED)
+                        R.id.chipClosed else R.id.chipOpen
+                    if (binding.chipGroupStatus.checkedChipId != statusChipId)
+                        binding.chipGroupStatus.check(statusChipId)
+
+                    // Cover image
                     if (form.imageUrl.isNotBlank()) {
-                        binding.imgHikePreview.visibility = View.VISIBLE
+                        binding.layoutImageHint.visibility = View.GONE
+                        binding.progressImage.visibility = View.GONE
                         Glide.with(this@CreateEditHikeFragment)
                             .load(form.imageUrl)
                             .centerCrop()
                             .into(binding.imgHikePreview)
                     }
 
-                    binding.btnSave.isEnabled = !form.loading
-                    binding.btnDelete.isEnabled = !form.loading
-                    binding.btnUploadImage.isEnabled = !form.loading
+                    // Loading state
+                    val loading = form.loading
+                    binding.progressSaving.visibility = if (loading) View.VISIBLE else View.GONE
+                    binding.btnSave.isEnabled = !loading
+                    binding.btnDelete.isEnabled = !loading
+                    binding.imgPickerArea.isEnabled = !loading
+                    binding.progressImage.visibility =
+                        if (loading && form.imageUrl.isBlank()) View.VISIBLE else View.GONE
 
+                    // Toast
                     form.message?.let {
                         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                         viewModel.consumeMessage()
                     }
-                    if (form.finished) {
-                        findNavController().popBackStack()
-                    }
+
+                    if (form.finished) findNavController().popBackStack()
                 }
             }
         }
