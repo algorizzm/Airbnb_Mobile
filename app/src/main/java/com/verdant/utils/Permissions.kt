@@ -9,6 +9,9 @@ object UserRole {
 
 object HikeStatus {
     const val OPEN = "open"
+    const val ONGOING = "ongoing"
+    const val COMPLETED = "completed"
+    const val CANCELLED = "cancelled"
     const val CLOSED = "closed"
 }
 
@@ -17,6 +20,14 @@ object BookingStatus {
     const val APPROVED = "approved"
     const val REJECTED = "rejected"
     const val CANCELLED = "cancelled"
+    const val COMPLETED = "completed"
+}
+
+object PaymentStatus {
+    const val UNPAID = "unpaid"
+    const val PENDING = "pending"
+    const val PAID = "paid"
+    const val REFUNDED = "refunded"
 }
 
 object Permissions {
@@ -86,9 +97,6 @@ object Permissions {
         isHiker(role)
 
     fun canEditProfile(role: String?): Boolean =
-        isHiker(role)
-
-    fun canApplyToHike(role: String?): Boolean =
         isHiker(role)
 
 
@@ -183,6 +191,77 @@ object Permissions {
     ): Boolean {
 
         return canManageHike(
+            role,
+            guideId,
+            currentUid
+        )
+    }
+
+    fun canStartHike(
+        role: String?,
+        guideId: String?,
+        currentUid: String?
+    ): Boolean {
+
+        return canManageHike(
+            role,
+            guideId,
+            currentUid
+        )
+    }
+
+    fun canEndHike(
+        role: String?,
+        guideId: String?,
+        currentUid: String?
+    ): Boolean {
+
+        return canManageHike(
+            role,
+            guideId,
+            currentUid
+        )
+    }
+
+    fun canCancelHike(
+        role: String?,
+        guideId: String?,
+        currentUid: String?
+    ): Boolean {
+
+        return canManageHike(
+            role,
+            guideId,
+            currentUid
+        )
+    }
+
+    fun canLeaveHike(
+        role: String?,
+        bookingStatus: String?,
+        hikeStatus: String?,
+        bookingUserId: String?,
+        currentUid: String?
+    ): Boolean {
+
+        if (currentUid.isNullOrBlank()) return false
+        if (bookingUserId != currentUid) return false
+        if (!isHiker(role)) return false
+
+        return bookingStatus == BookingStatus.APPROVED && hikeStatus != HikeStatus.COMPLETED
+    }
+
+    fun canApplyToHike(
+        role: String?,
+        hikeStatus: String?,
+        guideId: String?,
+        currentUid: String?
+    ): Boolean {
+
+        if (!isHiker(role)) return false
+        if (hikeStatus != HikeStatus.OPEN) return false
+
+        return canApplyAsHiker(
             role,
             guideId,
             currentUid

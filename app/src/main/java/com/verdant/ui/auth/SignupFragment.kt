@@ -36,7 +36,7 @@ class SignupFragment : Fragment() {
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
         val etConfirm = view.findViewById<EditText>(R.id.etConfirmPassword)
 
-        val btnClient = view.findViewById<MaterialButton>(R.id.btnClient)
+        val btnHiker = view.findViewById<MaterialButton>(R.id.btnHiker)
         val btnGuide = view.findViewById<MaterialButton>(R.id.btnGuide)
 
         val tvError = view.findViewById<TextView>(R.id.tvError)
@@ -51,8 +51,8 @@ class SignupFragment : Fragment() {
             tvError.visibility = View.VISIBLE
         }
 
-        // 🔵 Continue as Client
-        btnClient.setOnClickListener {
+        // 🔵 Continue as Hiker
+        btnHiker.setOnClickListener {
 
             val name = etName.text.toString().trim()
             val email = etEmail.text.toString().trim()
@@ -61,7 +61,7 @@ class SignupFragment : Fragment() {
 
             if (!validateInputs(name, email, password, confirm, tvError)) return@setOnClickListener
 
-            viewModel.signup(name, email, password, "client")
+            viewModel.signup(name, email, password, "hiker")
         }
 
 

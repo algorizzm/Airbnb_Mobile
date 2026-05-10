@@ -235,6 +235,32 @@
                 android:visibility="gone" />
 
             <Button
+                android:id="@+id/btnStartHike"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_button_green"
+                android:text="Start Hike"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnEndHike"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_button_green"
+                android:text="End Hike"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:fontFamily="@font/poppins_bold"
+                app:backgroundTint="@null"
+                android:visibility="gone" />
+
+            <Button
                 android:id="@+id/btnDeleteHike"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"

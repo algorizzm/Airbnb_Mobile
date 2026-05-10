@@ -4,7 +4,7 @@ data class User(
     val id: String = "",
     val name: String = "",
     val email: String = "",
-    val role: String = "client", // client, guide, admin, guest
+    val role: String = "guest", // hiker, guide, admin, guest
     val profileImage: String = "",
     val bio: String? = null,
     val totalHikes: Int = 0,

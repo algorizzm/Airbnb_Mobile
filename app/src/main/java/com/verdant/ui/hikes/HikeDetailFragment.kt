@@ -68,7 +68,7 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
         binding.btnLeaveHike.setOnClickListener {
             val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
-            viewModel.cancelMyBooking()
+            viewModel.leaveHike()
         }
 
         binding.btnEdit.setOnClickListener {
@@ -84,6 +84,16 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
             val bundle = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.applicantsFragment, bundle)) return@setOnClickListener
             findNavController().navigate(R.id.applicantsFragment, bundle)
+        }
+        binding.btnStartHike.setOnClickListener {
+            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            viewModel.startHike()
+        }
+        binding.btnEndHike.setOnClickListener {
+            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            viewModel.endHike()
         }
         binding.btnDeleteHike.setOnClickListener {
             val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
@@ -130,6 +140,8 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
                         val showGuide = state.showGuideActions
                         binding.btnEdit.visibility = if (showGuide) View.VISIBLE else View.GONE
                         binding.btnApplicants.visibility = if (showGuide) View.VISIBLE else View.GONE
+                        binding.btnStartHike.visibility = if (state.showStartHike) View.VISIBLE else View.GONE
+                        binding.btnEndHike.visibility = if (state.showEndHike) View.VISIBLE else View.GONE
                         binding.btnDeleteHike.visibility = if (showGuide) View.VISIBLE else View.GONE
 
                         state.message?.let { msg ->

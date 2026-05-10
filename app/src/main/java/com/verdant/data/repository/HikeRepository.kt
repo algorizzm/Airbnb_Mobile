@@ -101,4 +101,31 @@ class HikeRepository(
         batch.delete(hikesCol.document(hikeId))
         batch.commit().await()
     }
+
+    suspend fun updateHikeStatus(hikeId: String, status: String): Result<Unit> = runCatching {
+        hikesCol.document(hikeId).update("status", status).await()
+    }
+
+    fun observeHikesForGuide(guideId: String): Flow<List<Hike>> = callbackFlow {
+        val registration = hikesCol
+            .whereEqualTo("guideId", guideId)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val list = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(Hike::class.java)?.copy(id = doc.id)
+                }.orEmpty()
+                trySend(list)
+            }
+        awaitClose { registration.remove() }
+    }
+
+    suspend fun startHike(hikeId: String): Result<Unit> =
+        updateHikeStatus(hikeId, HikeStatus.ONGOING)
+
+    suspend fun completeHike(hikeId: String): Result<Unit> =
+        updateHikeStatus(hikeId, HikeStatus.COMPLETED)
 }

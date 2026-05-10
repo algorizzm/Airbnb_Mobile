@@ -30,13 +30,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="My Bookings"
+            android:text="My Hike History"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:fontFamily="@font/poppins_bold" />
 
     </LinearLayout>
 
+    <!-- Loading -->
     <ProgressBar
         android:id="@+id/progressLoading"
         android:layout_width="wrap_content"
@@ -45,6 +46,47 @@
         android:indeterminateTint="#02D083"
         android:visibility="gone" />
 
+    <!-- Empty state -->
+    <LinearLayout
+        android:id="@+id/layoutEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_hikes"
+            android:tint="#2A2A2A"
+            android:contentDescription="No bookings" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="No hike history yet"
+            android:textColor="#80FFFFFF"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppins_medium" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Your applied and completed hikes will appear here"
+            android:textColor="#4DFFFFFF"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:fontFamily="@font/poppins_regular" />
+
+    </LinearLayout>
+
+    <!-- Status text (auth/loading messages) -->
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="match_parent"
@@ -57,14 +99,16 @@
         android:fontFamily="@font/poppins_regular"
         android:visibility="gone" />
 
+    <!-- Booking list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerBookings"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="88dp" />
+        android:paddingTop="8dp"
+        android:paddingBottom="88dp"
+        android:scrollbars="none"
+        android:visibility="gone" />
 
 </LinearLayout>

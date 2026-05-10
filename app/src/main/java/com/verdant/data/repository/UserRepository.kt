@@ -3,11 +3,16 @@ package com.verdant.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.verdant.data.model.User
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 
 class UserRepository {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
+    private val usersCol get() = db.collection("users")
 
     fun getCurrentUser(onResult: (User?) -> Unit) {
         val uid = auth.currentUser?.uid
@@ -27,6 +32,23 @@ class UserRepository {
             .addOnFailureListener {
                 onResult(null)
             }
+    }
+
+    fun observeUser(userId: String): Flow<User?> = callbackFlow {
+        val registration = usersCol.document(userId).addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error)
+                return@addSnapshotListener
+            }
+            val user = snapshot?.toObject(User::class.java)
+            trySend(user)
+        }
+        awaitClose { registration.remove() }
+    }
+
+    suspend fun getUser(userId: String): Result<User> = runCatching {
+        val doc = usersCol.document(userId).get().await()
+        doc.toObject(User::class.java) ?: error("User not found")
     }
 
     fun clearUserSession() {
@@ -57,5 +79,21 @@ class UserRepository {
 
                 onResult(false)
             }
+    }
+
+    suspend fun updateUserStats(
+        userId: String,
+        totalHikesAdd: Int = 0,
+        totalDistanceAdd: Double = 0.0,
+        summitsAdd: Int = 0
+    ): Result<Unit> = runCatching {
+        val user = getUser(userId).getOrNull() ?: error("User not found")
+        usersCol.document(userId).update(
+            mapOf(
+                "totalHikes" to (user.totalHikes + totalHikesAdd),
+                "totalDistance" to (user.totalDistance + totalDistanceAdd),
+                "totalSummits" to (user.totalSummits + summitsAdd)
+            )
+        ).await()
     }
 }
