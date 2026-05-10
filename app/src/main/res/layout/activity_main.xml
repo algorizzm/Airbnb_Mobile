@@ -101,6 +101,7 @@
         </LinearLayout>
 
         <!-- Profile avatar -->
+        <!-- Profile avatar -->
         <LinearLayout
             android:id="@+id/navProfile"
             android:layout_width="0dp"
@@ -111,14 +112,27 @@
             android:clickable="true"
             android:focusable="true">
 
-            <ImageView
-                android:id="@+id/navIconProfile"
+            <FrameLayout
                 android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/bg_circle"
-                android:background="@drawable/bg_avatar_circle"
-                android:scaleType="centerCrop"
-                android:contentDescription="Profile" />
+                android:layout_height="32dp">
+
+                <ImageView
+                    android:id="@+id/navIconProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Profile" />
+
+                <TextView
+                    android:id="@+id/navProfileInitial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

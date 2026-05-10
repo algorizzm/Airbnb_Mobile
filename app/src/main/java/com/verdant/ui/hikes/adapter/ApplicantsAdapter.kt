@@ -43,10 +43,10 @@ class ApplicantsAdapter(
             binding.tvStatus.text = "Status: ${booking.status}"
 
             AvatarHelper.bind(
-                imgView   = binding.imgApplicantAvatar,
+                imgView = binding.imgApplicantAvatar,
                 tvInitial = binding.tvApplicantInitial,
-                name      = name,
-                imageUrl  = null
+                name = name,
+                imageUrl = null
             )
             val showActions = canManage && booking.status == BookingStatus.PENDING
             binding.actionsRow.visibility = if (showActions) View.VISIBLE else View.GONE

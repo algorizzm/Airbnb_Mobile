@@ -230,9 +230,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                         // Avatar — use AvatarHelper for consistent colored initials
                         AvatarHelper.bind(
-                            imgView  = binding.imgAvatar,
+                            imgView = binding.imgAvatar,
                             tvInitial = binding.tvAvatarInitial,
-                            name     = user.name,
+                            name = user.name,
                             imageUrl = user.profileImage
                         )
 

@@ -140,10 +140,10 @@ class PostAdapter(
 
             // Avatar initials — no real photo URL on HikePost (static feed)
             AvatarHelper.bind(
-                imgView   = imgProfile,
+                imgView = imgProfile,
                 tvInitial = tvPostInitial,
-                name      = hike.username,
-                imageUrl  = null
+                name = hike.username,
+                imageUrl = null
             )
 
             tvStats.text =

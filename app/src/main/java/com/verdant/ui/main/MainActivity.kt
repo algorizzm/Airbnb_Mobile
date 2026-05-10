@@ -6,11 +6,15 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.verdant.R
 import com.verdant.core.auth.AuthManager
 import com.verdant.core.navigation.ProtectedNav
+import com.verdant.core.ui.AvatarHelper
+import kotlinx.coroutines.launch
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navIconExplore: ImageView
     private lateinit var navIconMessages: ImageView
     private lateinit var navIconProfile: ImageView
+    private lateinit var navProfileInit: TextView
 
     private lateinit var customNavBar: LinearLayout
 
@@ -33,19 +38,28 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
         val navController = navHostFragment.navController
 
-        // Bind views
-        customNavBar   = findViewById(R.id.navBarBg)
-        navHome        = findViewById(R.id.navHome)
-        navExplore     = findViewById(R.id.navExplore)
-        navFab         = findViewById(R.id.navFab)
-        navMessages    = findViewById(R.id.navMessages)
-        navProfile     = findViewById(R.id.navProfile)
-        navIconHome    = findViewById(R.id.navIconHome)
-        navIconExplore = findViewById(R.id.navIconExplore)
-        navIconMessages= findViewById(R.id.navIconMessages)
-        navIconProfile = findViewById(R.id.navIconProfile)
+        // ─────────────────────────────────────────────
+        // Bind Views
+        // ─────────────────────────────────────────────
+        customNavBar    = findViewById(R.id.navBarBg)
+
+        navHome         = findViewById(R.id.navHome)
+        navExplore      = findViewById(R.id.navExplore)
+        navFab          = findViewById(R.id.navFab)
+        navMessages     = findViewById(R.id.navMessages)
+        navProfile      = findViewById(R.id.navProfile)
+        navProfileInit  = findViewById(R.id.navProfileInitial)
+
+        navIconHome     = findViewById(R.id.navIconHome)
+        navIconExplore  = findViewById(R.id.navIconExplore)
+        navIconMessages = findViewById(R.id.navIconMessages)
+        navIconProfile  = findViewById(R.id.navIconProfile)
+
+        // Observe avatar updates
+        observeBottomAvatar()
 
         val protectedTabs = setOf(
             R.id.messagesFragment,
@@ -53,14 +67,24 @@ class MainActivity : AppCompatActivity() {
             R.id.profileFragment
         )
 
-        // Reusable nav options — single top to avoid duplicate back stack entries
+        // ─────────────────────────────────────────────
+        // Navigation Options
+        // ─────────────────────────────────────────────
         fun navOptions(destId: Int) = NavOptions.Builder()
             .setLaunchSingleTop(true)
             .setRestoreState(true)
-            .setPopUpTo(navController.graph.startDestinationId, inclusive = false, saveState = true)
+            .setPopUpTo(
+                navController.graph.startDestinationId,
+                inclusive = false,
+                saveState = true
+            )
             .build()
 
+        // ─────────────────────────────────────────────
+        // Navigation Helper
+        // ─────────────────────────────────────────────
         fun navigateTo(destId: Int) {
+
             if (destId in protectedTabs && !AuthManager.isAuthenticated()) {
 
                 ProtectedNav.navigate(
@@ -71,12 +95,17 @@ class MainActivity : AppCompatActivity() {
                     isProtected = false
                 )
 
-                val navHostFragment = supportFragmentManager
-                    .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
+                val currentFragment =
+                    navHostFragment.childFragmentManager.primaryNavigationFragment
+
                 if (currentFragment != null) {
-                    com.verdant.core.ui.GuestPromptDialog.show(currentFragment.childFragmentManager)
+
+                    com.verdant.core.ui.GuestPromptDialog.show(
+                        currentFragment.childFragmentManager
+                    )
+
                 } else {
+
                     ProtectedNav.navigate(
                         navController = navController,
                         destId = destId,
@@ -87,17 +116,41 @@ class MainActivity : AppCompatActivity() {
                 }
 
             } else {
-                navController.navigate(destId, null, navOptions(destId))
+
+                navController.navigate(
+                    destId,
+                    null,
+                    navOptions(destId)
+                )
             }
         }
 
-        navHome.setOnClickListener    { navigateTo(R.id.homeFragment) }
-        navExplore.setOnClickListener { navigateTo(R.id.exploreFragment) }
-        navFab.setOnClickListener     { navigateTo(R.id.hikeFragment) }
-        navMessages.setOnClickListener{ navigateTo(R.id.messagesFragment) }
-        navProfile.setOnClickListener { navigateTo(R.id.profileFragment) }
+        // ─────────────────────────────────────────────
+        // Bottom Nav Clicks
+        // ─────────────────────────────────────────────
+        navHome.setOnClickListener {
+            navigateTo(R.id.homeFragment)
+        }
 
-        // Update active icon tints when destination changes
+        navExplore.setOnClickListener {
+            navigateTo(R.id.exploreFragment)
+        }
+
+        navFab.setOnClickListener {
+            navigateTo(R.id.hikeFragment)
+        }
+
+        navMessages.setOnClickListener {
+            navigateTo(R.id.messagesFragment)
+        }
+
+        navProfile.setOnClickListener {
+            navigateTo(R.id.profileFragment)
+        }
+
+        // ─────────────────────────────────────────────
+        // Destination Changes
+        // ─────────────────────────────────────────────
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             val authScreens = setOf(
@@ -107,32 +160,70 @@ class MainActivity : AppCompatActivity() {
                 R.id.onboardingFragment
             )
 
+            val showNav = destination.id !in authScreens
 
             customNavBar.visibility =
-                if (destination.id in authScreens) View.GONE else View.VISIBLE
+                if (showNav) View.VISIBLE else View.GONE
 
+            navFab.visibility =
+                if (showNav) View.VISIBLE else View.GONE
 
-
-            val showNav = destination.id !in authScreens
-            customNavBar.visibility = if (showNav) View.VISIBLE else View.GONE
-            navFab.visibility       = if (showNav) View.VISIBLE else View.GONE
-
-
-            // Reset all to inactive
+            // Colors
             val inactive = 0xFFAAAAAA.toInt()
             val active   = 0xFF02D083.toInt()
 
+            // Reset icon colors
             navIconHome.setColorFilter(inactive)
             navIconExplore.setColorFilter(inactive)
             navIconMessages.setColorFilter(inactive)
-            navIconProfile.setColorFilter(inactive)
+
+            // Do NOT tint profile avatar
+            navProfile.alpha = 0.7f
 
             // Highlight active tab
             when (destination.id) {
-                R.id.homeFragment     -> navIconHome.setColorFilter(active)
-                R.id.exploreFragment  -> navIconExplore.setColorFilter(active)
-                R.id.messagesFragment -> navIconMessages.setColorFilter(active)
-                R.id.profileFragment  -> navIconProfile.setColorFilter(active)
+
+                R.id.homeFragment -> {
+                    navIconHome.setColorFilter(active)
+                }
+
+                R.id.exploreFragment -> {
+                    navIconExplore.setColorFilter(active)
+                }
+
+                R.id.messagesFragment -> {
+                    navIconMessages.setColorFilter(active)
+                }
+
+                R.id.profileFragment -> {
+                    navProfile.alpha = 1f
+                }
+            }
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    // Observe User Avatar
+    // ─────────────────────────────────────────────
+    private fun observeBottomAvatar() {
+
+        lifecycleScope.launch {
+
+            AuthManager.currentUserFlow().collect { user ->
+
+                if (user != null) {
+
+                    AvatarHelper.bind(
+                        imgView = navIconProfile,
+                        tvInitial = navProfileInit,
+                        name = user.name.ifBlank { user.email },
+                        imageUrl = user.profileImage
+                    )
+
+                } else {
+
+                    navIconProfile.setImageResource(R.drawable.ic_profile)
+                }
             }
         }
     }
