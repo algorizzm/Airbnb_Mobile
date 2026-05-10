@@ -20,7 +20,9 @@ import kotlinx.coroutines.launch
 
 data class UserBookingRow(
     val booking: Booking,
-    val hikeTitle: String
+    val hikeTitle: String,
+    val hikeImageUrl: String = "",
+    val hikeLocation: String = ""
 )
 
 data class MyBookingsUiState(
@@ -76,8 +78,13 @@ class BookingsViewModel(
                             _message
                         ) { bookings, hikes, msg ->
                             val rows = bookings.map { b ->
-                                val title = hikes.firstOrNull { it.id == b.hikeId }?.title ?: "Hike"
-                                UserBookingRow(b, title)
+                                val hike = hikes.firstOrNull { it.id == b.hikeId }
+                                UserBookingRow(
+                                    booking = b,
+                                    hikeTitle = hike?.title ?: "Hike",
+                                    hikeImageUrl = hike?.imageUrl ?: "",
+                                    hikeLocation = hike?.location ?: ""
+                                )
                             }
                             MyBookingsUiState(
                                 rows = rows,

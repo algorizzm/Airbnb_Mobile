@@ -6,6 +6,7 @@ data class User(
     val email: String = "",
     val role: String = "client", // client, guide, admin, guest
     val profileImage: String = "",
+    val bannerImage: String = "",
     val bio: String? = null,
     val totalHikes: Int = 0,
     val totalDistance: Double = 0.0,

@@ -62,7 +62,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 username = "Jedd Davis",
                 date = "December 21, 2025",
                 time = "10:32 AM",
-                location = "Paceo Arcenas",
+                location = "Dalaguete",
                 title = "DALAGUETE TRILOGY HIKE!",
                 distance = "21.5 km",
                 elevation = "1150 m",
