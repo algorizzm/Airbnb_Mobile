@@ -19,11 +19,10 @@
         android:paddingEnd="16dp">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_logo"
-            android:tint="#02D083"
+            android:src="@drawable/verdant_logo"
             android:contentDescription="Verdant logo" />
 
         <TextView
@@ -40,9 +39,8 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/bg_circle"
+            android:background="@drawable/bg_translucent_circle"
             android:src="@drawable/ic_notification"
-            android:tint="#FFFFFF"
             android:contentDescription="Notifications"
             android:padding="8dp" />
 
@@ -50,9 +48,8 @@
             android:id="@+id/btnSettings"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="@drawable/bg_circle"
+            android:background="@drawable/bg_translucent_circle"
             android:src="@drawable/ic_settings"
-            android:tint="#FFFFFF"
             android:contentDescription="Settings"
             android:padding="8dp" />
 

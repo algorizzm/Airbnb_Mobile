@@ -59,7 +59,7 @@
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/ic_hikes"
+            android:src="@drawable/ic_explore"
             android:tint="#2A2A2A"
             android:contentDescription="No bookings" />
 

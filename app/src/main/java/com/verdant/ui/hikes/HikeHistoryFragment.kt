@@ -13,10 +13,11 @@ import com.verdant.R
 import com.verdant.core.auth.AuthState
 import com.verdant.core.ui.toast
 import com.verdant.databinding.FragmentMyBookingsBinding
+import com.verdant.ui.explore.ExploreFragment
 import com.verdant.ui.hikes.adapter.UserBookingsAdapter
 import kotlinx.coroutines.launch
 
-class MyBookingsFragment : Fragment(R.layout.fragment_my_bookings) {
+class HikeHistoryFragment : Fragment(R.layout.fragment_my_bookings) {
 
     private var _binding: FragmentMyBookingsBinding? = null
     private val binding get() = _binding!!
@@ -27,7 +28,7 @@ class MyBookingsFragment : Fragment(R.layout.fragment_my_bookings) {
         onItemClick = { row ->
             // Navigate to hike detail so the user can see full info
             val bundle = Bundle().apply {
-                putString(HikesFragment.ARG_HIKE_ID, row.booking.hikeId)
+                putString(ExploreFragment.ARG_HIKE_ID, row.booking.hikeId)
             }
             findNavController().navigate(R.id.hikeDetailFragment, bundle)
         },

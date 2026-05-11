@@ -1,4 +1,4 @@
-package com.verdant.ui.hikes
+package com.verdant.ui.explore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +14,6 @@ import com.verdant.core.auth.AuthState
 import com.verdant.utils.BookingStatus
 import com.verdant.utils.HikeStatus
 import com.verdant.utils.Permissions
-import com.verdant.utils.UserRole
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.verdant.ui.hikes.adapter
+package com.verdant.ui.explore.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

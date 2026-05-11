@@ -36,6 +36,7 @@ class SignupFragment : Fragment() {
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
         val etConfirm = view.findViewById<EditText>(R.id.etConfirmPassword)
 
+        val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
         val btnHiker = view.findViewById<MaterialButton>(R.id.btnHiker)
         val btnGuide = view.findViewById<MaterialButton>(R.id.btnGuide)
 
@@ -49,6 +50,20 @@ class SignupFragment : Fragment() {
 
             tvError.text = message
             tvError.visibility = View.VISIBLE
+        }
+
+        btnClose.setOnClickListener {
+
+            findNavController().navigate(
+                R.id.main_graph,
+                null,
+                navOptions {
+                    popUpTo(R.id.loginFragment) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
+            )
         }
 
         // 🔵 Continue as Hiker

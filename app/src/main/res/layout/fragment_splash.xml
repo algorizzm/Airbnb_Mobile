@@ -1,13 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#0D0D0D">
 
-    <!-- Simple loading screen -->
-    <ProgressBar
+    <!-- Logo + wordmark group -->
+    <LinearLayout
+        android:id="@+id/logoGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-</FrameLayout>
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.42">
+
+        <!-- Fixed ID: splashLogo -->
+        <ImageView
+            android:id="@+id/splashLogo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/verdant_logo"
+            android:contentDescription="Verdant Logo"
+            android:scaleType="fitCenter" />
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="32dp" />
+
+        <TextView
+            android:id="@+id/splashAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VERDANT"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.3"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/splashTagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Explore. Conquer. Connect."
+            android:textColor="#00C853"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:letterSpacing="0.08" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/splashProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="48dp"
+        android:layout_height="3dp"
+        android:layout_marginBottom="40dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#00C853"
+        android:progressBackgroundTint="#1A3D2B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

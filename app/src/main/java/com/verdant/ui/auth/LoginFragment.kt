@@ -32,8 +32,23 @@ class LoginFragment : Fragment() {
         val btnContinue = view.findViewById<Button>(R.id.btnContinue)
         val tvError = view.findViewById<TextView>(R.id.tvError)
         val tvSignupRedirect = view.findViewById<TextView>(R.id.tvFooter)
+        val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
 
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
+        btnClose.setOnClickListener {
+
+            findNavController().navigate(
+                R.id.main_graph,
+                null,
+                navOptions {
+                    popUpTo(R.id.loginFragment) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
+            )
+        }
 
         btnContinue.setOnClickListener {
 

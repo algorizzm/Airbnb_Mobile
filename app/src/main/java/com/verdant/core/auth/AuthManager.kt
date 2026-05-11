@@ -5,18 +5,36 @@ import com.verdant.data.session.UserSessionManager
 import kotlinx.coroutines.flow.StateFlow
 
 object AuthManager {
-    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
-    fun isAuthenticated(): Boolean = auth.currentUser != null
+    private val auth: FirebaseAuth by lazy {
+        FirebaseAuth.getInstance()
+    }
 
-    fun authState(): StateFlow<AuthState> = UserSessionManager.authState
+    fun isAuthenticated(): Boolean =
+        auth.currentUser != null
 
-    fun stateSnapshot(): AuthState = UserSessionManager.authState.value
+    fun authState(): StateFlow<AuthState> =
+        UserSessionManager.authState
+
+    fun stateSnapshot(): AuthState =
+        UserSessionManager.authState.value
 
     fun signOut() {
         auth.signOut()
     }
 
-    fun currentUserFlow() = UserSessionManager.currentUser
-}
+    fun currentUserFlow() =
+        UserSessionManager.currentUser
 
+    // =========================================================
+    // GUEST PROMPT
+    // =========================================================
+
+    fun dismissGuestPrompt() {
+        UserSessionManager.dismissGuestPrompt()
+    }
+
+    fun guestPromptDismissed(): StateFlow<Boolean> {
+        return UserSessionManager.guestPromptDismissed
+    }
+}

@@ -16,13 +16,25 @@
         android:paddingTop="60dp"
         android:paddingBottom="40dp">
 
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="start"
+            android:layout_marginBottom="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_chevron_left"
+            android:drawableTint="#80FFFFFF"
+            android:padding="8dp"
+            android:contentDescription="Close" />
+
         <!-- Logo -->
         <ImageView
             android:id="@+id/logo"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_logo"
+            android:src="@drawable/verdant_logo"
             android:contentDescription="Logo" />
 
         <!-- Title -->

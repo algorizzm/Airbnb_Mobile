@@ -1,7 +1,6 @@
 package com.verdant.ui.hikes
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -16,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.verdant.R
 import com.verdant.databinding.FragmentCreateEditHikeBinding
+import com.verdant.ui.explore.ExploreFragment
 import com.verdant.utils.HikeStatus
 import kotlinx.coroutines.launch
 
@@ -25,7 +25,7 @@ class CreateEditHikeFragment : Fragment(R.layout.fragment_create_edit_hike) {
     private val binding get() = _binding!!
 
     private val existingHikeId: String?
-        get() = arguments?.getString(HikesFragment.ARG_HIKE_ID)?.takeIf { it.isNotBlank() }
+        get() = arguments?.getString(ExploreFragment.ARG_HIKE_ID)?.takeIf { it.isNotBlank() }
 
     private val viewModel: CreateEditHikeViewModel by viewModels {
         CreateEditHikeViewModel.Factory(existingHikeId)

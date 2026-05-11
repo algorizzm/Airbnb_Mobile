@@ -82,7 +82,7 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_hikes"
+                        android:src="@drawable/ic_explore"
                         android:tint="#02D083"
                         android:contentDescription="Hike updates" />
 

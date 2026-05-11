@@ -20,7 +20,8 @@
             android:layout_height="36dp"
             android:src="@drawable/ic_chevron_left"
             android:padding="6dp"
-            android:contentDescription="Back" />
+            android:contentDescription="Back"
+            android:tint="@android:color/white" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -275,6 +276,7 @@
                         android:textSize="12sp"
                         android:fontFamily="@font/poppins_regular" />
                 </LinearLayout>
+
                 <ImageView
                     android:layout_width="22dp"
                     android:layout_height="22dp"

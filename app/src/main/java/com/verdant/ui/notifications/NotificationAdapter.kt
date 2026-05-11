@@ -45,7 +45,7 @@ class NotificationAdapter(
                 "booking_approved"   -> R.drawable.ic_check_circle_green
                 "booking_rejected"   -> R.drawable.ic_error_vector
                 "booking_cancelled"  -> R.drawable.ic_error_vector
-                "hike_update"        -> R.drawable.ic_hikes
+                "hike_update"        -> R.drawable.ic_explore
                 "message"            -> R.drawable.ic_message
                 else                 -> R.drawable.ic_notification_bell
             }

@@ -1,4 +1,4 @@
-package com.verdant.ui.hikes
+package com.verdant.ui.explore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

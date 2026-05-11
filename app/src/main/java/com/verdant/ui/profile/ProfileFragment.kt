@@ -23,7 +23,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.verdant.R
 import com.verdant.core.ui.AvatarHelper
 import com.verdant.databinding.FragmentProfileBinding
-import com.verdant.ui.hikes.HikesFragment
+import com.verdant.ui.explore.ExploreFragment
 import com.verdant.ui.hikes.UserBookingRow
 import kotlinx.coroutines.launch
 
@@ -184,7 +184,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
                 card.setOnClickListener {
                     val bundle = Bundle().apply {
-                        putString(HikesFragment.ARG_HIKE_ID, row.booking.hikeId)
+                        putString(ExploreFragment.ARG_HIKE_ID, row.booking.hikeId)
                     }
                     findNavController().navigate(R.id.hikeDetailFragment, bundle)
                 }

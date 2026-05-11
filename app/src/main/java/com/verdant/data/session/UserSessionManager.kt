@@ -17,12 +17,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-
 object UserSessionManager {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+    // =========================================================
+    // AUTH STATE
+    // =========================================================
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Guest)
     val authState: StateFlow<AuthState> = _authState.asStateFlow()
@@ -32,15 +35,45 @@ object UserSessionManager {
         .distinctUntilChanged()
         .stateIn(scope, SharingStarted.Eagerly, null)
 
+    // =========================================================
+    // GUEST PROMPT SESSION STATE
+    // =========================================================
+
+    private val _guestPromptDismissed = MutableStateFlow(false)
+    val guestPromptDismissed: StateFlow<Boolean> =
+        _guestPromptDismissed.asStateFlow()
+
+    fun dismissGuestPrompt() {
+        _guestPromptDismissed.value = true
+    }
+
+    fun resetGuestPrompt() {
+        _guestPromptDismissed.value = false
+    }
+
+    // =========================================================
+    // FIREBASE AUTH LISTENER
+    // =========================================================
+
     private val authListener = FirebaseAuth.AuthStateListener { firebaseUser ->
+
         val uid = firebaseUser?.uid
+
         if (uid != null) {
+
             scope.launch {
+
                 _authState.value = AuthState.Loading(uid)
+
                 loadUser(uid)
             }
+
         } else {
+
             _authState.value = AuthState.Guest
+
+            // Reset popup every fresh guest session
+            resetGuestPrompt()
         }
     }
 
@@ -49,21 +82,43 @@ object UserSessionManager {
     }
 
     fun refresh() {
+
         val uid = auth.currentUser?.uid ?: return
+
         scope.launch {
+
             _authState.value = AuthState.Loading(uid)
+
             loadUser(uid)
         }
     }
 
     private suspend fun loadUser(uid: String) {
+
         runCatching {
-            val snap = db.collection("users").document(uid).get().await()
-            val user = snap.toObject(User::class.java)?.copy(id = uid)
-            _authState.value = AuthState.Authenticated(uid = uid, user = user)
+
+            val snap = db.collection("users")
+                .document(uid)
+                .get()
+                .await()
+
+            val user = snap.toObject(User::class.java)
+                ?.copy(id = uid)
+
+            _authState.value =
+                AuthState.Authenticated(
+                    uid = uid,
+                    user = user
+                )
+
         }.onFailure {
-            // Firebase is authenticated but profile failed to load; don't silently "become guest".
-            _authState.value = AuthState.Authenticated(uid = uid, user = null)
+
+            // Firebase is authenticated but profile failed to load
+            _authState.value =
+                AuthState.Authenticated(
+                    uid = uid,
+                    user = null
+                )
         }
     }
 }

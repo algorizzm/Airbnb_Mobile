@@ -14,6 +14,7 @@ import com.verdant.core.auth.AuthState
 import com.verdant.core.navigation.ProtectedNav
 import com.verdant.core.ui.toast
 import com.verdant.databinding.FragmentApplicantsBinding
+import com.verdant.ui.explore.ExploreFragment
 import com.verdant.ui.hikes.adapter.ApplicantsAdapter
 import kotlinx.coroutines.launch
 
@@ -25,7 +26,7 @@ class ApplicantsFragment : Fragment(R.layout.fragment_applicants) {
     private val binding get() = _binding!!
 
     private val hikeId: String by lazy {
-        requireArguments().getString(HikesFragment.ARG_HIKE_ID).orEmpty()
+        requireArguments().getString(ExploreFragment.ARG_HIKE_ID).orEmpty()
     }
 
     private val viewModel: ApplicantsViewModel by viewModels {
@@ -59,7 +60,7 @@ class ApplicantsFragment : Fragment(R.layout.fragment_applicants) {
                         when (state.authState) {
                             AuthState.Guest -> {
                                 deniedAccessHandled = true
-                                val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+                                val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
                                 ProtectedNav.navigate(
                                     navController = findNavController(),
                                     destId = R.id.applicantsFragment,

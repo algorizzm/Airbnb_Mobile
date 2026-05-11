@@ -1,4 +1,4 @@
-package com.verdant.ui.hikes
+package com.verdant.ui.explore
 
 import android.os.Bundle
 import android.view.View
@@ -22,7 +22,7 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
     private val binding get() = _binding!!
 
     private val hikeId: String by lazy {
-        requireArguments().getString(HikesFragment.ARG_HIKE_ID).orEmpty()
+        requireArguments().getString(ExploreFragment.ARG_HIKE_ID).orEmpty()
     }
 
     private val viewModel: HikeDetailViewModel by viewModels {
@@ -56,23 +56,23 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
         }
 
         binding.btnApply.setOnClickListener {
-            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
             viewModel.applyToHike()
         }
         binding.btnCancelApplication.setOnClickListener {
-            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
             viewModel.cancelMyBooking()
         }
         binding.btnLeaveHike.setOnClickListener {
-            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
             viewModel.leaveHike()
         }
 
         binding.btnEdit.setOnClickListener {
-            val bundle = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val bundle = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             ProtectedNav.navigate(
                 navController = findNavController(),
                 destId = R.id.createEditHikeFragment,
@@ -81,22 +81,22 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
             )
         }
         binding.btnApplicants.setOnClickListener {
-            val bundle = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val bundle = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.applicantsFragment, bundle)) return@setOnClickListener
             findNavController().navigate(R.id.applicantsFragment, bundle)
         }
         binding.btnStartHike.setOnClickListener {
-            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
             viewModel.startHike()
         }
         binding.btnEndHike.setOnClickListener {
-            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
             viewModel.endHike()
         }
         binding.btnDeleteHike.setOnClickListener {
-            val args = Bundle().apply { putString(HikesFragment.ARG_HIKE_ID, hikeId) }
+            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
             viewModel.deleteHike()
         }

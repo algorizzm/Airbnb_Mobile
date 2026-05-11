@@ -19,13 +19,13 @@
     <!-- Explore -->
     <fragment
         android:id="@+id/exploreFragment"
-        android:name="com.verdant.ui.hikes.HikesFragment"
+        android:name="com.verdant.ui.explore.ExploreFragment"
         android:label="Explore" />
 
     <!-- Hike (protected placeholder destination) -->
     <fragment
         android:id="@+id/hikeFragment"
-        android:name="com.verdant.ui.hikes.MyBookingsFragment"
+        android:name="com.verdant.ui.hikes.HikesFragment"
         android:label="Hike" />
 
     <!-- Profile -->
@@ -39,16 +39,10 @@
             app:destination="@id/auth_graph" />
     </fragment>
 
-    <!-- Hikes -->
-    <fragment
-        android:id="@+id/hikesFragment"
-        android:name="com.verdant.ui.hikes.HikesFragment"
-        android:label="Hikes" />
-
     <!-- Hike Details -->
     <fragment
         android:id="@+id/hikeDetailFragment"
-        android:name="com.verdant.ui.hikes.HikeDetailFragment"
+        android:name="com.verdant.ui.explore.HikeDetailFragment"
         android:label="Hike details" />
 
     <!-- Create/Edit Hike -->
@@ -66,7 +60,7 @@
     <!-- My Bookings -->
     <fragment
         android:id="@+id/myBookingsFragment"
-        android:name="com.verdant.ui.hikes.MyBookingsFragment"
+        android:name="com.verdant.ui.hikes.HikeHistoryFragment"
         android:label="My bookings" />
 
     <!-- Messages -->

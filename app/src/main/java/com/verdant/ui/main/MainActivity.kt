@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         val protectedTabs = setOf(
             R.id.messagesFragment,
+            R.id.exploreFragment,
             R.id.hikeFragment,
             R.id.profileFragment
         )

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Top Action Bar -->
+        <!-- Top Bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,10 +23,11 @@
             android:paddingEnd="16dp">
 
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Explore Hikes"
+                android:text="Hikes"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins_bold" />
@@ -35,9 +37,8 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_circle"
+                android:background="@drawable/bg_translucent_circle"
                 android:src="@drawable/ic_notification"
-                android:tint="#FFFFFF"
                 android:contentDescription="Notifications"
                 android:padding="8dp" />
 
@@ -45,15 +46,73 @@
                 android:id="@+id/btnSettings"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:background="@drawable/bg_circle"
+                android:background="@drawable/bg_translucent_circle"
                 android:src="@drawable/ic_settings"
-                android:tint="#FFFFFF"
                 android:contentDescription="Settings"
                 android:padding="8dp" />
 
         </LinearLayout>
 
-        <!-- Search bar + Filter toggle row -->
+        <!-- Section Tabs -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tabHosted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_green_pill"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Hosted"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <TextView
+                    android:id="@+id/tabBooked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_dark_pill"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Booked"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <TextView
+                    android:id="@+id/tabCompleted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_dark_pill"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Completed"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_medium" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <!-- Search -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,11 +124,10 @@
 
             <EditText
                 android:id="@+id/etSearch"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_weight="1"
                 android:background="@drawable/bg_edittext_border"
-                android:hint="Search title or location"
+                android:hint="Search my hikes"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#666666"
                 android:textSize="14sp"
@@ -78,227 +136,60 @@
                 android:paddingEnd="16dp"
                 android:fontFamily="@font/poppins_regular" />
 
-            <!-- Filter toggle button -->
-            <LinearLayout
-                android:id="@+id/btnToggleFilters"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_edittext_border"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_difficulty"
-                    android:tint="#02D083"
-                    android:contentDescription="Filters" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="Filters"
-                    android:textColor="#02D083"
-                    android:textSize="13sp"
-                    android:fontFamily="@font/poppins_medium" />
-
-                <ImageView
-                    android:id="@+id/ivFilterChevron"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="4dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:tint="#02D083"
-                    android:rotation="90"
-                    android:contentDescription="Toggle filters" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
-        <!-- ── Collapsible filter panel (GONE by default) ── -->
+        <!-- Empty State -->
         <LinearLayout
-            android:id="@+id/layoutFilters"
+            android:id="@+id/layoutEmpty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
             android:orientation="vertical"
-            android:background="@drawable/bg_dark_card"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
+            android:gravity="center"
             android:visibility="gone">
 
-            <!-- Difficulty -->
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_hiker"
+                android:tint="#2E2E2E"
+                android:contentDescription="Empty state" />
+
             <TextView
+                android:id="@+id/tvEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Difficulty"
+                android:layout_marginTop="16dp"
+                android:text="No hikes yet"
                 android:textColor="#80FFFFFF"
-                android:textSize="11sp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginBottom="4dp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium" />
 
-            <Spinner
-                android:id="@+id/spinnerDifficulty"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:popupBackground="#1A1A1A" />
-
-            <!-- Distance -->
             <TextView
+                android:id="@+id/tvEmptySub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Distance (km)"
-                android:textColor="#80FFFFFF"
-                android:textSize="11sp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <EditText
-                    android:id="@+id/etMinDistance"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_edittext_border"
-                    android:hint="Min"
-                    android:inputType="numberDecimal"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#666666"
-                    android:textSize="13sp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:fontFamily="@font/poppins_regular" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:text="–"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="14sp" />
-
-                <EditText
-                    android:id="@+id/etMaxDistance"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_edittext_border"
-                    android:hint="Max"
-                    android:inputType="numberDecimal"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#666666"
-                    android:textSize="13sp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:fontFamily="@font/poppins_regular" />
-
-            </LinearLayout>
-
-            <!-- Max Price -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Max Price (₱)"
-                android:textColor="#80FFFFFF"
-                android:textSize="11sp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp" />
-
-            <EditText
-                android:id="@+id/etMaxPrice"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@drawable/bg_edittext_border"
-                android:hint="e.g. 500"
-                android:inputType="numberDecimal"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666666"
+                android:layout_marginTop="4dp"
+                android:text="Your hosted or booked hikes will appear here."
+                android:textColor="#55FFFFFF"
                 android:textSize="13sp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
                 android:fontFamily="@font/poppins_regular" />
-
-            <!-- Max Duration -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Max Duration (hrs)"
-                android:textColor="#80FFFFFF"
-                android:textSize="11sp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp" />
-
-            <EditText
-                android:id="@+id/etMaxDuration"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@drawable/bg_edittext_border"
-                android:hint="e.g. 8"
-                android:inputType="numberDecimal"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666666"
-                android:textSize="13sp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:fontFamily="@font/poppins_regular" />
-
-            <!-- Clear filters -->
-            <TextView
-                android:id="@+id/tvClearFilters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Clear filters"
-                android:textColor="#FF4444"
-                android:textSize="12sp"
-                android:fontFamily="@font/poppins_medium"
-                android:padding="4dp" />
 
         </LinearLayout>
 
-        <!-- Empty state -->
-        <TextView
-            android:id="@+id/tvEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:gravity="center"
-            android:text="No hikes available"
-            android:textColor="#80FFFFFF"
-            android:textSize="15sp"
-            android:fontFamily="@font/poppins_regular"
-            android:visibility="gone" />
-
+        <!-- Recycler -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerHikes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:layout_marginTop="4dp"
             android:clipToPadding="false"
             android:paddingBottom="88dp" />
 
     </LinearLayout>
 
+    <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreateHike"
         android:layout_width="wrap_content"
