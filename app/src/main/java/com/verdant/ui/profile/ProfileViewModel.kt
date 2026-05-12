@@ -111,8 +111,8 @@ class ProfileViewModel(
                     UserBookingRow(
                         booking = booking,
                         hikeTitle = hike?.title ?: "Hike",
-                        hikeImageUrl = hike?.imageUrl ?: "",
-                        hikeLocation = hike?.location ?: ""
+                        hikeImageUrl = hike?.coverImageUrl() ?: "",
+                        hikeLocation = hike?.summaryLocation()?.ifBlank { hike?.location } ?: ""
                     )
                 }
             }.collect { rows ->

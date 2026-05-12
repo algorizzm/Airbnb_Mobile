@@ -10,6 +10,7 @@ import com.verdant.data.repository.HikeRepository
 import com.verdant.data.session.UserSessionManager
 import com.verdant.core.auth.AuthState
 import com.verdant.utils.BookingStatus
+import com.verdant.utils.HikeStatus
 import com.verdant.utils.Permissions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -85,6 +86,13 @@ class ApplicantsViewModel(
                 return@launch
             }
             bookingRepository.updateBookingStatus(bookingId, BookingStatus.APPROVED).onSuccess {
+                val newCount = bookingRepository.countApprovedForHike(hikeId)
+                val h = hikeRepository.getHike(hikeId).getOrNull()
+                if (h != null && newCount >= h.maxParticipants &&
+                    h.status.equals(HikeStatus.OPEN, ignoreCase = true)
+                ) {
+                    hikeRepository.updateHikeStatus(hikeId, HikeStatus.FULL)
+                }
                 _message.value = "Applicant approved."
             }.onFailure {
                 _message.value = it.message ?: "Could not approve."

@@ -116,9 +116,10 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
                         }
                         binding.tvTitle.text = hike.title
                         binding.tvStatus.text = "Status: ${hike.status}"
-                        binding.tvLocation.text = hike.location
+                        binding.tvLocation.text = hike.summaryLocation().ifBlank { hike.location }
                         binding.tvDifficulty.text = "Difficulty: ${hike.difficulty}"
-                        binding.tvDistance.text = "Distance: ${hike.distanceKm} km"
+                        binding.tvDistance.text =
+                            "Distance: ${hike.effectiveDistanceKm()} km"
                         binding.tvPrice.text = "Price: ₱%.2f".format(hike.price)
                         binding.tvMaxParticipants.text = "Max participants: ${hike.maxParticipants}"
                         binding.tvDescription.text = hike.description

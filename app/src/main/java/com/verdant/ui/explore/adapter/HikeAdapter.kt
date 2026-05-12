@@ -28,7 +28,7 @@ class HikeAdapter(
 
         fun bind(hike: Hike) {
             binding.tvTitle.text = hike.title
-            binding.tvLocation.text = hike.location
+            binding.tvLocation.text = hike.summaryLocation().ifBlank { hike.location }
             binding.tvDifficulty.text = hike.difficulty
             binding.tvPrice.text = "₱%.2f".format(hike.price)
             binding.root.setOnClickListener { onItemClick(hike) }

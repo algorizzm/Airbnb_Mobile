@@ -8,10 +8,13 @@ object UserRole {
 }
 
 object HikeStatus {
+    const val DRAFT = "draft"
     const val OPEN = "open"
+    const val FULL = "full"
     const val ONGOING = "ongoing"
     const val COMPLETED = "completed"
     const val CANCELLED = "cancelled"
+    /** Legacy documents only; prefer [CANCELLED]. */
     const val CLOSED = "closed"
 }
 

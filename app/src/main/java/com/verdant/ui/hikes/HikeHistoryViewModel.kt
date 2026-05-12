@@ -81,8 +81,8 @@ class BookingsViewModel(
                                 UserBookingRow(
                                     booking = b,
                                     hikeTitle = hike?.title ?: "Hike",
-                                    hikeImageUrl = hike?.imageUrl ?: "",
-                                    hikeLocation = hike?.location ?: ""
+                                    hikeImageUrl = hike?.coverImageUrl() ?: "",
+                                    hikeLocation = hike?.summaryLocation()?.ifBlank { hike?.location } ?: ""
                                 )
                             }
                             MyBookingsUiState(

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.verdant.data.model.Hike
 import com.verdant.data.repository.HikeRepository
+import com.verdant.utils.HikeStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -74,7 +75,13 @@ class ExploreViewModel(
 
         hikes.filter { hike ->
 
+            val discoverable =
+                hike.status.equals(HikeStatus.OPEN, ignoreCase = true) ||
+                    hike.status.equals(HikeStatus.FULL, ignoreCase = true)
+            if (!discoverable) return@filter false
+
             val q = query.trim()
+            val locLabel = hike.summaryLocation().ifBlank { hike.location }
 
             val matchesQuery =
                 q.isEmpty() ||
@@ -82,7 +89,7 @@ class ExploreViewModel(
                             q,
                             ignoreCase = true
                         ) ||
-                        hike.location.contains(
+                        locLabel.contains(
                             q,
                             ignoreCase = true
                         )
@@ -94,13 +101,15 @@ class ExploreViewModel(
                             ignoreCase = true
                         )
 
+            val effDist = hike.effectiveDistanceKm()
+
             val matchesMinDist =
                 filters.minDistance == null ||
-                        hike.distanceKm >= filters.minDistance
+                        effDist >= filters.minDistance
 
             val matchesMaxDist =
                 filters.maxDistance == null ||
-                        hike.distanceKm <= filters.maxDistance
+                        effDist <= filters.maxDistance
 
             val matchesPrice =
                 filters.maxPrice == null ||

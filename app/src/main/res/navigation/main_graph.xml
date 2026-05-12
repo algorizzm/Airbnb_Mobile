@@ -22,12 +22,6 @@
         android:name="com.verdant.ui.explore.ExploreFragment"
         android:label="Explore" />
 
-    <!-- Hike (protected placeholder destination) -->
-    <fragment
-        android:id="@+id/hikeFragment"
-        android:name="com.verdant.ui.hikes.HikesFragment"
-        android:label="Hike" />
-
     <!-- Profile -->
     <fragment
         android:id="@+id/profileFragment"
@@ -39,16 +33,32 @@
             app:destination="@id/auth_graph" />
     </fragment>
 
+    <!-- Hike -->
+    <fragment
+        android:id="@+id/hikeFragment"
+        android:name="com.verdant.ui.hikes.HikesFragment"
+        android:label="Hike">
+
+        <action
+            android:id="@+id/action_hikeFragment_to_createEditHikeFragment"
+            app:destination="@id/createEditHikeFragment" />
+
+        <action
+            android:id="@+id/action_hikeFragment_to_hikeDetailFragment"
+            app:destination="@id/hikeDetailFragment" />
+
+    </fragment>
+
     <!-- Hike Details -->
     <fragment
         android:id="@+id/hikeDetailFragment"
         android:name="com.verdant.ui.explore.HikeDetailFragment"
         android:label="Hike details" />
 
-    <!-- Create/Edit Hike -->
+    <!-- Create/Edit Hike (multi-step host) -->
     <fragment
         android:id="@+id/createEditHikeFragment"
-        android:name="com.verdant.ui.hikes.CreateEditHikeFragment"
+        android:name="com.verdant.ui.hikes.create.CreateHikeHostFragment"
         android:label="Create or edit hike" />
 
     <!-- Applicants -->

@@ -163,7 +163,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.accountInformationFragment,
                 R.id.privacySecurityFragment,
                 R.id.notificationSettingsFragment,
-                R.id.changePasswordFragment
+                R.id.changePasswordFragment,
+                R.id.createEditHikeFragment
             )
 
             val showNav = destination.id !in authScreens

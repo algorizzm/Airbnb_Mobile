@@ -125,7 +125,7 @@ class HikeManagementViewModel(
             }
             hikeRepository.completeHike(hikeId).onSuccess {
                 bookingRepository.completeApprovedBookingsForHike(hikeId).onSuccess {
-                    updateUserStatsForCompletedHike(hikeId, hike.distanceKm)
+                    updateUserStatsForCompletedHike(hikeId, hike.effectiveDistanceKm())
                 }.onFailure {
                     _message.value = "Hike completed but could not complete bookings: ${it.message}"
                 }

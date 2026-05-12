@@ -33,7 +33,7 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
         }
 
         findNavController().navigate(
-            R.id.hikeDetailFragment,
+            R.id.action_hikeFragment_to_hikeDetailFragment,
             bundle
         )
     }
@@ -74,11 +74,12 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
 
             ProtectedNav.navigate(
                 navController = findNavController(),
-                destId = R.id.createEditHikeFragment,
+                destId = R.id.action_hikeFragment_to_createEditHikeFragment,
                 args = Bundle(),
                 isProtected = true,
                 fragmentManager = childFragmentManager
             )
+
         }
     }
 

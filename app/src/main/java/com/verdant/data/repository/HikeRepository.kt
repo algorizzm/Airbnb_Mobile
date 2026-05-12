@@ -3,6 +3,7 @@ package com.verdant.data.repository
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.verdant.data.model.Hike
 import com.verdant.utils.HikeStatus
 import kotlinx.coroutines.channels.awaitClose
@@ -57,40 +58,15 @@ class HikeRepository(
             status = hike.status.ifBlank { HikeStatus.OPEN }
         )
         val ref = hikesCol.document()
-        ref.set(
-            mapOf(
-                "title" to data.title,
-                "description" to data.description,
-                "location" to data.location,
-                "difficulty" to data.difficulty,
-                "distanceKm" to data.distanceKm,
-                "price" to data.price,
-                "guideId" to data.guideId,
-                "guideName" to data.guideName,
-                "maxParticipants" to data.maxParticipants,
-                "status" to data.status,
-                "createdAt" to data.createdAt!!
-            )
-        ).await()
+        ref.set(data.toFirestoreMap(includeCreatedAt = true)).await()
         ref.id
     }
 
     suspend fun updateHike(hike: Hike): Result<Unit> = runCatching {
         if (hike.id.isBlank()) error("Missing hike id")
         hikesCol.document(hike.id).set(
-            mapOf(
-                "title" to hike.title,
-                "description" to hike.description,
-                "location" to hike.location,
-                "difficulty" to hike.difficulty,
-                "distanceKm" to hike.distanceKm,
-                "price" to hike.price,
-                "guideId" to hike.guideId,
-                "guideName" to hike.guideName,
-                "maxParticipants" to hike.maxParticipants,
-                "status" to hike.status
-            ),
-            com.google.firebase.firestore.SetOptions.merge()
+            hike.toFirestoreMap(includeCreatedAt = false),
+            SetOptions.merge()
         ).await()
     }
 
@@ -128,4 +104,38 @@ class HikeRepository(
 
     suspend fun completeHike(hikeId: String): Result<Unit> =
         updateHikeStatus(hikeId, HikeStatus.COMPLETED)
+}
+
+private fun Hike.toFirestoreMap(includeCreatedAt: Boolean): Map<String, Any?> {
+    val meetup = meetupPoint.ifBlank { location }
+    val map = mutableMapOf<String, Any?>(
+        "title" to title,
+        "description" to description,
+        "location" to meetup,
+        "meetupPoint" to meetupPoint.ifBlank { null },
+        "destination" to destination.ifBlank { null },
+        "difficulty" to difficulty,
+        "distanceKm" to distanceKm,
+        "estimatedDistanceKm" to estimatedDistanceKm,
+        "elevationM" to elevationM,
+        "price" to price,
+        "durationHours" to durationHours,
+        "guideId" to guideId,
+        "guideName" to guideName,
+        "maxParticipants" to maxParticipants,
+        "status" to status,
+        "imageUrl" to imageUrl,
+        "galleryImageUrls" to galleryImageUrls,
+        "startDateTime" to startDateTime,
+        "endDateTime" to endDateTime,
+        "inclusions" to inclusions,
+        "requirements" to requirements,
+        "tags" to tags,
+        "paymentMethods" to paymentMethods,
+        "pricingNotes" to pricingNotes
+    )
+    if (includeCreatedAt) {
+        map["createdAt"] = createdAt
+    }
+    return map.filterValues { it != null }
 }
