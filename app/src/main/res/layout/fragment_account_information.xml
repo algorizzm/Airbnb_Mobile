@@ -250,7 +250,47 @@
 
             </LinearLayout>
 
-            <!-- Change Password button -->
+            <!-- Edit Profile Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Edit Profile"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"
+                android:backgroundTint="#02D083"
+                app:cornerRadius="16dp"
+                app:icon="@android:drawable/ic_menu_edit"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="#FFFFFF" />
+
+            <!-- Delete Account Button (Outlined Style) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteAccount"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Delete Account"
+                android:textAllCaps="false"
+                android:textColor="#FF5252"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"
+                android:backgroundTint="@android:color/transparent"
+                app:strokeColor="#FF5252"
+                app:strokeWidth="1dp"
+                app:cornerRadius="16dp"
+                app:icon="@android:drawable/ic_menu_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="#FF5252" />
 
         </LinearLayout>
 
