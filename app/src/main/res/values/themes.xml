@@ -5,7 +5,15 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Verdant" parent="Base.Theme.Verdant" />
+    <style name="Theme.Verdant" parent="Base.Theme.Verdant">
+        <!-- Brand Colors -->
+        <item name="colorPrimary">#4CAF50</item>
+        <item name="colorSecondary">#81C784</item>
+
+        <!-- Material Picker Themes -->
+        <item name="materialCalendarTheme">@style/VerdantCalendarTheme</item>
+        <item name="materialTimePickerTheme">@style/VerdantTimePickerTheme</item>
+    </style>
 
         <style name="VerdantTag">
             <item name="android:layout_width">wrap_content</item>
@@ -79,6 +87,18 @@
         <style name="VerdantCircleImageView">
             <item name="cornerFamily">rounded</item>
             <item name="cornerSize">50%</item>
+        </style>
+
+        <style name="VerdantCalendarTheme"
+            parent="ThemeOverlay.Material3.MaterialCalendar">
+            <item name="colorPrimary">#4CAF50</item>
+            <item name="colorOnPrimary">#FFFFFF</item>
+        </style>
+
+        <style name="VerdantTimePickerTheme"
+            parent="ThemeOverlay.Material3.MaterialTimePicker">
+            <item name="colorPrimary">#4CAF50</item>
+            <item name="colorOnPrimary">#FFFFFF</item>
         </style>
 
 </resources>

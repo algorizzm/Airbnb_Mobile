@@ -3,14 +3,18 @@ package com.verdant.ui.hikes.create
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.verdant.R
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.chip.Chip
+import com.verdant.R
 import com.verdant.databinding.FragmentCreateHikeReviewBinding
 import kotlinx.coroutines.launch
 import java.text.DateFormat
+import java.text.NumberFormat
+import java.util.Locale
 
 class CreateHikeReviewFragment : Fragment(R.layout.fragment_create_hike_review) {
 
@@ -19,56 +23,194 @@ class CreateHikeReviewFragment : Fragment(R.layout.fragment_create_hike_review) 
 
     private val flowVm get() = createHikeFlowViewModel()
 
-    private val fmt: DateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+    private val fmt: DateFormat =
+        DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+
+    private val pesoFormat = NumberFormat.getCurrencyInstance(Locale("en", "PH"))
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         _binding = FragmentCreateHikeReviewBinding.bind(view)
 
-        binding.btnPublish.setOnClickListener { flowVm.publish() }
-        binding.btnSaveDraft.setOnClickListener { flowVm.saveDraft() }
+        setupListeners()
+        observeUi()
+    }
+
+    private fun setupListeners() {
+
+        binding.btnPublish.setOnClickListener {
+            flowVm.publish()
+        }
+
+        binding.btnSaveDraft.setOnClickListener {
+            flowVm.saveDraft()
+        }
+
         binding.btnDelete.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle("Delete hike")
                 .setMessage("This will permanently delete the hike and all its bookings.")
-                .setPositiveButton("Delete") { _, _ -> flowVm.deleteHike() }
+                .setPositiveButton("Delete") { _, _ ->
+                    flowVm.deleteHike()
+                }
                 .setNegativeButton("Cancel", null)
                 .show()
         }
+    }
+
+    private fun observeUi() {
 
         viewLifecycleOwner.lifecycleScope.launch {
+
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
                 flowVm.ui.collect { s ->
-                    binding.btnDelete.visibility =
-                        if (s.isEditMode) View.VISIBLE else View.GONE
-                    binding.tvSummary.text = buildSummary(s)
+
+                    // DELETE BUTTON
+                    binding.btnDelete.isVisible = s.isEditMode
+
+                    // COVER TITLE
+                    binding.tvReviewTitle.text =
+                        s.title.ifBlank { "Untitled Hike" }
+
+                    // SCHEDULE
+                    binding.tvReviewSchedule.text =
+                        buildScheduleText(s)
+
+                    // DESCRIPTION
+                    binding.tvReviewDescription.text =
+                        s.description.ifBlank {
+                            "No description added."
+                        }
+
+                    // DETAILS
+                    binding.tvReviewDestination.text =
+                        s.destination.ifBlank { "Not set" }
+
+                    binding.tvReviewMeetup.text =
+                        s.meetupPoint.ifBlank { "Not set" }
+
+                    binding.tvReviewDifficulty.text =
+                        s.routeDifficulty.ifBlank { "Beginner" }
+
+                    binding.tvReviewElevation.text =
+                        if (s.elevationMText.isBlank()) {
+                            "0 m"
+                        } else {
+                            "${s.elevationMText} m"
+                        }
+
+                    binding.tvReviewDistance.text =
+                        if (s.estimatedDistanceKmText.isBlank()) {
+                            "0 km"
+                        } else {
+                            "${s.estimatedDistanceKmText} km"
+                        }
+
+                    binding.tvReviewSlots.text =
+                        s.maxSlotsText.ifBlank { "0" }
+
+                    // TAGS
+                    setupTags(s.tagsText)
+
+                    // PRICE
+                    binding.tvReviewPrice.text =
+                        formatPrice(s.priceText)
+
+                    // PAYMENT METHODS
+                    binding.tvReviewPaymentMethods.text =
+                        s.paymentMethodsText.ifBlank {
+                            "No payment methods selected"
+                        }
+
+                    // PRICING NOTES
+                    binding.tvReviewPricingNotes.text =
+                        s.pricingNotes.ifBlank {
+                            "No pricing notes."
+                        }
+
+                    // TODO:
+                    // Load cover image here using Glide / Coil / Picasso
+                    //
+                    // Example:
+                    // Glide.with(requireContext())
+                    //     .load(s.coverImageUrl)
+                    //     .placeholder(R.drawable.placeholder_hike)
+                    //     .into(binding.imgReviewCover)
                 }
             }
         }
     }
 
-    private fun buildSummary(s: CreateHikeUiState): String = buildString {
-        appendLine("Title: ${s.title}")
-        appendLine("Description: ${s.description}")
-        appendLine("Max slots: ${s.maxSlotsText}")
-        appendLine("Inclusions: ${s.inclusionsText.ifBlank { "—" }}")
-        appendLine("Requirements: ${s.requirementsText.ifBlank { "—" }}")
-        appendLine("Tags: ${s.tagsText.ifBlank { "—" }}")
-        appendLine(
-            "Start: ${s.startMillis?.let { fmt.format(it) } ?: "—"}"
-        )
-        appendLine("End: ${s.endMillis?.let { fmt.format(it) } ?: "—"}")
-        appendLine("Meetup: ${s.meetupPoint}")
-        appendLine("Destination: ${s.destination}")
-        appendLine("Difficulty: ${s.routeDifficulty}")
-        appendLine("Elevation (m): ${s.elevationMText.ifBlank { "—" }}")
-        appendLine("Distance (km): ${s.estimatedDistanceKmText}")
-        appendLine("Cover: ${if (s.coverImageUrl.isNotBlank()) "set" else "—"}")
-        appendLine("Gallery: ${s.galleryImageUrls.count { it.isNotBlank() }} item(s)")
-        appendLine("Price: ${s.priceText}")
-        appendLine("Payment methods: ${s.paymentMethodsText.ifBlank { "—" }}")
-        appendLine("Pricing notes: ${s.pricingNotes.ifBlank { "—" }}")
-    }.trim()
+    private fun buildScheduleText(s: CreateHikeUiState): String {
+
+        val start = s.startMillis?.let { fmt.format(it) }
+        val end = s.endMillis?.let { fmt.format(it) }
+
+        return when {
+            start != null && end != null -> "$start • $end"
+            start != null -> start
+            else -> "No schedule selected"
+        }
+    }
+
+    private fun setupTags(tagsText: String) {
+
+        binding.chipGroupReviewTags.removeAllViews()
+
+        val tags = tagsText
+            .split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        tags.forEach { tag ->
+
+            val chip = Chip(requireContext()).apply {
+
+                text = tag
+
+                isClickable = false
+                isCheckable = false
+                isCloseIconVisible = false
+
+                setTextColor(
+                    resources.getColor(android.R.color.white, null)
+                )
+
+                chipBackgroundColor =
+                    androidx.core.content.ContextCompat.getColorStateList(
+                        requireContext(),
+                        R.color.colorAccentGreen
+                    )
+
+                textSize = 12f
+
+                chipCornerRadius = 50f
+
+                setEnsureMinTouchTargetSize(false)
+            }
+
+            binding.chipGroupReviewTags.addView(chip)
+        }
+    }
+
+    private fun formatPrice(price: String): String {
+
+        if (price.isBlank()) {
+            return "₱ 0.00"
+        }
+
+        return try {
+
+            val amount = price.toDouble()
+            pesoFormat.format(amount)
+
+        } catch (_: Exception) {
+
+            "₱ $price"
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

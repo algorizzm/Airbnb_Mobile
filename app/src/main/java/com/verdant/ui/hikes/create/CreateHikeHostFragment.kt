@@ -14,6 +14,7 @@ import com.verdant.R
 import com.verdant.databinding.FragmentCreateHikeHostBinding
 import com.verdant.ui.explore.ExploreFragment
 import kotlinx.coroutines.launch
+import androidx.fragment.app.activityViewModels
 
 class CreateHikeHostFragment : Fragment(R.layout.fragment_create_hike_host) {
 
@@ -23,7 +24,7 @@ class CreateHikeHostFragment : Fragment(R.layout.fragment_create_hike_host) {
     private val existingHikeId: String?
         get() = arguments?.getString(ExploreFragment.ARG_HIKE_ID)?.takeIf { it.isNotBlank() }
 
-    private val viewModel: CreateHikeFlowViewModel by viewModels {
+    private val viewModel: CreateHikeFlowViewModel by activityViewModels {
         CreateHikeFlowViewModel.Factory(existingHikeId)
     }
 
@@ -37,10 +38,7 @@ class CreateHikeHostFragment : Fragment(R.layout.fragment_create_hike_host) {
         binding.tvScreenTitle.text = if (isEdit) "Edit hike" else "Create hike"
 
         binding.btnBack.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.hikeFragment
-            )
+            findNavController().popBackStack()
         }
 
         binding.btnPrev.setOnClickListener {

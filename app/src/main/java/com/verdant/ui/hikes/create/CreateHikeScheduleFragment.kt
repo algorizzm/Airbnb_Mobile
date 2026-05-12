@@ -1,13 +1,14 @@
 package com.verdant.ui.hikes.create
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.verdant.R
 import com.verdant.databinding.FragmentCreateHikeScheduleBinding
 import kotlinx.coroutines.launch
@@ -28,123 +29,67 @@ class CreateHikeScheduleFragment :
             DateFormat.SHORT
         )
 
-    private var selectingStart = true
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentCreateHikeScheduleBinding.bind(view)
 
         setupDateSelection()
-        setupTimePicker()
         observeUi()
     }
 
     private fun setupDateSelection() {
 
-        binding.tvStart.setOnClickListener {
-            selectingStart = true
+        binding.layoutStart.setOnClickListener {
             showDatePicker()
         }
 
-        binding.tvEnd.setOnClickListener {
-            selectingStart = false
+        binding.tvStart.setOnClickListener {
             showDatePicker()
         }
     }
 
     private fun showDatePicker() {
 
-        val initial =
-            if (selectingStart)
-                flowVm.ui.value.startMillis
-            else
-                flowVm.ui.value.endMillis
+        val picker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select hike date")
+                .build()
 
-        val cal = Calendar.getInstance()
+        picker.show(parentFragmentManager, "DATE_PICKER")
 
-        if (initial != null) {
-            cal.timeInMillis = initial
-        }
-
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, day ->
-
-                cal.set(Calendar.YEAR, year)
-                cal.set(Calendar.MONTH, month)
-                cal.set(Calendar.DAY_OF_MONTH, day)
-
-                applySelectedDate(cal)
-
-            },
-            cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
-        ).show()
-    }
-
-    private fun setupTimePicker() {
-
-        val picker = binding.timePicker
-
-        picker.setIs24HourView(false)
-
-        picker.setOnTimeChangedListener { _: TimePicker, hour: Int, minute: Int ->
-
-            val current =
-                if (selectingStart)
-                    flowVm.ui.value.startMillis
-                else
-                    flowVm.ui.value.endMillis
+        picker.addOnPositiveButtonClickListener { selection ->
 
             val cal = Calendar.getInstance()
 
-            if (current != null) {
-                cal.timeInMillis = current
-            }
+            cal.timeInMillis = selection
 
-            cal.set(Calendar.HOUR_OF_DAY, hour)
-            cal.set(Calendar.MINUTE, minute)
+            showTimePicker(cal)
+        }
+    }
+
+    private fun showTimePicker(cal: Calendar) {
+
+        val picker =
+            MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(cal.get(Calendar.HOUR_OF_DAY))
+                .setMinute(cal.get(Calendar.MINUTE))
+                .setTitleText("Select hike time")
+                .build()
+
+        picker.show(parentFragmentManager, "TIME_PICKER")
+
+        picker.addOnPositiveButtonClickListener {
+
+            cal.set(Calendar.HOUR_OF_DAY, picker.hour)
+            cal.set(Calendar.MINUTE, picker.minute)
             cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
 
             val millis = cal.timeInMillis
 
-            if (selectingStart) {
-                flowVm.setStartMillis(millis)
-            } else {
-                flowVm.setEndMillis(millis)
-            }
-        }
-    }
-
-    private fun applySelectedDate(cal: Calendar) {
-
-        val current =
-            if (selectingStart)
-                flowVm.ui.value.startMillis
-            else
-                flowVm.ui.value.endMillis
-
-        if (current != null) {
-
-            val existing = Calendar.getInstance()
-            existing.timeInMillis = current
-
-            cal.set(Calendar.HOUR_OF_DAY,
-                existing.get(Calendar.HOUR_OF_DAY))
-
-            cal.set(Calendar.MINUTE,
-                existing.get(Calendar.MINUTE))
-        }
-
-        val millis = cal.timeInMillis
-
-        if (selectingStart) {
             flowVm.setStartMillis(millis)
-        } else {
-            flowVm.setEndMillis(millis)
         }
     }
 
@@ -161,12 +106,12 @@ class CreateHikeScheduleFragment :
                     binding.tvStart.text =
                         state.startMillis?.let {
                             fmt.format(it)
-                        } ?: "Tap to set start"
+                        } ?: "Select date & time"
 
-                    binding.tvEnd.text =
-                        state.endMillis?.let {
-                            fmt.format(it)
-                        } ?: "Tap to set end"
+                    binding.layoutFloatingCard.tvFloatingHikeTitle.text =
+                        state.title.ifBlank {
+                            "Untitled Hike"
+                        }
                 }
             }
         }

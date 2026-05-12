@@ -56,7 +56,7 @@ data class CreateHikeUiState(
     val coverImageUrl: String = "",
     val galleryImageUrls: List<String> = List(CREATE_HIKE_MAX_GALLERY) { "" },
     val priceText: String = "",
-    val paymentMethodsText: String = "",
+    val paymentMethodsText: String = "Cash",
     val pricingNotes: String = "",
     val isEditMode: Boolean = false,
     val loading: Boolean = false,
@@ -192,7 +192,12 @@ class CreateHikeFlowViewModel(
     }
 
     fun updatePaymentMethodsText(v: String) {
-        _ui.value = _ui.value.copy(paymentMethodsText = v)
+
+        _ui.value =
+            _ui.value.copy(
+                paymentMethodsText =
+                v.ifBlank { "Cash" }
+            )
     }
 
     fun updatePricingNotes(v: String) {
@@ -356,36 +361,68 @@ class CreateHikeFlowViewModel(
         _ui.value = _ui.value.copy(message = null)
     }
 
-    private fun validateStep(step: CreateHikeStep, s: CreateHikeUiState, forPublish: Boolean): String? {
+    private fun validateStep(
+        step: CreateHikeStep,
+        s: CreateHikeUiState,
+        forPublish: Boolean
+    ): String? {
+
         if (!forPublish && step != CreateHikeStep.REVIEW) {
+
             return when (step) {
+
                 CreateHikeStep.DETAILS -> when {
-                    s.title.isBlank() -> "Title is required."
-                    s.maxSlotsText.toIntOrNull() == null || s.maxSlotsText.toIntOrNull()!! <= 0 ->
+
+                    s.title.isBlank() ->
+                        "Title is required."
+
+                    s.maxSlotsText.toIntOrNull() == null ||
+                            s.maxSlotsText.toIntOrNull()!! <= 0 ->
                         "Enter a valid max slots number."
+
                     else -> null
                 }
+
                 CreateHikeStep.SCHEDULE -> when {
-                    s.startMillis == null || s.endMillis == null -> "Pick start and end date/time."
-                    s.endMillis <= s.startMillis -> "End must be after start."
+
+                    s.startMillis == null ->
+                        "Pick a start date and time."
+
                     else -> null
                 }
+
                 CreateHikeStep.ROUTE -> when {
-                    s.meetupPoint.isBlank() -> "Meetup point is required."
-                    s.destination.isBlank() -> "Destination is required."
-                    s.routeDifficulty.isBlank() -> "Select difficulty."
+
+                    s.meetupPoint.isBlank() ->
+                        "Meetup point is required."
+
+                    s.destination.isBlank() ->
+                        "Destination is required."
+
+                    s.routeDifficulty.isBlank() ->
+                        "Select difficulty."
+
                     s.estimatedDistanceKmText.toDoubleOrNull() == null ||
-                        s.estimatedDistanceKmText.toDoubleOrNull()!! <= 0 -> "Enter estimated distance (km)."
+                            s.estimatedDistanceKmText.toDoubleOrNull()!! <= 0 ->
+                        "Enter estimated distance (km)."
+
                     else -> null
                 }
+
                 CreateHikeStep.MEDIA -> null
+
                 CreateHikeStep.PRICING -> when {
-                    s.priceText.toDoubleOrNull() == null -> "Enter a valid price (0 allowed)."
+
+                    s.priceText.toDoubleOrNull() == null ->
+                        "Enter a valid price (0 allowed)."
+
                     else -> null
                 }
+
                 CreateHikeStep.REVIEW -> null
             }
         }
+
         return null
     }
 
@@ -471,7 +508,10 @@ class CreateHikeFlowViewModel(
             coverImageUrl = imageUrl,
             galleryImageUrls = trimmed,
             priceText = price.toString(),
-            paymentMethodsText = paymentMethods.joinToString("\n"),
+            paymentMethodsText =
+            paymentMethods
+                .joinToString("\n")
+                .ifBlank { "Cash" },
             pricingNotes = pricingNotes,
             isEditMode = isEditMode,
             loading = loading,

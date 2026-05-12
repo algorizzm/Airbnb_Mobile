@@ -159,11 +159,11 @@
                 android:fontFamily="@font/poppins_regular"
                 android:scrollbars="vertical" />
 
-            <!-- MAX SLOTS -->
+            <!-- PARTICIPANTS -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Max Slots *"
+                android:text="Participants"
                 android:textColor="#80FFFFFF"
                 android:textSize="12sp"
                 android:fontFamily="@font/poppins_medium"
@@ -172,24 +172,58 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:background="@drawable/bg_edittext_border"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:background="@drawable/bg_dark_card"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="10dp">
 
-                <EditText
-                    android:id="@+id/etMaxSlots"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:hint="e.g. 12"
-                    android:inputType="number"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#555555"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Number of participants"
+                    android:textColor="@android:color/white"
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins_regular" />
+
+                <TextView
+                    android:id="@+id/btnDecrement"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_counter_btn"
+                    android:text="&#8722;"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Decrease participants" />
+
+                <TextView
+                    android:id="@+id/tvParticipantCount"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/btnIncrement"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_counter_btn"
+                    android:text="+"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Increase participants" />
 
             </LinearLayout>
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/floatingHikeCard"
+    android:layout_width="wrap_content"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="14dp"
+    android:paddingEnd="16dp"
+    android:background="@drawable/bg_floating_hike_card"
+    android:elevation="18dp"
+    android:translationZ="12dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- HIKER ICON -->
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_hiker"
+        android:tint="#FFFFFF" />
+
+    <!-- HIKE TITLE -->
+    <TextView
+        android:id="@+id/tvFloatingHikeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Mountain Trail"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        android:maxLines="1" />
+
+</LinearLayout>

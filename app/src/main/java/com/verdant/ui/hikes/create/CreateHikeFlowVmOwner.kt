@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.verdant.ui.explore.ExploreFragment
 
 internal fun Fragment.createHikeFlowViewModel(): CreateHikeFlowViewModel {
-    val host = requireParentFragment()
+
     return ViewModelProvider(
-        host,
+        requireActivity(),
         CreateHikeFlowViewModel.Factory(
-            host.requireArguments().getString(ExploreFragment.ARG_HIKE_ID)
+            requireActivity()
+                .intent
+                ?.getStringExtra(ExploreFragment.ARG_HIKE_ID)
         )
     )[CreateHikeFlowViewModel::class.java]
 }

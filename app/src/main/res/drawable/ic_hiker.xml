@@ -1,15 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
     <!-- Head -->
     <path
-        android:fillColor="@android:color/black"
-        android:pathData="M13.49,5.48c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"/>
-    <!-- Body with hiking pole -->
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M256,70
+            m-34,0
+            a34,34 0,1 1,68 0
+            a34,34 0,1 1,-68 0" />
+
+    <!-- Backpack -->
     <path
-        android:fillColor="@android:color/black"
-        android:pathData="M17.09,11.1c-0.01,-0.01 -0.01,-0.01 -0.02,-0.01l-2.45,-1.27c-0.34,-0.18 -0.71,-0.27 -1.09,-0.27 -0.64,0 -1.26,0.26 -1.71,0.72l-1.36,1.37c-0.14,0.14 -0.3,0.26 -0.47,0.34l-2.35,1.09c-0.51,0.24 -0.74,0.84 -0.5,1.35 0.17,0.38 0.54,0.61 0.93,0.61 0.14,0 0.28,-0.03 0.42,-0.09l2.36,-1.09c0.34,-0.16 0.65,-0.37 0.92,-0.63l0.45,-0.45 0.5,1.67 -1.93,1.86c-0.19,0.18 -0.33,0.4 -0.4,0.65l-0.87,3.29c-0.14,0.54 0.18,1.09 0.72,1.23 0.09,0.02 0.17,0.03 0.26,0.03 0.45,0 0.86,-0.3 0.98,-0.75l0.82,-3.11 2.17,-2.09c0.29,-0.28 0.48,-0.65 0.53,-1.04l0.25,-1.98 0.53,0.28v2.46c0,0.28 0.11,0.54 0.3,0.74l2.17,2.26c0.2,0.21 0.47,0.32 0.74,0.32 0.25,0 0.51,-0.09 0.7,-0.28 0.41,-0.39 0.42,-1.04 0.03,-1.44l-1.97,-2.06v-2.88c0.01,-0.5 -0.25,-0.97 -0.67,-1.19z"/>
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M145,120
+            L112,220
+            Q107,236 122,241
+            L160,250
+            Q176,254 181,237
+            L205,136
+            Q209,120 194,116
+            L160,108
+            Q149,106 145,120 Z" />
+
+    <!-- Main Body + Left Leg -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M250,125
+            Q220,125 210,165
+            L165,425
+            Q160,448 177,462
+            Q195,476 212,464
+            Q223,456 228,435
+            L270,235
+            L300,145
+            Q307,123 285,120
+            Z" />
+
+    <!-- Connected Right Leg -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M248,255
+            L310,430
+            Q316,448 330,458
+            Q345,468 358,458
+            Q372,447 367,428
+            L315,225
+            Q311,210 298,205
+            Q280,198 265,212
+            Q252,224 248,255 Z" />
+
+    <!-- Connected Arm -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M285,175
+            L378,205
+            Q394,210 398,226
+            Q402,244 388,252
+            Q379,257 365,253
+            L300,232
+            Q284,227 279,212
+            L268,182
+            Q264,170 272,165
+            Q280,160 285,175 Z" />
+
+    <!-- Hiking Pole -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M405,125
+            Q413,127 416,135
+            Q418,142 416,152
+            L360,470
+            Q357,482 345,480
+            Q333,478 336,466
+            L392,145
+            Q395,132 405,125 Z" />
+
 </vector>
