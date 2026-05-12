@@ -9,14 +9,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.verdant.R
 import com.verdant.core.auth.AuthState
-import com.verdant.core.navigation.ProtectedNav
 import com.verdant.data.session.UserSessionManager
 import com.verdant.databinding.FragmentHikesBinding
-import com.verdant.ui.explore.ExploreFragment
-import com.verdant.ui.explore.adapter.HikeAdapter
 import kotlinx.coroutines.launch
 
 class HikesFragment : Fragment(R.layout.fragment_hikes) {
@@ -26,34 +22,13 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
 
     private val viewModel: HikesViewModel by viewModels()
 
-    private val adapter = HikeAdapter { hike ->
-
-        val bundle = Bundle().apply {
-            putString(ExploreFragment.ARG_HIKE_ID, hike.id)
-        }
-
-        findNavController().navigate(
-            R.id.action_hikeFragment_to_hikeDetailFragment,
-            bundle
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentHikesBinding.bind(view)
 
-        setupRecycler()
         setupClicks()
         observeUi()
-    }
-
-    private fun setupRecycler() {
-
-        binding.recyclerHikes.layoutManager =
-            LinearLayoutManager(requireContext())
-
-        binding.recyclerHikes.adapter = adapter
     }
 
     private fun setupClicks() {
@@ -70,16 +45,37 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
             )
         }
 
-        binding.fabCreateHike.setOnClickListener {
-
-            ProtectedNav.navigate(
-                navController = findNavController(),
-                destId = R.id.action_hikeFragment_to_createEditHikeFragment,
-                args = Bundle(),
-                isProtected = true,
-                fragmentManager = childFragmentManager
+        // Events tab
+        binding.tabEvents.setOnClickListener {
+            findNavController().navigate(
+                R.id.eventsFragment
             )
+        }
 
+        // History tab
+        binding.tabHistory.setOnClickListener {
+            findNavController().navigate(
+                R.id.hikeHistoryFragment
+            )
+        }
+
+        // Empty state button
+        binding.btnEmptyAction.setOnClickListener {
+
+            val isGuide = viewModel.isGuide.value
+
+            if (isGuide) {
+
+                findNavController().navigate(
+                    R.id.eventsFragment
+                )
+
+            } else {
+
+                findNavController().navigate(
+                    R.id.exploreFragment
+                )
+            }
         }
     }
 
@@ -108,24 +104,40 @@ class HikesFragment : Fragment(R.layout.fragment_hikes) {
 
                 launch {
 
-                    viewModel.myHikes.collect { hikes ->
+                    viewModel.isGuide.collect { guide ->
 
-                        adapter.submitList(hikes)
-
-                        binding.tvEmpty.visibility =
-                            if (hikes.isEmpty())
+                        binding.tabEvents.visibility =
+                            if (guide)
                                 View.VISIBLE
                             else
                                 View.GONE
+
+                        binding.btnEmptyAction.text =
+                            if (guide)
+                                "Go to events"
+                            else
+                                "Explore hikes"
+
+                        binding.tvEmptySub.text =
+                            if (guide)
+                                "Create and manage hikes from Events."
+                            else
+                                "Explore available hikes and join one."
                     }
                 }
 
                 launch {
 
-                    viewModel.isGuide.collect { guide ->
+                    viewModel.hasActiveHike.collect { hasHike ->
 
-                        binding.fabCreateHike.visibility =
-                            if (guide)
+                        binding.layoutEmpty.visibility =
+                            if (hasHike)
+                                View.GONE
+                            else
+                                View.VISIBLE
+
+                        binding.layoutActive.visibility =
+                            if (hasHike)
                                 View.VISIBLE
                             else
                                 View.GONE

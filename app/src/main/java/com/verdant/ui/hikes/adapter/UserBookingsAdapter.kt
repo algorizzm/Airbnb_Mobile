@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.verdant.databinding.ItemUserBookingBinding
-import com.verdant.ui.hikes.UserBookingRow
+import com.verdant.ui.hikes.history.UserBookingRow
 import com.verdant.utils.BookingStatus
 import java.text.SimpleDateFormat
 import java.util.Date

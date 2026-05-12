@@ -13,7 +13,7 @@ import com.verdant.data.repository.HikeRepository
 import com.verdant.data.repository.NotificationRepository
 import com.verdant.data.repository.UserRepository
 import com.verdant.data.session.UserSessionManager
-import com.verdant.ui.hikes.UserBookingRow
+import com.verdant.ui.hikes.history.UserBookingRow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -5,20 +5,22 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import com.verdant.R
 import com.verdant.core.auth.AuthState
 import com.verdant.data.session.UserSessionManager
 import com.verdant.databinding.FragmentAccountInformationBinding
 
-class AccountInformationFragment : Fragment(R.layout.fragment_account_information) {
+class AccountInformationFragment :
+    Fragment(R.layout.fragment_account_information) {
 
     private var _binding: FragmentAccountInformationBinding? = null
     private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         _binding = FragmentAccountInformationBinding.bind(view)
 
         setupViews()
@@ -32,16 +34,9 @@ class AccountInformationFragment : Fragment(R.layout.fragment_account_informatio
         }
 
         binding.btnEditProfile.setOnClickListener {
-
-            // Navigate to edit profile screen
-            // Replace with your actual destination
-            // findNavController().navigate(R.id.action_accountInformation_to_editProfile)
-
-            Toast.makeText(
-                requireContext(),
-                "Edit Profile clicked",
-                Toast.LENGTH_SHORT
-            ).show()
+            findNavController().navigate(
+                R.id.action_accountInformationFragment_to_editProfileFragment
+            )
         }
 
         binding.btnDeleteAccount.setOnClickListener {
@@ -62,7 +57,6 @@ class AccountInformationFragment : Fragment(R.layout.fragment_account_informatio
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            // Navigate back to login/onboarding
                             findNavController().navigate(R.id.auth_graph)
                         }
                         ?.addOnFailureListener { e ->

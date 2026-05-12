@@ -174,21 +174,45 @@ class CreateHikeReviewFragment : Fragment(R.layout.fragment_create_hike_review) 
                 isCheckable = false
                 isCloseIconVisible = false
 
+                // TEXT
                 setTextColor(
                     resources.getColor(android.R.color.white, null)
                 )
 
+                textSize = 12f
+
+                // FONT
+                typeface =
+                    androidx.core.content.res.ResourcesCompat.getFont(
+                        requireContext(),
+                        R.font.poppins_medium
+                    )
+
+                // DARK BACKGROUND
                 chipBackgroundColor =
                     androidx.core.content.ContextCompat.getColorStateList(
                         requireContext(),
-                        R.color.colorAccentGreen
+                        R.color.chip_state_color
                     )
 
-                textSize = 12f
+                // GREEN OUTLINE
+                chipStrokeWidth = 1f
 
+                chipStrokeColor =
+                    android.content.res.ColorStateList.valueOf(
+                        android.graphics.Color.parseColor("#02D083")
+                    )
+
+                // ROUNDING
                 chipCornerRadius = 50f
 
+                // REMOVE EXTRA TOUCH PADDING
                 setEnsureMinTouchTargetSize(false)
+
+                // OPTIONAL:
+                // tighter visual appearance
+                chipStartPadding = 14f
+                chipEndPadding = 14f
             }
 
             binding.chipGroupReviewTags.addView(chip)

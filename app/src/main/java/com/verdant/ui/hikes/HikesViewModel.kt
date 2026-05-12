@@ -2,7 +2,6 @@ package com.verdant.ui.hikes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.verdant.data.model.Hike
 import com.verdant.data.repository.HikeRepository
 import com.verdant.data.session.UserSessionManager
 import com.verdant.utils.UserRole
@@ -18,11 +17,12 @@ class HikesViewModel(
     private val hikeRepository: HikeRepository = HikeRepository()
 ) : ViewModel() {
 
-    private val _myHikes = MutableStateFlow<List<Hike>>(emptyList())
-    val myHikes: StateFlow<List<Hike>> = _myHikes.asStateFlow()
-
     private val _toast = MutableStateFlow<String?>(null)
     val toast: StateFlow<String?> = _toast.asStateFlow()
+
+    private val _hasActiveHike = MutableStateFlow(false)
+    val hasActiveHike: StateFlow<Boolean> =
+        _hasActiveHike.asStateFlow()
 
     val isGuide: StateFlow<Boolean> = UserSessionManager.currentUser
         .map { user ->
@@ -35,10 +35,10 @@ class HikesViewModel(
         )
 
     init {
-        observeUserHikes()
+        observeCurrentHike()
     }
 
-    private fun observeUserHikes() {
+    private fun observeCurrentHike() {
 
         viewModelScope.launch {
 
@@ -47,21 +47,35 @@ class HikesViewModel(
                 val currentUserId =
                     UserSessionManager.currentUser.value?.id
 
-                if (currentUserId == null) {
-                    _myHikes.value = emptyList()
+                val currentUser =
+                    UserSessionManager.currentUser.value
+
+                if (currentUserId == null || currentUser == null) {
+
+                    _hasActiveHike.value = false
                     return@collect
                 }
 
-                // TEMPORARY LOGIC
-                // Replace later with:
-                // booked hikes
-                // hosted hikes
-                // active hikes
+                val hasActive = when (currentUser.role) {
 
-                _myHikes.value = hikes.filter { hike ->
+                    UserRole.GUIDE -> {
 
-                    hike.guideId == currentUserId
+                        hikes.any { hike ->
+                            hike.guideId == currentUserId
+                        }
+                    }
+
+                    UserRole.HIKER -> {
+
+                        // TODO:
+                        // Replace with joined-hike logic later
+                        false
+                    }
+
+                    else -> false
                 }
+
+                _hasActiveHike.value = hasActive
             }
         }
     }

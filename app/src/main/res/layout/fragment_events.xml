@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212">
 
+    <!-- Main Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Dashboard"
+                android:text="Events"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:fontFamily="@font/poppins_bold" />
@@ -68,10 +70,10 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_green_pill"
+                android:background="@drawable/bg_dark_pill"
                 android:gravity="center"
                 android:text="Track"
-                android:textColor="#FFFFFF"
+                android:textColor="#80FFFFFF"
                 android:textSize="13sp"
                 android:fontFamily="@font/poppins_medium"
                 android:clickable="true"
@@ -79,15 +81,15 @@
 
             <!-- Events -->
             <TextView
-                android:id="@+id/tabEvents"
+                android:id="@+id/tabBookings"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/bg_dark_pill"
+                android:background="@drawable/bg_green_pill"
                 android:gravity="center"
                 android:text="Events"
-                android:textColor="#80FFFFFF"
+                android:textColor="#FFFFFF"
                 android:textSize="13sp"
                 android:fontFamily="@font/poppins_medium"
                 android:clickable="true"
@@ -115,91 +117,64 @@
         <LinearLayout
             android:id="@+id/layoutEmpty"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingHorizontal="24dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
             android:visibility="gone">
 
             <ImageView
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:src="@drawable/ic_hiker"
-                android:contentDescription="Empty state" />
+                android:src="@drawable/ic_ghost"
+                android:contentDescription="Empty events" />
 
             <TextView
-                android:id="@+id/tvEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="You're not currently in a hike right now"
-                android:textColor="#80FFFFFF"
+                android:layout_marginTop="18dp"
+                android:text="No events yet"
+                android:textColor="#B3FFFFFF"
                 android:textSize="16sp"
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center" />
 
             <TextView
-                android:id="@+id/tvEmptySub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Explore available hikes and join one."
+                android:layout_marginTop="6dp"
+                android:text="Create your first hike event and start hosting hikers."
                 android:textColor="#55FFFFFF"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center" />
 
-            <Button
-                android:id="@+id/btnEmptyAction"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="#02D083"
-                android:text="Explore hikes"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:fontFamily="@font/poppins_medium" />
-
         </LinearLayout>
 
-        <!-- Active Hike State -->
-        <LinearLayout
-            android:id="@+id/layoutActive"
+        <!-- Events List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerEvents"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingHorizontal="24dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:src="@drawable/ic_hiker"
-                android:contentDescription="Active hike" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="You're currently in a hike"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:fontFamily="@font/poppins_bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Tracking and hike details will appear here."
-                android:textColor="#80FFFFFF"
-                android:textSize="13sp"
-                android:fontFamily="@font/poppins_regular" />
-
-        </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="100dp" />
 
     </LinearLayout>
+
+    <!-- FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreateEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="18dp"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="Create event"
+        app:tint="@android:color/white"
+        app:backgroundTint="#02D083" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

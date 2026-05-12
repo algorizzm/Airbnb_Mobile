@@ -272,7 +272,7 @@
                     android:id="@+id/tvUsername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/@juandelacruz"
+                    android:text="@juandelacruz"
                     android:textColor="#80FFFFFF"
                     android:textSize="13sp"
                     android:fontFamily="@font/poppins_regular" />
@@ -288,11 +288,12 @@
                     <ImageView
                         android:layout_width="14dp"
                         android:layout_height="14dp"
-                        android:src="@drawable/ic_trail"
-                        android:tint="#80FFFFFF"
+                        android:src="@drawable/ic_location"
+                        app:tint="#80FFFFFF"
                         android:contentDescription="Location" />
 
                     <TextView
+                        android:id="@+id/tvLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -300,7 +301,6 @@
                         android:textColor="#80FFFFFF"
                         android:textSize="12sp"
                         android:fontFamily="@font/poppins_regular" />
-
                 </LinearLayout>
 
             </LinearLayout>

@@ -1,14 +1,11 @@
 package com.verdant.ui.profile
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -24,10 +21,9 @@ import com.verdant.R
 import com.verdant.core.ui.AvatarHelper
 import com.verdant.databinding.FragmentProfileBinding
 import com.verdant.ui.explore.ExploreFragment
-import com.verdant.ui.hikes.UserBookingRow
+import com.verdant.ui.hikes.history.UserBookingRow
 import kotlinx.coroutines.launch
 import com.verdant.core.ui.EditTextDialog
-import com.verdant.ui.hikes.HikesFragment
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -201,18 +197,29 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                     // User fields
                     state.user?.let { user ->
+
                         binding.tvFullName.text = user.name.ifBlank { "—" }
+
                         binding.tvUsername.text =
                             if (user.name.isNotBlank())
                                 "@${user.name.lowercase().replace(" ", "")}"
                             else "—"
+
                         binding.tvBio.text =
                             user.bio?.takeIf { it.isNotBlank() } ?: "No bio yet."
-                        binding.tvStatHikes.text = user.totalHikes.toString()
-                        binding.tvStatDistance.text = "%.1fkm".format(user.totalDistance)
-                        binding.tvStatSummits.text = user.totalSummits.toString()
 
-                        // Avatar — use AvatarHelper for consistent colored initials
+                        binding.tvLocation.text =
+                            user.location.ifBlank { "Unknown location" }
+
+                        binding.tvStatHikes.text = user.totalHikes.toString()
+
+                        binding.tvStatDistance.text =
+                            "%.1fkm".format(user.totalDistance)
+
+                        binding.tvStatSummits.text =
+                            user.totalSummits.toString()
+
+                        // Avatar
                         AvatarHelper.bind(
                             imgView = binding.imgAvatar,
                             tvInitial = binding.tvAvatarInitial,

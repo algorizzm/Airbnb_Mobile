@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#121212">
 
-    <!-- ── Top bar ── -->
+    <!-- Top Bar -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -20,8 +20,8 @@
             android:id="@+id/btnBack"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/ic_chevron_left"
             android:padding="6dp"
+            android:src="@drawable/ic_chevron_left"
             android:contentDescription="Back" />
 
         <TextView
@@ -35,14 +35,14 @@
             android:fontFamily="@font/poppins_bold"
             android:gravity="center" />
 
-        <!-- Spacer to balance the back arrow -->
+        <!-- Spacer -->
         <View
             android:layout_width="36dp"
             android:layout_height="36dp" />
 
     </LinearLayout>
 
-    <!-- ── Scrollable content ── -->
+    <!-- Content -->
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -57,140 +57,25 @@
             android:paddingHorizontal="20dp"
             android:paddingTop="12dp">
 
-            <!-- ── Profile Photo card ── -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/bg_dark_card"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <!-- Avatar -->
-                <ImageView
-                    android:id="@+id/imgAvatar"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/bg_circle"
-                    android:contentDescription="Profile photo"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/bg_circle" />
-
-                <!-- Labels + button -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Profile Photo"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="JPG or PNG. Max size 5MB."
-                        android:textColor="#80FFFFFF"
-                        android:textSize="12sp" />
-
-                    <Button
-                        android:id="@+id/btnChangePhoto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="34dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_button_green"
-                        android:fontFamily="@font/poppins_bold"
-                        android:paddingHorizontal="14dp"
-                        android:text="Change Photo"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="@null" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- ── Personal Information section ── -->
+            <!-- Section Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Personal Information"
+                android:text="Profile Information"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
+            <!-- Card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="24dp"
                 android:background="@drawable/bg_dark_card"
                 android:orientation="vertical"
                 android:padding="4dp">
-
-                <!-- Full Name -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Full Name"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_dark"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
-
-                    <EditText
-                        android:id="@+id/etFullName"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:fontFamily="@font/poppins_regular"
-                        android:hint="Full name"
-                        android:inputType="textPersonName"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#60FFFFFF"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:alpha="0.5"
-                        android:contentDescription="Name icon"
-                        android:src="@drawable/ic_user_vector" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#2A2A2A" />
 
                 <!-- Username -->
                 <TextView
@@ -220,7 +105,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:fontFamily="@font/poppins_regular"
-                        android:hint="@jamesroldan"
+                        android:hint="/@username"
                         android:inputType="textNoSuggestions"
                         android:singleLine="true"
                         android:textColor="@android:color/white"
@@ -231,8 +116,8 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:alpha="0.5"
-                        android:contentDescription="Username icon"
-                        android:src="@drawable/ic_user_vector" />
+                        android:src="@drawable/ic_user_vector"
+                        android:contentDescription="Username Icon" />
 
                 </LinearLayout>
 
@@ -282,8 +167,8 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:alpha="0.5"
-                        android:contentDescription="Email icon"
-                        android:src="@drawable/ic_email_vector" />
+                        android:src="@drawable/ic_email_vector"
+                        android:contentDescription="Email Icon" />
 
                 </LinearLayout>
 
@@ -333,8 +218,8 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:alpha="0.5"
-                        android:contentDescription="Location icon"
-                        android:src="@drawable/ic_trail" />
+                        android:src="@drawable/ic_trail"
+                        android:contentDescription="Location Icon" />
 
                 </LinearLayout>
 
@@ -376,195 +261,22 @@
                         android:background="@null"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="top"
-                        android:hint="Tell us about yourself…"
+                        android:hint="Tell us about yourself..."
                         android:inputType="textMultiLine"
                         android:maxLines="3"
                         android:textColor="@android:color/white"
                         android:textColorHint="#60FFFFFF"
                         android:textSize="14sp" />
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:alpha="0.5"
-                        android:contentDescription="Bio icon"
-                        android:src="@drawable/ic_camera" />
-
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- ── Preferences section ── -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Preferences"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                android:background="@drawable/bg_dark_card"
-                android:orientation="vertical"
-                android:padding="4dp">
-
-                <!-- Units row -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Units"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
-
-                <LinearLayout
-                    android:id="@+id/rowUnits"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_dark"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
-
-                    <TextView
-                        android:id="@+id/tvUnits"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="Kilometers (km)"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:alpha="0.6"
-                        android:contentDescription="Select units"
-                        android:src="@drawable/ic_chevron_right" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#2A2A2A" />
-
-                <!-- Temperature row -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Temperature"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
-
-                <LinearLayout
-                    android:id="@+id/rowTemperature"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_dark"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
-
-                    <TextView
-                        android:id="@+id/tvTemperature"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="Celsius (°C)"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:alpha="0.6"
-                        android:contentDescription="Select temperature unit"
-                        android:src="@drawable/ic_chevron_right" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#2A2A2A" />
-
-                <!-- Notifications row -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Notifications"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
-
-                <LinearLayout
-                    android:id="@+id/rowNotifications"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/bg_input_dark"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
-
-                    <TextView
-                        android:id="@+id/tvNotifications"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="Enabled"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:alpha="0.6"
-                        android:contentDescription="Notification settings"
-                        android:src="@drawable/ic_chevron_right" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Save Changes button inside scroll -->
+            <!-- Save Changes Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSaveChanges"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_button_green"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Save Changes"
@@ -573,7 +285,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <!-- Sign Out button -->
+            <!-- Sign Out Button -->
             <Button
                 android:id="@+id/btnSignOut"
                 android:layout_width="match_parent"

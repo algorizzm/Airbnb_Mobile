@@ -53,6 +53,10 @@
             android:id="@+id/action_hikeFragment_to_hikeDetailFragment"
             app:destination="@id/hikeDetailFragment" />
 
+        <action
+            android:id="@+id/action_hikeFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
+
     </fragment>
 
     <!-- Hike Details -->
@@ -67,6 +71,24 @@
         android:name="com.verdant.ui.hikes.create.CreateHikeHostFragment"
         android:label="Create or edit hike" />
 
+    <!-- Events -->
+    <fragment
+        android:id="@+id/eventsFragment"
+        android:name="com.verdant.ui.hikes.events.EventsFragment"
+        android:label="Your Hiking Events">
+
+        <action
+            android:id="@+id/action_eventsFragment_to_createEditHikeFragment"
+            app:destination="@id/createEditHikeFragment" />
+
+    </fragment>
+
+    <!-- History -->
+    <fragment
+        android:id="@+id/hikeHistoryFragment"
+        android:name="com.verdant.ui.hikes.history.HikeHistoryFragment"
+        android:label="Your Hiking History" />
+
     <!-- Applicants -->
     <fragment
         android:id="@+id/applicantsFragment"
@@ -76,7 +98,7 @@
     <!-- My Bookings -->
     <fragment
         android:id="@+id/myBookingsFragment"
-        android:name="com.verdant.ui.hikes.HikeHistoryFragment"
+        android:name="com.verdant.ui.hikes.history.HikeHistoryFragment"
         android:label="My bookings" />
 
     <!-- Messages -->
@@ -109,7 +131,19 @@
     <fragment
         android:id="@+id/accountInformationFragment"
         android:name="com.verdant.ui.settings.AccountInformationFragment"
-        android:label="Account Information" />
+        android:label="Account Information">
+
+        <action
+            android:id="@+id/action_accountInformationFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+
+    </fragment>
+
+    <!-- Edit Profile -->
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.verdant.ui.settings.EditProfileFragment"
+        android:label="Edit Profile" />
 
     <!-- Privacy & Security -->
     <fragment

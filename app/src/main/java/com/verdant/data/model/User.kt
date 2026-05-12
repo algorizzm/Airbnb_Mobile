@@ -2,9 +2,12 @@ package com.verdant.data.model
 
 data class User(
     val id: String = "",
+    val fname: String = "",
+    val lname: String = "",
     val name: String = "",
     val email: String = "",
     val role: String = "guest", // hiker, guide, admin, guest
+    val location: String = "Cebu, Philippines",
     val profileImage: String = "",
     val bannerImage: String = "",
     val bio: String? = null,
