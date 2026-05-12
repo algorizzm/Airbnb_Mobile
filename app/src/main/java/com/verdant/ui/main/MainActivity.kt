@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
@@ -14,7 +15,6 @@ import com.verdant.core.auth.AuthManager
 import com.verdant.core.navigation.ProtectedNav
 import com.verdant.core.ui.AvatarHelper
 import kotlinx.coroutines.launch
-import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +32,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var customNavBar: LinearLayout
 
+    // Prevent rapid duplicate navigations
+    private var lastNavTime = 0L
+
+    companion object {
+        private const val NAV_DEBOUNCE_MS = 400L
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,19 +51,19 @@ class MainActivity : AppCompatActivity() {
         // ─────────────────────────────────────────────
         // Bind Views
         // ─────────────────────────────────────────────
-        customNavBar    = findViewById(R.id.navBarBg)
+        customNavBar = findViewById(R.id.navBarBg)
 
-        navHome         = findViewById(R.id.navHome)
-        navExplore      = findViewById(R.id.navExplore)
-        navFab          = findViewById(R.id.navFab)
-        navMessages     = findViewById(R.id.navMessages)
-        navProfile      = findViewById(R.id.navProfile)
-        navProfileInit  = findViewById(R.id.navProfileInitial)
+        navHome = findViewById(R.id.navHome)
+        navExplore = findViewById(R.id.navExplore)
+        navFab = findViewById(R.id.navFab)
+        navMessages = findViewById(R.id.navMessages)
+        navProfile = findViewById(R.id.navProfile)
+        navProfileInit = findViewById(R.id.navProfileInitial)
 
-        navIconHome     = findViewById(R.id.navIconHome)
-        navIconExplore  = findViewById(R.id.navIconExplore)
+        navIconHome = findViewById(R.id.navIconHome)
+        navIconExplore = findViewById(R.id.navIconExplore)
         navIconMessages = findViewById(R.id.navIconMessages)
-        navIconProfile  = findViewById(R.id.navIconProfile)
+        navIconProfile = findViewById(R.id.navIconProfile)
 
         // Observe avatar updates
         observeBottomAvatar()
@@ -71,14 +78,16 @@ class MainActivity : AppCompatActivity() {
         // ─────────────────────────────────────────────
         // Navigation Options
         // ─────────────────────────────────────────────
-        fun navOptions(destId: Int) = NavOptions.Builder()
+        fun navOptions() = NavOptions.Builder()
             .setLaunchSingleTop(true)
-            .setRestoreState(true)
             .setPopUpTo(
                 navController.graph.startDestinationId,
-                inclusive = false,
-                saveState = true
+                inclusive = false
             )
+            .setEnterAnim(R.anim.nav_enter)
+            .setExitAnim(R.anim.nav_exit)
+            .setPopEnterAnim(R.anim.nav_pop_enter)
+            .setPopExitAnim(R.anim.nav_pop_exit)
             .build()
 
         // ─────────────────────────────────────────────
@@ -86,15 +95,22 @@ class MainActivity : AppCompatActivity() {
         // ─────────────────────────────────────────────
         fun navigateTo(destId: Int) {
 
-            if (destId in protectedTabs && !AuthManager.isAuthenticated()) {
+            // Prevent rapid duplicate taps
+            val now = System.currentTimeMillis()
 
-                ProtectedNav.navigate(
-                    navController = navController,
-                    destId = destId,
-                    args = null,
-                    navOptions = null,
-                    isProtected = false
-                )
+            if (now - lastNavTime < NAV_DEBOUNCE_MS) {
+                return
+            }
+
+            lastNavTime = now
+
+            // Prevent navigating to same destination
+            if (navController.currentDestination?.id == destId) {
+                return
+            }
+
+            // Protected tabs
+            if (destId in protectedTabs && !AuthManager.isAuthenticated()) {
 
                 val currentFragment =
                     navHostFragment.childFragmentManager.primaryNavigationFragment
@@ -121,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(
                     destId,
                     null,
-                    navOptions(destId)
+                    navOptions()
                 )
             }
         }
@@ -177,7 +193,7 @@ class MainActivity : AppCompatActivity() {
 
             // Colors
             val inactive = 0xFFAAAAAA.toInt()
-            val active   = 0xFF02D083.toInt()
+            val active = 0xFF02D083.toInt()
 
             // Reset icon colors
             navIconHome.setColorFilter(inactive)

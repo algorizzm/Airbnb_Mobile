@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -118,7 +119,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_difficulty"
-                android:tint="#02D083" />
+                app:tint="#02D083" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -135,7 +136,7 @@
                 android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:src="@drawable/ic_chevron_right"
-                android:tint="#02D083"
+                app:tint="#02D083"
                 android:rotation="90" />
 
         </LinearLayout>
@@ -155,21 +156,100 @@
         android:padding="16dp"
         android:visibility="gone">
 
+        <!-- Difficulty -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Difficulty"
             android:textColor="#80FFFFFF"
             android:textSize="11sp"
-            android:fontFamily="@font/poppins_medium" />
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginBottom="4dp" />
 
+        <!-- Difficulty Chips -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupDifficultyFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="false">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterAll"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/poppins_medium"
+                android:checked="true"
+                app:chipBackgroundColor="@color/chip_state_color"
+                app:chipStrokeColor="#02D083"
+                app:chipStrokeWidth="1dp"
+                app:checkedIconTint="#000000" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterEasy"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Easy"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/poppins_medium"
+                app:chipBackgroundColor="@color/chip_state_color"
+                app:chipStrokeColor="#02D083"
+                app:chipStrokeWidth="1dp"
+                app:checkedIconTint="#000000" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterModerate"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moderate"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/poppins_medium"
+                app:chipBackgroundColor="@color/chip_state_color"
+                app:chipStrokeColor="#02D083"
+                app:chipStrokeWidth="1dp"
+                app:checkedIconTint="#000000" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterHard"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hard"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/poppins_medium"
+                app:chipBackgroundColor="@color/chip_state_color"
+                app:chipStrokeColor="#02D083"
+                app:chipStrokeWidth="1dp"
+                app:checkedIconTint="#000000" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterExpert"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expert"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/poppins_medium"
+                app:chipBackgroundColor="@color/chip_state_color"
+                app:chipStrokeColor="#02D083"
+                app:chipStrokeWidth="1dp"
+                app:checkedIconTint="#000000" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- Hidden Spinner kept for compatibility -->
         <Spinner
             android:id="@+id/spinnerDifficulty"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="4dp"
-            android:popupBackground="#1A1A1A" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
 
+        <!-- Distance -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -217,6 +297,7 @@
 
         </LinearLayout>
 
+        <!-- Max Price -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -239,6 +320,7 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
+        <!-- Max Duration -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -261,6 +343,7 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
+        <!-- Clear filters -->
         <TextView
             android:id="@+id/tvClearFilters"
             android:layout_width="wrap_content"

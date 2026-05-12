@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.verdant.R
 import com.verdant.core.auth.AuthState
 import com.verdant.core.ui.toast
-import com.verdant.databinding.FragmentMyBookingsBinding
+import com.verdant.databinding.FragmentHistoryBinding
 import com.verdant.ui.explore.ExploreFragment
 import com.verdant.ui.hikes.adapter.UserBookingsAdapter
 import kotlinx.coroutines.launch
 
-class HikeHistoryFragment : Fragment(R.layout.fragment_my_bookings) {
+class HikeHistoryFragment : Fragment(R.layout.fragment_history) {
 
-    private var _binding: FragmentMyBookingsBinding? = null
+    private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: BookingsViewModel by viewModels()
@@ -39,11 +39,7 @@ class HikeHistoryFragment : Fragment(R.layout.fragment_my_bookings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentMyBookingsBinding.bind(view)
-
-        binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        _binding = FragmentHistoryBinding.bind(view)
 
         binding.recyclerBookings.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerBookings.adapter = adapter

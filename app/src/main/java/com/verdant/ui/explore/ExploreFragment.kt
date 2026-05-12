@@ -2,8 +2,6 @@ package com.verdant.ui.explore
 
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -14,11 +12,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.verdant.R
+import com.verdant.core.auth.AuthState
+import com.verdant.data.session.UserSessionManager
 import com.verdant.databinding.FragmentExploreBinding
 import com.verdant.ui.explore.adapter.HikeAdapter
 import kotlinx.coroutines.launch
-import com.verdant.core.auth.AuthState
-import com.verdant.data.session.UserSessionManager
 
 class ExploreFragment : Fragment(R.layout.fragment_explore) {
 
@@ -39,7 +37,10 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
         )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentExploreBinding.bind(view)
@@ -54,12 +55,14 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
     private fun setupTopBar() {
 
         binding.btnNotifications.setOnClickListener {
+
             findNavController().navigate(
                 R.id.notificationsFragment
             )
         }
 
         binding.btnSettings.setOnClickListener {
+
             findNavController().navigate(
                 R.id.settingsFragment
             )
@@ -85,6 +88,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             }
         }
     }
+
     private fun setupRecycler() {
 
         binding.recyclerHikes.layoutManager =
@@ -105,6 +109,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
 
     private fun setupFilters() {
 
+        // ── Filter panel toggle ───────────────────────────────
         binding.btnToggleFilters.setOnClickListener {
 
             val panel = binding.layoutFilters
@@ -122,9 +127,11 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             }
         }
 
+        // ── Clear filters ─────────────────────────────────────
         binding.tvClearFilters.setOnClickListener {
 
-            binding.spinnerDifficulty.setSelection(0)
+            binding.chipGroupDifficultyFilter
+                .check(R.id.chipFilterAll)
 
             binding.etMinDistance.text?.clear()
             binding.etMaxDistance.text?.clear()
@@ -138,68 +145,59 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             viewModel.setMaxDuration(null)
         }
 
-        val difficulties = listOf(
-            "All",
-            "Easy",
-            "Moderate",
-            "Hard",
-            "Expert"
-        )
+        // ── Difficulty chip filter ────────────────────────────
+        binding.chipGroupDifficultyFilter
+            .setOnCheckedStateChangeListener { _, checkedIds ->
 
-        val spinnerAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            difficulties
-        ).also {
-            it.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item
-            )
-        }
-
-        binding.spinnerDifficulty.adapter = spinnerAdapter
-
-        binding.spinnerDifficulty.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
+                val difficulty = when (
+                    checkedIds.firstOrNull()
                 ) {
 
-                    viewModel.setDifficultyFilter(
-                        if (position == 0)
-                            null
-                        else
-                            difficulties[position]
-                    )
+                    R.id.chipFilterEasy ->
+                        "Easy"
+
+                    R.id.chipFilterModerate ->
+                        "Moderate"
+
+                    R.id.chipFilterHard ->
+                        "Hard"
+
+                    R.id.chipFilterExpert ->
+                        "Expert"
+
+                    else ->
+                        null
                 }
 
-                override fun onNothingSelected(
-                    parent: AdapterView<*>?
-                ) = Unit
+                viewModel.setDifficultyFilter(
+                    difficulty
+                )
             }
 
+        // ── Numeric filters ───────────────────────────────────
         binding.etMinDistance.doAfterTextChanged {
+
             viewModel.setMinDistance(
                 it?.toString()?.toDoubleOrNull()
             )
         }
 
         binding.etMaxDistance.doAfterTextChanged {
+
             viewModel.setMaxDistance(
                 it?.toString()?.toDoubleOrNull()
             )
         }
 
         binding.etMaxPrice.doAfterTextChanged {
+
             viewModel.setMaxPrice(
                 it?.toString()?.toDoubleOrNull()
             )
         }
 
         binding.etMaxDuration.doAfterTextChanged {
+
             viewModel.setMaxDuration(
                 it?.toString()?.toDoubleOrNull()
             )

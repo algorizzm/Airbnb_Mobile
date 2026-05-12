@@ -16,6 +16,12 @@
 
     </fragment>
 
+    <!-- Post Detail -->
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.verdant.ui.home.PostDetailFragment"
+        android:label="Post" />
+
     <!-- Explore -->
     <fragment
         android:id="@+id/exploreFragment"

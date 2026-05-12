@@ -26,6 +26,8 @@ import com.verdant.databinding.FragmentProfileBinding
 import com.verdant.ui.explore.ExploreFragment
 import com.verdant.ui.hikes.UserBookingRow
 import kotlinx.coroutines.launch
+import com.verdant.core.ui.EditTextDialog
+import com.verdant.ui.hikes.HikesFragment
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -125,32 +127,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     // ── Edit Bio ─────────────────────────────────────────────────────────────
     private fun setupBioEdit() {
         binding.btnEditBio.setOnClickListener {
-            val currentBio = viewModel.state.value.user?.bio ?: ""
-
-            val input = EditText(requireContext()).apply {
-                setText(currentBio)
-                hint = "Tell us about yourself…"
-                maxLines = 5
-                inputType = android.text.InputType.TYPE_CLASS_TEXT or
-                        android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            }
-
-            val container = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.VERTICAL
-                val pad = (20 * resources.displayMetrics.density).toInt()
-                setPadding(pad, pad / 2, pad, 0)
-                addView(input)
-            }
-
-            AlertDialog.Builder(requireContext())
-                .setTitle("Edit Bio")
-                .setView(container)
-                .setPositiveButton("Save") { _, _ ->
-                    val newBio = input.text.toString().trim()
-                    viewModel.updateBio(newBio)
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
+            EditTextDialog.show(
+                context   = requireContext(),
+                title     = "Edit Bio",
+                initial   = viewModel.state.value.user?.bio ?: "",
+                hint      = "Tell us about yourself…",
+                maxLength = 200,
+                multiLine = true
+            ) { newBio -> viewModel.updateBio(newBio) }
         }
     }
 

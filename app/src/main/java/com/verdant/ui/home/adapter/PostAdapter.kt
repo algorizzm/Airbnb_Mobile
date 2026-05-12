@@ -1,12 +1,18 @@
 package com.verdant.ui.home.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.verdant.core.auth.AuthManager
+import com.verdant.core.auth.AuthState
+import com.verdant.core.ui.AvatarHelper
+import com.verdant.core.ui.GuestPromptDialog
 import com.verdant.data.model.FeedItem
 import com.verdant.data.model.HikePost
-import com.verdant.core.ui.AvatarHelper
+import com.verdant.data.remote.WeatherState
 import com.verdant.databinding.ItemHomeCtaBinding
 import com.verdant.databinding.ItemPostBinding
 import com.verdant.utils.Permissions
@@ -14,190 +20,124 @@ import com.verdant.utils.Permissions
 class PostAdapter(
     private val items: List<FeedItem>,
     private val userRole: String?,
-    private val onHikeClick: () -> Unit
+    private val fragmentManager: FragmentManager,
+    private val weather: WeatherState? = null,
+    private val weatherLoading: Boolean = false,
+    private val onHikeClick: () -> Unit,
+    private val onPostClick: (HikePost) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        private const val TYPE_CTA = 0
+        private const val TYPE_CTA  = 0
         private const val TYPE_POST = 1
     }
 
-    // =====================================================
-    // VIEW HOLDERS
-    // =====================================================
+    inner class CTAViewHolder(val binding: ItemHomeCtaBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    inner class CTAViewHolder(
-        val binding: ItemHomeCtaBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+    inner class HikeViewHolder(val binding: ItemPostBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    inner class HikeViewHolder(
-        val binding: ItemPostBinding
-    ) : RecyclerView.ViewHolder(binding.root)
-
-    // =====================================================
-    // VIEW TYPES
-    // =====================================================
-
-    override fun getItemViewType(position: Int): Int {
-
-        return when (items[position]) {
-
-            is FeedItem.CTA -> TYPE_CTA
-
-            is FeedItem.Post -> TYPE_POST
-        }
+    override fun getItemViewType(position: Int) = when (items[position]) {
+        is FeedItem.CTA  -> TYPE_CTA
+        is FeedItem.Post -> TYPE_POST
     }
 
-    // =====================================================
-    // CREATE VIEW HOLDER
-    // =====================================================
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
-
-        return when (viewType) {
-
-            TYPE_CTA -> {
-
-                val binding = ItemHomeCtaBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-
-                CTAViewHolder(binding)
-            }
-
-            else -> {
-
-                val binding = ItemPostBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-
-                HikeViewHolder(binding)
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when (viewType) {
+            TYPE_CTA -> CTAViewHolder(
+                ItemHomeCtaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+            else -> HikeViewHolder(
+                ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
         }
-    }
 
-    // =====================================================
-    // BIND VIEW HOLDER
-    // =====================================================
-
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int
-    ) {
-
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = items[position]) {
-
-            // -------------------------------------------------
-            // CTA ITEM
-            // -------------------------------------------------
-
             is FeedItem.CTA -> {
+                val b = (holder as CTAViewHolder).binding
+                b.btnHike.setOnClickListener { onHikeClick() }
 
-                val binding =
-                    (holder as CTAViewHolder).binding
+                // Weather loading spinner
+                b.progressWeather.visibility =
+                    if (weatherLoading) View.VISIBLE else View.GONE
 
-                binding.btnHike.setOnClickListener {
-                    onHikeClick()
+                // Weather chip
+                if (weather != null) {
+                    b.layoutWeather.visibility = View.VISIBLE
+                    b.tvWeatherEmoji.text = weather.emoji
+                    b.tvWeatherTemp.text = "${weather.tempC}°C"
+                    b.tvWeatherCondition.text = weather.condition
+
+                    // Hiking advisory badge
+                    if (weather.isGoodForHiking) {
+                        b.tvHikingAdvisory.visibility = View.VISIBLE
+                        b.tvCtaSubtitle.text = "Perfect weather for a hike today!"
+                    } else {
+                        b.tvHikingAdvisory.visibility = View.GONE
+                        b.tvCtaSubtitle.text = "Discover hikes near you"
+                    }
+                } else {
+                    b.layoutWeather.visibility = View.GONE
+                    b.tvHikingAdvisory.visibility = View.GONE
+                    b.tvCtaSubtitle.text = "Discover hikes near you"
                 }
             }
-
-            // -------------------------------------------------
-            // POST ITEM
-            // -------------------------------------------------
-
-            is FeedItem.Post -> {
-
-                bindPost(
-                    holder as HikeViewHolder,
-                    item.hikePost
-                )
-            }
+            is FeedItem.Post -> bindPost(holder as HikeViewHolder, item.hikePost)
         }
     }
 
-    // =====================================================
-    // POST BINDING
-    // =====================================================
-
-    private fun bindPost(
-        holder: HikeViewHolder,
-        hike: HikePost
-    ) {
-
+    private fun bindPost(holder: HikeViewHolder, hike: HikePost) {
         with(holder.binding) {
 
             tvUsername.text = hike.username
-            tvDate.text = "${hike.date} at ${hike.time}"
-            tvLoc.text = "@${hike.location}"
-            tvTitle.text = hike.title
+            tvDate.text     = "${hike.date} at ${hike.time}"
+            tvLoc.text      = "@${hike.location}"
+            tvTitle.text    = hike.title
+            tvStats.text    = "${hike.distance} • ${hike.elevation} • ${hike.duration}"
 
-            // Avatar initials — no real photo URL on HikePost (static feed)
-            AvatarHelper.bind(
-                imgView = imgProfile,
-                tvInitial = tvPostInitial,
-                name = hike.username,
-                imageUrl = null
+            AvatarHelper.bind(imgProfile, tvPostInitial, hike.username, null)
+
+            rvImages.layoutManager = LinearLayoutManager(
+                root.context, LinearLayoutManager.HORIZONTAL, false
             )
+            rvImages.adapter = PostImageAdapter(hike.images)
 
-            tvStats.text =
-                "${hike.distance} • ${hike.elevation} • ${hike.duration}"
+            // Whole card click → post detail
+            root.setOnClickListener { onPostClick(hike) }
 
-            // ------------------------------------------------
-            // IMAGES
-            // ------------------------------------------------
-
-            rvImages.layoutManager =
-                LinearLayoutManager(
-                    root.context,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
-
-            rvImages.adapter =
-                PostImageAdapter(hike.images)
-
-            // ------------------------------------------------
             // RBAC
-            // ------------------------------------------------
+            val canLike    = Permissions.canLikePosts(userRole)
+            val canComment = Permissions.canCommentPosts(userRole)
+            val canShare   = Permissions.canSharePosts(userRole)
 
-            val canLike =
-                Permissions.canLikePosts(userRole)
-
-            val canComment =
-                Permissions.canCommentPosts(userRole)
-
-            val canShare =
-                Permissions.canSharePosts(userRole)
-
-            // ------------------------------------------------
-            // LIKE
-            // ------------------------------------------------
-
-            btnLike.isEnabled = canLike
-            btnLike.alpha = if (canLike) 1f else 0.4f
-
-            // ------------------------------------------------
-            // COMMENT
-            // ------------------------------------------------
-
-            btnComment.isEnabled = canComment
+            btnLike.alpha    = if (canLike) 1f else 0.4f
             btnComment.alpha = if (canComment) 1f else 0.4f
+            btnShare.alpha   = if (canShare) 1f else 0.4f
 
-            // ------------------------------------------------
-            // SHARE
-            // ------------------------------------------------
+            // Guest guard helper — shows dialog if not authenticated
+            fun guardedAction(action: () -> Unit) {
+                if (AuthManager.stateSnapshot() is AuthState.Guest) {
+                    GuestPromptDialog.show(fragmentManager)
+                } else {
+                    action()
+                }
+            }
 
-            btnShare.isEnabled = canShare
-            btnShare.alpha = if (canShare) 1f else 0.4f
+            btnLike.setOnClickListener {
+                guardedAction {
+                    btnLike.setColorFilter(0xFF02D083.toInt())
+                }
+            }
+            btnComment.setOnClickListener {
+                guardedAction { /* open comment sheet */ }
+            }
+            btnShare.setOnClickListener {
+                guardedAction { /* open share sheet */ }
+            }
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount() = items.size
 }

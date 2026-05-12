@@ -249,14 +249,15 @@ class ProfileViewModel(
     // ─────────────────────────────────────────────────────────────────────────
 
     fun updateBio(bio: String) {
-
         val uid = currentUid() ?: return
-
         viewModelScope.launch {
-
             userRepo.updateBio(uid, bio)
+                .onSuccess {
+                    // Optimistically update local state immediately
+                    val updated = _state.value.user?.copy(bio = bio)
+                    _state.value = _state.value.copy(user = updated)
+                }
                 .onFailure {
-
                     _state.value = _state.value.copy(
                         message = "Failed to save bio: ${it.message}"
                     )
