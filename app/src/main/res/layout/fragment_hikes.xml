@@ -164,41 +164,116 @@
         </LinearLayout>
 
         <!-- Active Hike State -->
-        <LinearLayout
+        <ScrollView
             android:id="@+id/layoutActive"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingHorizontal="24dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:visibility="gone">
 
-            <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:src="@drawable/ic_hiker"
-                android:contentDescription="Active hike" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="You're currently in a hike"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:fontFamily="@font/poppins_bold" />
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="48dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Tracking and hike details will appear here."
-                android:textColor="#80FFFFFF"
-                android:textSize="13sp"
-                android:fontFamily="@font/poppins_regular" />
+                <TextView
+                    android:id="@+id/tvActiveHikeTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
+                    android:fontFamily="@font/poppins_bold" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tvGuideInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <TextView
+                    android:id="@+id/tvParticipants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <TextView
+                    android:id="@+id/tvDates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <TextView
+                    android:id="@+id/tvDistanceElevation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#02D083"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp">
+
+                    <Button
+                        android:id="@+id/btnViewActiveHike"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#2C2C2C"
+                        android:text="View Details"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <Button
+                        android:id="@+id/btnEndHike"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:backgroundTint="#D32F2F"
+                        android:text="End Hike"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_medium"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 

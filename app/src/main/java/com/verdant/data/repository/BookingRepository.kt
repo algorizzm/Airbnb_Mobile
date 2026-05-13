@@ -145,4 +145,26 @@ class BookingRepository(
             doc.toObject(Booking::class.java)?.copy(id = doc.id)
         }
     }
+
+    /**
+     * Real-time flow of the user's APPROVED bookings.
+     * The Track ViewModel cross-joins this with hike status to determine
+     * whether the hiker is currently in an ONGOING hike.
+     */
+    fun observeApprovedBookingsForUser(userId: String): Flow<List<Booking>> = callbackFlow {
+        val reg = bookingsCol
+            .whereEqualTo("userId", userId)
+            .whereEqualTo("status", BookingStatus.APPROVED)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val list = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(Booking::class.java)?.copy(id = doc.id)
+                }.orEmpty()
+                trySend(list)
+            }
+        awaitClose { reg.remove() }
+    }
 }

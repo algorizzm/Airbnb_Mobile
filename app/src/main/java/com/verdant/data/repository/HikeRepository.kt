@@ -99,11 +99,56 @@ class HikeRepository(
         awaitClose { registration.remove() }
     }
 
-    suspend fun startHike(hikeId: String): Result<Unit> =
-        updateHikeStatus(hikeId, HikeStatus.ONGOING)
+    /**
+     * Real-time flow of the guide's currently ONGOING hike, or null if none.
+     */
+    fun observeOngoingHikeForGuide(guideId: String): Flow<Hike?> = callbackFlow {
+        val registration = hikesCol
+            .whereEqualTo("guideId", guideId)
+            .whereEqualTo("status", HikeStatus.ONGOING)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val hike = snapshot?.documents
+                    ?.firstOrNull()
+                    ?.let { it.toObject(Hike::class.java)?.copy(id = it.id) }
+                trySend(hike)
+            }
+        awaitClose { registration.remove() }
+    }
 
-    suspend fun completeHike(hikeId: String): Result<Unit> =
-        updateHikeStatus(hikeId, HikeStatus.COMPLETED)
+    /**
+     * Returns true if the guide already has at least one ONGOING hike.
+     * Used to enforce the single-ongoing-hike rule before starting a new hike.
+     */
+    suspend fun hasOngoingHike(guideId: String): Boolean = runCatching {
+        val snap = hikesCol
+            .whereEqualTo("guideId", guideId)
+            .whereEqualTo("status", HikeStatus.ONGOING)
+            .get()
+            .await()
+        snap.isEmpty.not()
+    }.getOrDefault(false)
+
+    suspend fun startHike(hikeId: String): Result<Unit> = runCatching {
+        hikesCol.document(hikeId).update(
+            mapOf(
+                "status" to HikeStatus.ONGOING,
+                "startDateTime" to Timestamp.now()
+            )
+        ).await()
+    }
+
+    suspend fun completeHike(hikeId: String): Result<Unit> = runCatching {
+        hikesCol.document(hikeId).update(
+            mapOf(
+                "status" to HikeStatus.COMPLETED,
+                "endDateTime" to Timestamp.now()
+            )
+        ).await()
+    }
 }
 
 private fun Hike.toFirestoreMap(includeCreatedAt: Boolean): Map<String, Any?> {

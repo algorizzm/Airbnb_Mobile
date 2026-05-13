@@ -78,6 +78,7 @@ class ExploreViewModel(
             val discoverable =
                 hike.status.equals(HikeStatus.OPEN, ignoreCase = true) ||
                     hike.status.equals(HikeStatus.FULL, ignoreCase = true)
+            // Exclude ONGOING, COMPLETED, CANCELLED, DRAFT from Explore
             if (!discoverable) return@filter false
 
             val q = query.trim()

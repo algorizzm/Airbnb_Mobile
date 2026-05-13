@@ -166,7 +166,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     val bundle = Bundle().apply {
                         putString(ExploreFragment.ARG_HIKE_ID, row.booking.hikeId)
                     }
-                    findNavController().navigate(R.id.hikeDetailFragment, bundle)
+                    try {
+                        findNavController().navigate(R.id.action_profileFragment_to_hikeDetailFragment, bundle)
+                    } catch (e: IllegalArgumentException) {
+                        // ignore double click
+                    }
                 }
                 card.visibility = View.VISIBLE
             } else {

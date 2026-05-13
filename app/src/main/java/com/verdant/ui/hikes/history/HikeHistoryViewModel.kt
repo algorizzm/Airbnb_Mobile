@@ -8,6 +8,9 @@ import com.verdant.data.repository.HikeRepository
 import com.verdant.data.session.UserSessionManager
 import com.verdant.core.auth.AuthState
 import com.verdant.utils.BookingStatus
+import com.verdant.utils.HikeStatus
+import com.verdant.utils.UserRole
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,6 +34,7 @@ data class MyBookingsUiState(
     val message: String? = null
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class BookingsViewModel(
     private val bookingRepository: BookingRepository = BookingRepository(),
     private val hikeRepository: HikeRepository = HikeRepository()
@@ -70,13 +74,49 @@ class BookingsViewModel(
                                 message = msg
                             )
                         }
+                    } else if (user.role == UserRole.GUIDE) {
+                        // Guide history: completed hikes where they were the guide
+                        combine(
+                            hikeRepository.observeHikesForGuide(user.id),
+                            _message
+                        ) { hikes, msg ->
+                            val completedHikes = hikes.filter { it.status == HikeStatus.COMPLETED }
+                            val rows = completedHikes.map { hike ->
+                                // Create a synthetic "booking" row from the hike itself
+                                // so we can reuse the same adapter/UI without a new layout
+                                val syntheticBooking = Booking(
+                                    id = hike.id,
+                                    hikeId = hike.id,
+                                    userId = user.id,
+                                    userName = user.name,
+                                    guideId = user.id,
+                                    status = BookingStatus.COMPLETED
+                                )
+                                UserBookingRow(
+                                    booking = syntheticBooking,
+                                    hikeTitle = hike.title,
+                                    hikeImageUrl = hike.coverImageUrl(),
+                                    hikeLocation = hike.summaryLocation().ifBlank { hike.location }
+                                )
+                            }
+                            MyBookingsUiState(
+                                rows = rows,
+                                loading = false,
+                                authState = authState,
+                                message = msg
+                            )
+                        }
                     } else {
+                        // Hiker history: only COMPLETED bookings
                         combine(
                             bookingRepository.observeBookingsForUser(user.id),
                             hikeRepository.observeHikes(),
                             _message
                         ) { bookings, hikes, msg ->
-                            val rows = bookings.map { b ->
+                            val completedBookings = bookings.filter { b ->
+                                b.status == BookingStatus.COMPLETED
+                            }
+                            val rows = completedBookings.map { b ->
                                 val hike = hikes.firstOrNull { it.id == b.hikeId }
                                 UserBookingRow(
                                     booking = b,

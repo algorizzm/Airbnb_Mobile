@@ -15,11 +15,15 @@ import com.verdant.core.navigation.ProtectedNav
 import com.verdant.core.ui.toast
 import com.verdant.databinding.FragmentHikeDetailBinding
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
 
     private var _binding: FragmentHikeDetailBinding? = null
     private val binding get() = _binding!!
+
+    private val dateFmt = SimpleDateFormat("MMM d, yyyy  h:mm a", Locale.getDefault())
 
     private val hikeId: String by lazy {
         requireArguments().getString(ExploreFragment.ARG_HIKE_ID).orEmpty()
@@ -37,10 +41,7 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
             findNavController().popBackStack()
         }
 
-        fun ensureAuthedOrRedirect(
-            intendedDestId: Int,
-            intendedArgs: Bundle?
-        ): Boolean {
+        fun ensureAuthed(): Boolean {
             val state = AuthManager.stateSnapshot()
             return when (state) {
                 AuthState.Guest -> {
@@ -56,21 +57,17 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
         }
 
         binding.btnApply.setOnClickListener {
-            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
-            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            if (!ensureAuthed()) return@setOnClickListener
             viewModel.applyToHike()
         }
         binding.btnCancelApplication.setOnClickListener {
-            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
-            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            if (!ensureAuthed()) return@setOnClickListener
             viewModel.cancelMyBooking()
         }
         binding.btnLeaveHike.setOnClickListener {
-            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
-            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            if (!ensureAuthed()) return@setOnClickListener
             viewModel.leaveHike()
         }
-
         binding.btnEdit.setOnClickListener {
             val bundle = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
             ProtectedNav.navigate(
@@ -82,22 +79,19 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
         }
         binding.btnApplicants.setOnClickListener {
             val bundle = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
-            if (!ensureAuthedOrRedirect(R.id.applicantsFragment, bundle)) return@setOnClickListener
+            if (!ensureAuthed()) return@setOnClickListener
             findNavController().navigate(R.id.applicantsFragment, bundle)
         }
         binding.btnStartHike.setOnClickListener {
-            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
-            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            if (!ensureAuthed()) return@setOnClickListener
             viewModel.startHike()
         }
         binding.btnEndHike.setOnClickListener {
-            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
-            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            if (!ensureAuthed()) return@setOnClickListener
             viewModel.endHike()
         }
         binding.btnDeleteHike.setOnClickListener {
-            val args = Bundle().apply { putString(ExploreFragment.ARG_HIKE_ID, hikeId) }
-            if (!ensureAuthedOrRedirect(R.id.hikeDetailFragment, args)) return@setOnClickListener
+            if (!ensureAuthed()) return@setOnClickListener
             viewModel.deleteHike()
         }
 
@@ -109,41 +103,105 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
                             findNavController().popBackStack()
                             return@collect
                         }
+
                         val hike = state.hike
                         if (hike == null) {
                             binding.tvTitle.text = "Loading…"
                             return@collect
                         }
+
+                        // ── Core fields ───────────────────────────────
                         binding.tvTitle.text = hike.title
-                        binding.tvStatus.text = "Status: ${hike.status}"
+                        binding.tvStatus.text = "Status: ${hike.status.replaceFirstChar { it.uppercase() }}"
                         binding.tvLocation.text = hike.summaryLocation().ifBlank { hike.location }
                         binding.tvDifficulty.text = "Difficulty: ${hike.difficulty}"
-                        binding.tvDistance.text =
-                            "Distance: ${hike.effectiveDistanceKm()} km"
+                        binding.tvDistance.text = "Distance: ${hike.effectiveDistanceKm()} km"
                         binding.tvPrice.text = "Price: ₱%.2f".format(hike.price)
                         binding.tvMaxParticipants.text = "Max participants: ${hike.maxParticipants}"
                         binding.tvDescription.text = hike.description
                         binding.tvGuideName.text = hike.guideName.ifBlank { hike.guideId }
 
+                        // ── Participant count (current / max) ─────────
+                        if (state.approvedCount > 0 || hike.maxParticipants > 0) {
+                            binding.tvParticipantCount.visibility = View.VISIBLE
+                            binding.tvParticipantCount.text =
+                                "Participants: ${state.approvedCount} / ${hike.maxParticipants}"
+                        } else {
+                            binding.tvParticipantCount.visibility = View.GONE
+                        }
+
+                        // ── Meetup point ──────────────────────────────
+                        if (hike.meetupPoint.isNotBlank()) {
+                            binding.tvMeetupPoint.visibility = View.VISIBLE
+                            binding.tvMeetupPoint.text = "Meetup: ${hike.meetupPoint}"
+                        } else {
+                            binding.tvMeetupPoint.visibility = View.GONE
+                        }
+
+                        // ── Destination ───────────────────────────────
+                        if (hike.destination.isNotBlank()) {
+                            binding.tvDestination.visibility = View.VISIBLE
+                            binding.tvDestination.text = "Destination: ${hike.destination}"
+                        } else {
+                            binding.tvDestination.visibility = View.GONE
+                        }
+
+                        // ── Elevation ─────────────────────────────────
+                        if (hike.elevationM > 0) {
+                            binding.tvElevation.visibility = View.VISIBLE
+                            binding.tvElevation.text = "Elevation: ${hike.elevationM.toInt()} m"
+                        } else {
+                            binding.tvElevation.visibility = View.GONE
+                        }
+
+                        // ── Start date ────────────────────────────────
+                        val startDate = hike.startDateTime?.toDate()
+                        if (startDate != null) {
+                            binding.tvStartDate.visibility = View.VISIBLE
+                            binding.tvStartDate.text = "Started: ${dateFmt.format(startDate)}"
+                        } else {
+                            binding.tvStartDate.visibility = View.GONE
+                        }
+
+                        // ── End date ──────────────────────────────────
+                        val endDate = hike.endDateTime?.toDate()
+                        if (endDate != null) {
+                            binding.tvEndDate.visibility = View.VISIBLE
+                            binding.tvEndDate.text = "Ended: ${dateFmt.format(endDate)}"
+                        } else {
+                            binding.tvEndDate.visibility = View.GONE
+                        }
+
+                        // ── Booking status badge ───────────────────────
                         val booking = state.myBooking
                         if (booking != null) {
                             binding.tvBookingStatus.visibility = View.VISIBLE
-                            binding.tvBookingStatus.text = "Your booking: ${booking.status}"
+                            binding.tvBookingStatus.text =
+                                "Your status: ${booking.status.replaceFirstChar { it.uppercase() }}"
                         } else {
                             binding.tvBookingStatus.visibility = View.GONE
                         }
 
-                        binding.btnApply.visibility = if (state.showApply) View.VISIBLE else View.GONE
+                        // ── Hiker action buttons ──────────────────────
+                        binding.btnApply.visibility =
+                            if (state.showApply) View.VISIBLE else View.GONE
                         binding.btnCancelApplication.visibility =
                             if (state.showCancelApplication) View.VISIBLE else View.GONE
-                        binding.btnLeaveHike.visibility = if (state.showLeaveHike) View.VISIBLE else View.GONE
+                        binding.btnLeaveHike.visibility =
+                            if (state.showLeaveHike) View.VISIBLE else View.GONE
 
+                        // ── Guide action buttons ──────────────────────
                         val showGuide = state.showGuideActions
-                        binding.btnEdit.visibility = if (showGuide) View.VISIBLE else View.GONE
-                        binding.btnApplicants.visibility = if (showGuide) View.VISIBLE else View.GONE
-                        binding.btnStartHike.visibility = if (state.showStartHike) View.VISIBLE else View.GONE
-                        binding.btnEndHike.visibility = if (state.showEndHike) View.VISIBLE else View.GONE
-                        binding.btnDeleteHike.visibility = if (showGuide) View.VISIBLE else View.GONE
+                        binding.btnEdit.visibility =
+                            if (showGuide) View.VISIBLE else View.GONE
+                        binding.btnApplicants.visibility =
+                            if (showGuide) View.VISIBLE else View.GONE
+                        binding.btnStartHike.visibility =
+                            if (state.showStartHike) View.VISIBLE else View.GONE
+                        binding.btnEndHike.visibility =
+                            if (state.showEndHike) View.VISIBLE else View.GONE
+                        binding.btnDeleteHike.visibility =
+                            if (showGuide) View.VISIBLE else View.GONE
 
                         state.message?.let { msg ->
                             toast(msg)

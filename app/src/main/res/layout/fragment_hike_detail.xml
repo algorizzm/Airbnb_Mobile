@@ -121,6 +121,72 @@
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins_regular" />
 
+                <!-- Participants current/max -->
+                <TextView
+                    android:id="@+id/tvParticipantCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#02D083"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:visibility="gone" />
+
+                <!-- Meetup point -->
+                <TextView
+                    android:id="@+id/tvMeetupPoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:visibility="gone" />
+
+                <!-- Destination -->
+                <TextView
+                    android:id="@+id/tvDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:visibility="gone" />
+
+                <!-- Elevation -->
+                <TextView
+                    android:id="@+id/tvElevation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:visibility="gone" />
+
+                <!-- Start date -->
+                <TextView
+                    android:id="@+id/tvStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:visibility="gone" />
+
+                <!-- End date -->
+                <TextView
+                    android:id="@+id/tvEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:visibility="gone" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

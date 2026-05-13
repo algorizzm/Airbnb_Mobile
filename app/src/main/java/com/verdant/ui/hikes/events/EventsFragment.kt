@@ -30,10 +30,14 @@ class EventsFragment : Fragment(R.layout.fragment_events) {
             putString(ExploreFragment.ARG_HIKE_ID, hike.id)
         }
 
-        findNavController().navigate(
-            R.id.action_hikeFragment_to_hikeDetailFragment,
-            bundle
-        )
+        try {
+            findNavController().navigate(
+                R.id.action_eventsFragment_to_hikeDetailFragment,
+                bundle
+            )
+        } catch (e: IllegalArgumentException) {
+            // ignore
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -93,7 +97,7 @@ class EventsFragment : Fragment(R.layout.fragment_events) {
 
             ProtectedNav.navigate(
                 navController = findNavController(),
-                destId = R.id.action_eventsFragment_to_createEditHikeFragment,
+                destId = R.id.createEditHikeFragment,
                 args = Bundle(),
                 isProtected = true,
                 fragmentManager = childFragmentManager

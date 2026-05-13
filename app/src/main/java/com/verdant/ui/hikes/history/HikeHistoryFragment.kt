@@ -40,10 +40,20 @@ class HikeHistoryFragment : Fragment(R.layout.fragment_history) {
                 )
             }
 
-            findNavController().navigate(
-                R.id.hikeDetailFragment,
-                bundle
-            )
+            val currentDestId = findNavController().currentDestination?.id
+            val actionId = if (currentDestId == R.id.myBookingsFragment) {
+                R.id.action_myBookingsFragment_to_hikeDetailFragment
+            } else {
+                R.id.action_hikeHistoryFragment_to_hikeDetailFragment
+            }
+            try {
+                findNavController().navigate(
+                    actionId,
+                    bundle
+                )
+            } catch (e: IllegalArgumentException) {
+                // ignore
+            }
         },
 
         onCancelOrLeave = { row ->

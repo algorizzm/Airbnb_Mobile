@@ -87,6 +87,11 @@ class HikeManagementViewModel(
                 _message.value = "This hike is not open."
                 return@launch
             }
+            // Enforce: guide may only have ONE ongoing hike at a time
+            if (hikeRepository.hasOngoingHike(user.id)) {
+                _message.value = "You already have an ongoing hike. End it before starting another."
+                return@launch
+            }
             hikeRepository.startHike(hikeId).onSuccess {
                 _message.value = "Hike started."
             }.onFailure {
@@ -123,33 +128,28 @@ class HikeManagementViewModel(
                 _message.value = "This hike is not ongoing."
                 return@launch
             }
+            // Fetch approved bookings BEFORE completing them
+            val approvedBookings = bookingRepository
+                .getApprovedBookingsForHike(hikeId)
+                .getOrElse { emptyList() }
+
             hikeRepository.completeHike(hikeId).onSuccess {
                 bookingRepository.completeApprovedBookingsForHike(hikeId).onSuccess {
-                    updateUserStatsForCompletedHike(hikeId, hike.effectiveDistanceKm())
+                    approvedBookings.forEach { booking ->
+                        userRepository.updateUserStats(
+                            userId = booking.userId,
+                            totalHikesAdd = 1,
+                            totalDistanceAdd = hike.effectiveDistanceKm(),
+                            summitsAdd = 1
+                        )
+                    }
+                    _message.value = "Hike completed. ${approvedBookings.size} participant(s) updated."
                 }.onFailure {
-                    _message.value = "Hike completed but could not complete bookings: ${it.message}"
+                    _message.value = "Hike completed but could not finalise bookings: ${it.message}"
                 }
             }.onFailure {
                 _message.value = it.message ?: "Could not complete hike."
             }
-        }
-    }
-
-    private suspend fun updateUserStatsForCompletedHike(hikeId: String, distance: Double) {
-        bookingRepository.getApprovedBookingsForHike(hikeId).onSuccess { bookings ->
-            bookings.forEach { booking ->
-                userRepository.updateUserStats(
-                    userId = booking.userId,
-                    totalHikesAdd = 1,
-                    totalDistanceAdd = distance,
-                    summitsAdd = 1
-                ).onFailure {
-                    _message.value = "Could not update user stats: ${it.message}"
-                }
-            }
-            _message.value = "Hike completed and all stats updated."
-        }.onFailure {
-            _message.value = "Could not get completed bookings: ${it.message}"
         }
     }
 

@@ -26,7 +26,13 @@
     <fragment
         android:id="@+id/exploreFragment"
         android:name="com.verdant.ui.explore.ExploreFragment"
-        android:label="Explore" />
+        android:label="Explore">
+
+        <action
+            android:id="@+id/action_exploreFragment_to_hikeDetailFragment"
+            app:destination="@id/hikeDetailFragment" />
+
+    </fragment>
 
     <!-- Profile -->
     <fragment
@@ -37,6 +43,11 @@
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/auth_graph" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_hikeDetailFragment"
+            app:destination="@id/hikeDetailFragment" />
+
     </fragment>
 
     <!-- Hike -->
@@ -81,13 +92,23 @@
             android:id="@+id/action_eventsFragment_to_createEditHikeFragment"
             app:destination="@id/createEditHikeFragment" />
 
+        <action
+            android:id="@+id/action_eventsFragment_to_hikeDetailFragment"
+            app:destination="@id/hikeDetailFragment" />
+
     </fragment>
 
     <!-- History -->
     <fragment
         android:id="@+id/hikeHistoryFragment"
         android:name="com.verdant.ui.hikes.history.HikeHistoryFragment"
-        android:label="Your Hiking History" />
+        android:label="Your Hiking History">
+
+        <action
+            android:id="@+id/action_hikeHistoryFragment_to_hikeDetailFragment"
+            app:destination="@id/hikeDetailFragment" />
+
+    </fragment>
 
     <!-- Applicants -->
     <fragment
@@ -99,7 +120,13 @@
     <fragment
         android:id="@+id/myBookingsFragment"
         android:name="com.verdant.ui.hikes.history.HikeHistoryFragment"
-        android:label="My bookings" />
+        android:label="My bookings">
+
+        <action
+            android:id="@+id/action_myBookingsFragment_to_hikeDetailFragment"
+            app:destination="@id/hikeDetailFragment" />
+
+    </fragment>
 
     <!-- Messages -->
     <fragment

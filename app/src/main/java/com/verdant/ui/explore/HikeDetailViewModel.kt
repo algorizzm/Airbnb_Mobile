@@ -27,6 +27,7 @@ data class HikeDetailUiState(
     val hike: Hike? = null,
     val loading: Boolean = true,
     val myBooking: Booking? = null,
+    val approvedCount: Int = 0,
     val message: String? = null,
     val canApply: Boolean = false,
     val showGuideActions: Boolean = false,
@@ -57,8 +58,11 @@ class HikeDetailViewModel(
                 bookingRepository.observeBookingsForUser(id)
             } ?: flowOf(emptyList())
 
-            combine(bookingsFlow, _message, _shouldPop) { bookings, msg, pop ->
-                buildUiState(hike, user, bookings, msg, pop)
+            val allHikeBookingsFlow = bookingRepository.observeBookingsForHike(hikeId)
+
+            combine(bookingsFlow, allHikeBookingsFlow, _message, _shouldPop) { myBookings, allBookings, msg, pop ->
+                val approvedCount = allBookings.count { it.status == com.verdant.utils.BookingStatus.APPROVED }
+                buildUiState(hike, user, myBookings, approvedCount, msg, pop)
             }
         }
         .stateIn(
@@ -79,6 +83,7 @@ class HikeDetailViewModel(
         hike: Hike?,
         user: User?,
         myBookings: List<Booking>,
+        approvedCount: Int,
         message: String?,
         shouldPop: Boolean
     ): HikeDetailUiState {
@@ -106,6 +111,7 @@ class HikeDetailViewModel(
             hike = hike,
             loading = authLoading,
             myBooking = myBooking,
+            approvedCount = approvedCount,
             message = message,
             canApply = canApplyLogic,
             showGuideActions = showGuideActions,
@@ -298,6 +304,11 @@ class HikeDetailViewModel(
                 _message.value = "This hike is not open."
                 return@launch
             }
+            // Enforce: guide may only have ONE ongoing hike at a time
+            if (hikeRepository.hasOngoingHike(user.id)) {
+                _message.value = "You already have an ongoing hike. End it before starting another."
+                return@launch
+            }
             hikeRepository.startHike(hikeId).onSuccess {
                 _message.value = "Hike started."
             }.onFailure {
@@ -334,11 +345,16 @@ class HikeDetailViewModel(
                 _message.value = "This hike is not ongoing."
                 return@launch
             }
+            // Fetch approved bookings BEFORE completing them (status will change after)
+            val approvedBookings = bookingRepository
+                .getApprovedBookingsForHike(hikeId)
+                .getOrElse { emptyList() }
+
             hikeRepository.completeHike(hikeId).onSuccess {
                 bookingRepository.completeApprovedBookingsForHike(hikeId).onSuccess {
-                    updateUserStatsForCompletedHike(hike.effectiveDistanceKm())
+                    updateUserStats(approvedBookings, hike.effectiveDistanceKm())
                 }.onFailure {
-                    _message.value = "Hike completed but could not complete bookings: ${it.message}"
+                    _message.value = "Hike completed but could not finalise bookings: ${it.message}"
                 }
             }.onFailure {
                 _message.value = it.message ?: "Could not complete hike."
@@ -346,22 +362,18 @@ class HikeDetailViewModel(
         }
     }
 
-    private suspend fun updateUserStatsForCompletedHike(distance: Double) {
-        bookingRepository.getApprovedBookingsForHike(hikeId).onSuccess { bookings ->
-            bookings.forEach { booking ->
-                userRepository.updateUserStats(
-                    userId = booking.userId,
-                    totalHikesAdd = 1,
-                    totalDistanceAdd = distance,
-                    summitsAdd = 1
-                ).onFailure {
-                    _message.value = "Could not update user stats: ${it.message}"
-                }
+    private suspend fun updateUserStats(approvedBookings: List<Booking>, distance: Double) {
+        approvedBookings.forEach { booking ->
+            userRepository.updateUserStats(
+                userId = booking.userId,
+                totalHikesAdd = 1,
+                totalDistanceAdd = distance,
+                summitsAdd = 1
+            ).onFailure {
+                _message.value = "Could not update stats for ${booking.userName}: ${it.message}"
             }
-            _message.value = "Hike completed and all stats updated."
-        }.onFailure {
-            _message.value = "Could not get completed bookings: ${it.message}"
         }
+        _message.value = "Hike completed. ${approvedBookings.size} participant(s) updated."
     }
 
     fun consumeMessage() {

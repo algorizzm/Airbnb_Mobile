@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Your applied and completed hikes will appear here"
+            android:text="Completed hikes will appear here"
             android:textColor="#4DFFFFFF"
             android:textSize="12sp"
             android:gravity="center"

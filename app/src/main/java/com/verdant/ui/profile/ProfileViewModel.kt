@@ -92,34 +92,51 @@ class ProfileViewModel(
     // ─────────────────────────────────────────────────────────────────────────
 
     private fun observeRecentHikes() {
-
         val uid = currentUid() ?: return
-
+        
         viewModelScope.launch {
-
-            combine(
-                bookingRepo.observeBookingsForUser(uid),
-                hikeRepo.observeHikes()
-            ) { bookings, hikes ->
-
-                bookings.take(3).map { booking ->
-
-                    val hike = hikes.firstOrNull {
-                        it.id == booking.hikeId
+            UserSessionManager.currentUser.collect { user ->
+                if (user == null) return@collect
+                
+                if (user.role == com.verdant.utils.UserRole.GUIDE) {
+                    hikeRepo.observeHikesForGuide(uid).collect { hikes ->
+                        val rows = hikes.filter { it.status == com.verdant.utils.HikeStatus.COMPLETED }
+                            .take(3)
+                            .map { hike ->
+                                val syntheticBooking = com.verdant.data.model.Booking(
+                                    id = hike.id, hikeId = hike.id, userId = uid, userName = user.name,
+                                    guideId = uid, status = com.verdant.utils.BookingStatus.COMPLETED
+                                )
+                                UserBookingRow(
+                                    booking = syntheticBooking,
+                                    hikeTitle = hike.title,
+                                    hikeImageUrl = hike.coverImageUrl(),
+                                    hikeLocation = hike.summaryLocation().ifBlank { hike.location }
+                                )
+                            }
+                        _state.value = _state.value.copy(recentHikes = rows)
                     }
-
-                    UserBookingRow(
-                        booking = booking,
-                        hikeTitle = hike?.title ?: "Hike",
-                        hikeImageUrl = hike?.coverImageUrl() ?: "",
-                        hikeLocation = hike?.summaryLocation()?.ifBlank { hike?.location } ?: ""
-                    )
+                } else {
+                    combine(
+                        bookingRepo.observeBookingsForUser(uid),
+                        hikeRepo.observeHikes()
+                    ) { bookings, hikes ->
+                        bookings
+                            .filter { it.status == com.verdant.utils.BookingStatus.COMPLETED }
+                            .take(3)
+                            .map { booking ->
+                                val hike = hikes.firstOrNull { it.id == booking.hikeId }
+                                UserBookingRow(
+                                    booking = booking,
+                                    hikeTitle = hike?.title ?: "Hike",
+                                    hikeImageUrl = hike?.coverImageUrl() ?: "",
+                                    hikeLocation = hike?.summaryLocation()?.ifBlank { hike?.location } ?: ""
+                                )
+                            }
+                    }.collect { rows ->
+                        _state.value = _state.value.copy(recentHikes = rows)
+                    }
                 }
-            }.collect { rows ->
-
-                _state.value = _state.value.copy(
-                    recentHikes = rows
-                )
             }
         }
     }
