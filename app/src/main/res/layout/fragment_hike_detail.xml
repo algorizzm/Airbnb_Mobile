@@ -1,345 +1,626 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
-    android:orientation="vertical">
+    android:background="#121212">
 
-    <!-- Top bar -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingTop="44dp"
-        android:paddingBottom="12dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@null"
-            android:src="@drawable/ic_chevron_left"
-            android:tint="#FFFFFF"
-            android:contentDescription="Back"
-            android:padding="12dp" />
-
-        <TextView
-            android:id="@+id/tvScreenTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Hike Details"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_bold" />
-
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
-
+        <!-- Top bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="44dp"
+            android:paddingBottom="12dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="16dp">
 
-            <!-- Details card -->
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:src="@drawable/ic_chevron_left"
+                app:tint="#FFFFFF"
+                android:contentDescription="Back"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/tvScreenTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hike Details"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:clipToPadding="false">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_dark_card"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="120dp">
 
-                <TextView
-                    android:id="@+id/tvTitle"
+                <!-- COVER -->
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="22sp"
-                    android:fontFamily="@font/poppins_bold" />
-
-                <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="13sp"
-                    android:fontFamily="@font/poppins_regular" />
-
-                <TextView
-                    android:id="@+id/tvLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/poppins_medium" />
-
-                <TextView
-                    android:id="@+id/tvDifficulty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular" />
-
-                <TextView
-                    android:id="@+id/tvDistance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular" />
-
-                <TextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#02D083"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_bold" />
-
-                <TextView
-                    android:id="@+id/tvMaxParticipants"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular" />
-
-                <!-- Participants current/max -->
-                <TextView
-                    android:id="@+id/tvParticipantCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#02D083"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:visibility="gone" />
-
-                <!-- Meetup point -->
-                <TextView
-                    android:id="@+id/tvMeetupPoint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:visibility="gone" />
-
-                <!-- Destination -->
-                <TextView
-                    android:id="@+id/tvDestination"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:visibility="gone" />
-
-                <!-- Elevation -->
-                <TextView
-                    android:id="@+id/tvElevation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:visibility="gone" />
-
-                <!-- Start date -->
-                <TextView
-                    android:id="@+id/tvStartDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:visibility="gone" />
-
-                <!-- End date -->
-                <TextView
-                    android:id="@+id/tvEndDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="240dp"
                     android:layout_marginTop="12dp"
-                    android:text="Description"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_bold" />
+                    android:background="@drawable/bg_dark_card">
 
-                <TextView
-                    android:id="@+id/tvDescription"
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sample_hike"
+                        android:contentDescription="Cover image" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#33000000" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading..."
+                            android:textColor="#FFFFFF"
+                            android:textSize="22sp"
+                            android:fontFamily="@font/poppins_bold" />
+
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_regular" />
+                            
+                        <TextView
+                            android:id="@+id/tvGuideName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                        <TextView
+                            android:id="@+id/tvBookingStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="#02D083"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <!-- DESCRIPTION -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular" />
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/bg_dark_card"
+                    android:orientation="vertical"
+                    android:padding="18dp">
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/tvDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="No description added."
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <!-- HIKE DETAILS -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Guide"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_bold" />
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_dark_card"
+                    android:padding="18dp">
 
-                <TextView
-                    android:id="@+id/tvGuideName"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hike Details"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <!-- LOCATION -->
+                    <LinearLayout
+                        android:id="@+id/containerLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Location"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvLocation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Not set"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- DESTINATION -->
+                    <LinearLayout
+                        android:id="@+id/containerDestination"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Destination"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvDestination"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Not set"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- MEETUP -->
+                    <LinearLayout
+                        android:id="@+id/containerMeetup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Meetup"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvMeetupPoint"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Not set"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- DIFFICULTY -->
+                    <LinearLayout
+                        android:id="@+id/containerDifficulty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Difficulty"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvDifficulty"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Unknown"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- ELEVATION -->
+                    <LinearLayout
+                        android:id="@+id/containerElevation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Elevation"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvElevation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="0 m"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- DISTANCE -->
+                    <LinearLayout
+                        android:id="@+id/containerDistance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Distance"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvDistance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="0 km"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- START DATE -->
+                    <LinearLayout
+                        android:id="@+id/containerStartDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Start Date"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvStartDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Not set"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- END DATE -->
+                    <LinearLayout
+                        android:id="@+id/containerEndDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="End Date"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvEndDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Not set"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- PARTICIPANTS COUNT -->
+                    <LinearLayout
+                        android:id="@+id/containerParticipantCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Participants"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvParticipantCount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="0 / 0"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+
+                    <!-- MAX CAPACITY (for backwards compat with viewModel logic) -->
+                    <TextView
+                        android:id="@+id/tvMaxParticipants"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <!-- PRICING -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular" />
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_dark_card"
+                    android:padding="18dp">
 
-                <TextView
-                    android:id="@+id/tvBookingStatus"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pricing"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <!-- TOTAL PRICE -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="16dp"
+                            android:text="Total Price"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_regular" />
+
+                        <TextView
+                            android:id="@+id/tvPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="16dp"
+                            android:text="₱ 0.00"
+                            android:textColor="#02D083"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/poppins_bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- ACTION BUTTONS -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:textColor="#02D083"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:visibility="gone" />
+                    android:layout_marginTop="32dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnApply"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Apply to Hike"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#02D083"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCancelApplication"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Cancel Application"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#1E1E1E"
+                        app:strokeColor="#02D083"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLeaveHike"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Leave Hike"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#1E1E1E"
+                        app:strokeColor="#02D083"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Edit Hike"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#02D083"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnApplicants"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="View Applicants"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#1E1E1E"
+                        app:strokeColor="#02D083"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnStartHike"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Start Hike"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#02D083"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEndHike"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="End Hike"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#02D083"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDeleteHike"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Delete Hike"
+                        android:textAllCaps="false"
+                        android:textColor="#FF6B6B"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_bold"
+                        app:backgroundTint="#1E1E1E"
+                        app:strokeColor="#FF6B6B"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="16dp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <!-- Action buttons -->
-            <Button
-                android:id="@+id/btnApply"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_button_green"
-                android:text="Apply to Hike"
-                android:textAllCaps="false"
-                android:textColor="#000000"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
+        </ScrollView>
 
-            <Button
-                android:id="@+id/btnCancelApplication"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_button_outline_green"
-                android:text="Cancel Application"
-                android:textAllCaps="false"
-                android:textColor="#02D083"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/btnLeaveHike"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_button_outline_green"
-                android:text="Leave Hike"
-                android:textAllCaps="false"
-                android:textColor="#02D083"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
+</FrameLayout>
 
-            <Button
-                android:id="@+id/btnEdit"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_button_green"
-                android:text="Edit Hike"
-                android:textAllCaps="false"
-                android:textColor="#000000"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnApplicants"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_button_outline_green"
-                android:text="View Applicants"
-                android:textAllCaps="false"
-                android:textColor="#02D083"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnStartHike"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_button_green"
-                android:text="Start Hike"
-                android:textAllCaps="false"
-                android:textColor="#000000"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnEndHike"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_button_green"
-                android:text="End Hike"
-                android:textAllCaps="false"
-                android:textColor="#000000"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnDeleteHike"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/bg_button_outline_red"
-                android:text="Delete Hike"
-                android:textAllCaps="false"
-                android:textColor="#FF4444"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null"
-                android:visibility="gone" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</LinearLayout>

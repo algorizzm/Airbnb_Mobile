@@ -114,62 +114,61 @@ class HikeDetailFragment : Fragment(R.layout.fragment_hike_detail) {
                         binding.tvTitle.text = hike.title
                         binding.tvStatus.text = "Status: ${hike.status.replaceFirstChar { it.uppercase() }}"
                         binding.tvLocation.text = hike.summaryLocation().ifBlank { hike.location }
-                        binding.tvDifficulty.text = "Difficulty: ${hike.difficulty}"
-                        binding.tvDistance.text = "Distance: ${hike.effectiveDistanceKm()} km"
-                        binding.tvPrice.text = "Price: ₱%.2f".format(hike.price)
-                        binding.tvMaxParticipants.text = "Max participants: ${hike.maxParticipants}"
-                        binding.tvDescription.text = hike.description
-                        binding.tvGuideName.text = hike.guideName.ifBlank { hike.guideId }
+                        binding.tvDifficulty.text = hike.difficulty.replaceFirstChar { it.uppercase() }
+                        binding.tvDistance.text = "${hike.effectiveDistanceKm()} km"
+                        binding.tvPrice.text = "₱%.2f".format(hike.price)
+                        binding.tvMaxParticipants.text = hike.maxParticipants.toString()
+                        binding.tvDescription.text = hike.description.ifBlank { "No description provided." }
+                        binding.tvGuideName.text = "Guide: ${hike.guideName.ifBlank { hike.guideId }}"
 
                         // ── Participant count (current / max) ─────────
                         if (state.approvedCount > 0 || hike.maxParticipants > 0) {
-                            binding.tvParticipantCount.visibility = View.VISIBLE
-                            binding.tvParticipantCount.text =
-                                "Participants: ${state.approvedCount} / ${hike.maxParticipants}"
+                            binding.containerParticipantCount.visibility = View.VISIBLE
+                            binding.tvParticipantCount.text = "${state.approvedCount} / ${hike.maxParticipants}"
                         } else {
-                            binding.tvParticipantCount.visibility = View.GONE
+                            binding.containerParticipantCount.visibility = View.GONE
                         }
 
                         // ── Meetup point ──────────────────────────────
                         if (hike.meetupPoint.isNotBlank()) {
-                            binding.tvMeetupPoint.visibility = View.VISIBLE
-                            binding.tvMeetupPoint.text = "Meetup: ${hike.meetupPoint}"
+                            binding.containerMeetup.visibility = View.VISIBLE
+                            binding.tvMeetupPoint.text = hike.meetupPoint
                         } else {
-                            binding.tvMeetupPoint.visibility = View.GONE
+                            binding.containerMeetup.visibility = View.GONE
                         }
 
                         // ── Destination ───────────────────────────────
                         if (hike.destination.isNotBlank()) {
-                            binding.tvDestination.visibility = View.VISIBLE
-                            binding.tvDestination.text = "Destination: ${hike.destination}"
+                            binding.containerDestination.visibility = View.VISIBLE
+                            binding.tvDestination.text = hike.destination
                         } else {
-                            binding.tvDestination.visibility = View.GONE
+                            binding.containerDestination.visibility = View.GONE
                         }
 
                         // ── Elevation ─────────────────────────────────
                         if (hike.elevationM > 0) {
-                            binding.tvElevation.visibility = View.VISIBLE
-                            binding.tvElevation.text = "Elevation: ${hike.elevationM.toInt()} m"
+                            binding.containerElevation.visibility = View.VISIBLE
+                            binding.tvElevation.text = "${hike.elevationM.toInt()} m"
                         } else {
-                            binding.tvElevation.visibility = View.GONE
+                            binding.containerElevation.visibility = View.GONE
                         }
 
                         // ── Start date ────────────────────────────────
                         val startDate = hike.startDateTime?.toDate()
                         if (startDate != null) {
-                            binding.tvStartDate.visibility = View.VISIBLE
-                            binding.tvStartDate.text = "Started: ${dateFmt.format(startDate)}"
+                            binding.containerStartDate.visibility = View.VISIBLE
+                            binding.tvStartDate.text = dateFmt.format(startDate)
                         } else {
-                            binding.tvStartDate.visibility = View.GONE
+                            binding.containerStartDate.visibility = View.GONE
                         }
 
                         // ── End date ──────────────────────────────────
                         val endDate = hike.endDateTime?.toDate()
                         if (endDate != null) {
-                            binding.tvEndDate.visibility = View.VISIBLE
-                            binding.tvEndDate.text = "Ended: ${dateFmt.format(endDate)}"
+                            binding.containerEndDate.visibility = View.VISIBLE
+                            binding.tvEndDate.text = dateFmt.format(endDate)
                         } else {
-                            binding.tvEndDate.visibility = View.GONE
+                            binding.containerEndDate.visibility = View.GONE
                         }
 
                         // ── Booking status badge ───────────────────────
