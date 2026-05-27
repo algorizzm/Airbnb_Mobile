@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Verdant"
+rootProject.name = "Airbnb"
 include(":app")
  

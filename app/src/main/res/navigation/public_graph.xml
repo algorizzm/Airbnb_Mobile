@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.verdant.ui.main.SplashFragment"
+        android:name="com.airbnb.ui.main.SplashFragment"
         android:label="Launcher">
 
         <action
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.verdant.ui.main.OnboardingFragment"
+        android:name="com.airbnb.ui.main.OnboardingFragment"
         android:label="Onboarding">
 
         <argument

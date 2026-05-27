@@ -7,7 +7,7 @@
     <!-- Home -->
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.verdant.ui.home.HomeFragment"
+        android:name="com.airbnb.ui.home.HomeFragment"
         android:label="Home">
 
         <action
@@ -19,13 +19,13 @@
     <!-- Post Detail -->
     <fragment
         android:id="@+id/postDetailFragment"
-        android:name="com.verdant.ui.home.PostDetailFragment"
+        android:name="com.airbnb.ui.home.PostDetailFragment"
         android:label="Post" />
 
     <!-- Explore -->
     <fragment
         android:id="@+id/exploreFragment"
-        android:name="com.verdant.ui.explore.ExploreFragment"
+        android:name="com.airbnb.ui.explore.ExploreFragment"
         android:label="Explore">
 
         <action
@@ -37,7 +37,7 @@
     <!-- Profile -->
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.verdant.ui.profile.ProfileFragment"
+        android:name="com.airbnb.ui.profile.ProfileFragment"
         android:label="Profile">
 
         <action
@@ -53,7 +53,7 @@
     <!-- Hike -->
     <fragment
         android:id="@+id/hikeFragment"
-        android:name="com.verdant.ui.hikes.HikesFragment"
+        android:name="com.airbnb.ui.hikes.HikesFragment"
         android:label="Hike">
 
         <action
@@ -73,19 +73,19 @@
     <!-- Hike Details -->
     <fragment
         android:id="@+id/hikeDetailFragment"
-        android:name="com.verdant.ui.explore.HikeDetailFragment"
+        android:name="com.airbnb.ui.explore.HikeDetailFragment"
         android:label="Hike details" />
 
     <!-- Create/Edit Hike (multi-step host) -->
     <fragment
         android:id="@+id/createEditHikeFragment"
-        android:name="com.verdant.ui.hikes.create.CreateHikeHostFragment"
+        android:name="com.airbnb.ui.hikes.create.CreateHikeHostFragment"
         android:label="Create or edit hike" />
 
     <!-- Events -->
     <fragment
         android:id="@+id/eventsFragment"
-        android:name="com.verdant.ui.hikes.events.EventsFragment"
+        android:name="com.airbnb.ui.hikes.events.EventsFragment"
         android:label="Your Hiking Events">
 
         <action
@@ -101,7 +101,7 @@
     <!-- History -->
     <fragment
         android:id="@+id/hikeHistoryFragment"
-        android:name="com.verdant.ui.hikes.history.HikeHistoryFragment"
+        android:name="com.airbnb.ui.hikes.history.HikeHistoryFragment"
         android:label="Your Hiking History">
 
         <action
@@ -113,13 +113,13 @@
     <!-- Applicants -->
     <fragment
         android:id="@+id/applicantsFragment"
-        android:name="com.verdant.ui.hikes.ApplicantsFragment"
+        android:name="com.airbnb.ui.hikes.ApplicantsFragment"
         android:label="Applicants" />
 
     <!-- My Bookings -->
     <fragment
         android:id="@+id/myBookingsFragment"
-        android:name="com.verdant.ui.hikes.history.HikeHistoryFragment"
+        android:name="com.airbnb.ui.hikes.history.HikeHistoryFragment"
         android:label="My bookings">
 
         <action
@@ -131,13 +131,13 @@
     <!-- Messages -->
     <fragment
         android:id="@+id/messagesFragment"
-        android:name="com.verdant.ui.messages.MessagesFragment"
+        android:name="com.airbnb.ui.messages.MessagesFragment"
         android:label="Messages" />
 
     <!-- Settings -->
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.verdant.ui.settings.SettingsFragment"
+        android:name="com.airbnb.ui.settings.SettingsFragment"
         android:label="Settings">
 
         <action
@@ -157,7 +157,7 @@
     <!-- Account Information -->
     <fragment
         android:id="@+id/accountInformationFragment"
-        android:name="com.verdant.ui.settings.AccountInformationFragment"
+        android:name="com.airbnb.ui.settings.AccountInformationFragment"
         android:label="Account Information">
 
         <action
@@ -169,31 +169,31 @@
     <!-- Edit Profile -->
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.verdant.ui.settings.EditProfileFragment"
+        android:name="com.airbnb.ui.settings.EditProfileFragment"
         android:label="Edit Profile" />
 
     <!-- Privacy & Security -->
     <fragment
         android:id="@+id/privacySecurityFragment"
-        android:name="com.verdant.ui.settings.PrivacySecurityFragment"
+        android:name="com.airbnb.ui.settings.PrivacySecurityFragment"
         android:label="Privacy and Security" />
 
     <!-- Notification Settings (from Settings screen) -->
     <fragment
         android:id="@+id/notificationSettingsFragment"
-        android:name="com.verdant.ui.settings.NotificationsFragment"
+        android:name="com.airbnb.ui.settings.NotificationsFragment"
         android:label="Notification Settings" />
 
     <!-- Notification Inbox (from main screen bell icon) -->
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.verdant.ui.notifications.NotificationInboxFragment"
+        android:name="com.airbnb.ui.notifications.NotificationInboxFragment"
         android:label="Notifications" />
 
     <!-- Change Password -->
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.verdant.ui.settings.ChangePasswordFragment"
+        android:name="com.airbnb.ui.settings.ChangePasswordFragment"
         android:label="Change Password" />
 
 </navigation>

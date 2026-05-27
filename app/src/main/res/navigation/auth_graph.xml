@@ -7,7 +7,7 @@
     <!-- Login -->
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.verdant.ui.auth.LoginFragment"
+        android:name="com.airbnb.ui.auth.LoginFragment"
         android:label="Login">
 
         <action
@@ -22,7 +22,7 @@
     <!-- Signup -->
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.verdant.ui.auth.SignupFragment"
+        android:name="com.airbnb.ui.auth.SignupFragment"
         android:label="Signup">
 
         <action

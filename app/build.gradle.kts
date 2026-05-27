@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.verdant"
+    namespace = "com.airbnb"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.verdant"
+        applicationId = "com.airbnb"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
