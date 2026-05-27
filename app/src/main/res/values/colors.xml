@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Base -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#80FFFFFF</color>
+    <!-- Airbnb Brand -->
+    <color name="airbnb_red">#FF385C</color>
+    <color name="airbnb_red_dark">#E31C5F</color>
+    <color name="airbnb_red_light">#FFF1F2</color>
 
-    <color name="colorBackground">#121212</color>
-    <color name="colorSurface">#1A1A1A</color>
-    <color name="colorSurface2">#1E1E1E</color>
+    <!-- Text -->
+    <color name="text_primary">#222222</color>
+    <color name="text_secondary">#717171</color>
+    <color name="text_muted">#B0B0B0</color>
 
-    <!-- Verdant Green Theme -->
-    <color name="colorAccentGreen">#34C759</color>
-    <color name="colorPrimaryGreen">#008453</color>
-    <color name="colorGradientStart">#34C759</color>
-    <color name="colorGradientEnd">#008453</color>
+    <!-- Backgrounds -->
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorSurface2">#F7F7F7</color>
 
-    <color name="colorTextPrimary">#FFFFFF</color>
-    <color name="colorTextSecondary">#80FFFFFF</color>
-    <color name="colorTextMuted">#666666</color>
+    <!-- Borders / Dividers -->
+    <color name="border_light">#DDDDDD</color>
+    <color name="divider">#EBEBEB</color>
+
+    <!-- Accent -->
+    <color name="colorAccent">#FF385C</color>
+    <color name="colorPrimary">#FF385C</color>
+    <color name="colorPrimaryDark">#E31C5F</color>
+
+    <!-- Legacy Compatibility (mapped to Airbnb) -->
+    <color name="colorAccentGreen">#FF385C</color>
+    <color name="colorPrimaryGreen">#E31C5F</color>
+    <color name="colorGradientStart">#FF385C</color>
+    <color name="colorGradientEnd">#E31C5F</color>
+
+    <!-- Text Compatibility -->
+    <color name="colorTextPrimary">#222222</color>
+    <color name="colorTextSecondary">#717171</color>
+    <color name="colorTextMuted">#B0B0B0</color>
 
     <!-- Status Colors -->
-    <color name="green">#4CAF50</color>
-    <color name="red">#F44336</color>
-    <color name="gray">#AAAAAA</color>
-    <color name="light_gray">#D3D3D3</color>
+    <color name="green">#34A853</color>
+    <color name="red">#FF385C</color>
+    <color name="gray">#717171</color>
+    <color name="light_gray">#DDDDDD</color>
+    <color name="airbnb_black">#222222</color>
+    <color name="airbnb_gray">#717171</color>
+    <color name="airbnb_border">#DDDDDD</color>
+    <color name="airbnb_surface">#F7F7F7</color>
 
-    <!-- Reservation Status Colors -->
-    <color name="status_active">#4CAF50</color>
-    <color name="status_cancelled">#F44336</color>
-    <color name="status_completed">#2196F3</color>
+    <!-- Reservation Status -->
+    <color name="status_active">#34A853</color>
+    <color name="status_pending">#FFA500</color>
+    <color name="status_rejected">#FF385C</color>
+    <color name="status_cancelled">#717171</color>
+    <color name="status_completed">#4285F4</color>
 
 </resources>

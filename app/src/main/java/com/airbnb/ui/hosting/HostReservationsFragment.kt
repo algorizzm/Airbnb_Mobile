@@ -51,6 +51,12 @@ class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
 
     private fun setupRecyclerView() {
         adapter = HostReservationAdapter(
+            onApproveClick = { reservation ->
+                showApproveConfirmation(reservation.id, reservation.guestName)
+            },
+            onRejectClick = { reservation ->
+                showRejectConfirmation(reservation.id, reservation.guestName)
+            },
             onCancelClick = { reservation ->
                 showCancelConfirmation(reservation.id, reservation.guestName)
             }
@@ -60,6 +66,28 @@ class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@HostReservationsFragment.adapter
         }
+    }
+
+    private fun showApproveConfirmation(reservationId: String, guestName: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Approve Reservation")
+            .setMessage("Approve reservation for $guestName?")
+            .setPositiveButton("Approve") { _, _ ->
+                viewModel.approveReservation(reservationId)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showRejectConfirmation(reservationId: String, guestName: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Reject Reservation")
+            .setMessage("Reject reservation for $guestName? This cannot be undone.")
+            .setPositiveButton("Reject") { _, _ ->
+                viewModel.rejectReservation(reservationId)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun showCancelConfirmation(reservationId: String, guestName: String) {

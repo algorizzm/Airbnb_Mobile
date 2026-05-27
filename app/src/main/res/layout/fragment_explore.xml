@@ -5,234 +5,181 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#121212">
+    android:background="#FFFFFF">
 
-    <!-- Top Action Bar -->
+    <!-- ============================= -->
+    <!-- SEARCH BAR -->
+    <!-- ============================= -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingTop="44dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="52dp"
         android:paddingBottom="12dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Explore"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_bold" />
-
-        <ImageButton
-            android:id="@+id/btnNotifications"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/bg_translucent_circle"
-            android:src="@drawable/ic_notification"
-            android:contentDescription="Notifications"
-            android:padding="8dp" />
-
-        <ImageButton
-            android:id="@+id/btnSettings"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="@drawable/bg_translucent_circle"
-            android:src="@drawable/ic_settings"
-            android:contentDescription="Settings"
-            android:padding="8dp" />
-
-    </LinearLayout>
-
-    <!-- Header -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Explore Stays"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:fontFamily="@font/poppins_bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Discover unique places to stay"
-            android:textColor="#80FFFFFF"
-            android:textSize="13sp"
-            android:layout_marginTop="2dp"
-            android:fontFamily="@font/poppins_regular" />
-
-    </LinearLayout>
-
-    <!-- Search + Filters -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:gravity="center_vertical">
 
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_edittext_border"
-            android:hint="Search title or location"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#666666"
-            android:textSize="14sp"
-            android:inputType="text"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:fontFamily="@font/poppins_regular" />
-
+        <!-- Search Container -->
         <LinearLayout
-            android:id="@+id/btnToggleFilters"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
+            android:id="@+id/btnSearchContainer"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/bg_edittext_border"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:clickable="true"
-            android:focusable="true">
+            android:background="@drawable/bg_airbnb_search"
+            android:elevation="4dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp">
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_difficulty"
-                app:tint="#02D083" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_search"
+                app:tint="#111111"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="Filters"
-                android:textColor="#02D083"
-                android:textSize="13sp"
-                android:fontFamily="@font/poppins_medium" />
+                android:layout_marginStart="12dp"
+                android:background="@android:color/transparent"
+                android:hint="Start your search"
+                android:textColor="#111111"
+                android:textColorHint="#444444"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="0dp"
+                android:inputType="text"/>
+
+        </LinearLayout>
+
+        <!-- FILTER BUTTON -->
+        <!-- IMPORTANT IDS PRESERVED -->
+        <LinearLayout
+            android:id="@+id/btnToggleFilters"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:background="@drawable/bg_filter_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:elevation="3dp">
 
             <ImageView
                 android:id="@+id/ivFilterChevron"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/ic_chevron_right"
-                app:tint="#02D083"
-                android:rotation="90" />
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_filter"
+                app:tint="#111111"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Filters -->
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"/>
+
+    <!-- ============================= -->
+    <!-- FILTERS -->
+    <!-- ============================= -->
     <LinearLayout
         android:id="@+id/layoutFilters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_dark_card"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:padding="16dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_airbnb_card"
+        android:padding="18dp">
 
-        <!-- Max Price -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Price per Night (₱)"
-            android:textColor="#80FFFFFF"
-            android:textSize="11sp"
-            android:fontFamily="@font/poppins_medium" />
+            android:text="Maximum price"
+            android:textColor="#111111"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_medium"/>
 
         <EditText
             android:id="@+id/etMaxPrice"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_edittext_border"
-            android:hint="e.g. 5000"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_airbnb_input"
+            android:hint="₱5000"
             android:inputType="numberDecimal"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#666666"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+            android:textColor="#111111"
+            android:textColorHint="#999999"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"/>
 
-        <!-- Min Guests -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minimum Guests"
-            android:textColor="#80FFFFFF"
-            android:textSize="11sp"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/poppins_medium" />
+            android:text="Guests"
+            android:textColor="#111111"
+            android:textSize="13sp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_medium"/>
 
         <EditText
             android:id="@+id/etMinGuests"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_edittext_border"
-            android:hint="e.g. 2"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_airbnb_input"
+            android:hint="2 guests"
             android:inputType="number"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#666666"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+            android:textColor="#111111"
+            android:textColorHint="#999999"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"/>
 
-        <!-- Clear filters -->
         <TextView
             android:id="@+id/tvClearFilters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="18dp"
             android:text="Clear filters"
-            android:textColor="#FF4444"
-            android:textSize="12sp"
-            android:fontFamily="@font/poppins_medium" />
+            android:textColor="#FF385C"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_medium"/>
 
     </LinearLayout>
 
-    <!-- Empty -->
+    <!-- ============================= -->
+    <!-- EMPTY -->
+    <!-- ============================= -->
     <TextView
         android:id="@+id/tvEmpty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:gravity="center"
-        android:text="No listings found"
-        android:textColor="#80FFFFFF"
+        android:text="No stays found"
+        android:textColor="#999999"
         android:textSize="15sp"
-        android:fontFamily="@font/poppins_regular"
-        android:visibility="gone" />
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="40dp"/>
 
-    <!-- Recycler -->
+    <!-- ============================= -->
+    <!-- MAIN CONTENT -->
+    <!-- SCROLLABLE HORIZONTAL TRIPS -->
+    <!-- IMPORTANT ID KEPT -->
+    <!-- ============================= -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerHikes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingBottom="16dp" />
+        android:clipToPadding="false"
+        android:paddingBottom="90dp"
+        android:paddingTop="12dp"/>
 
 </LinearLayout>

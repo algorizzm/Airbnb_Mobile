@@ -114,24 +114,4 @@ class UserRepository {
             .await()
     }
 
-    suspend fun updateUserStats(
-        userId: String,
-        totalHikesAdd: Int = 0,
-        totalDistanceAdd: Double = 0.0,
-        summitsAdd: Int = 0
-    ): Result<Unit> = runCatching {
-
-        val user = getUser(userId).getOrNull()
-            ?: error("User not found")
-
-        usersCol.document(userId)
-            .update(
-                mapOf(
-                    "totalHikes" to (user.totalHikes + totalHikesAdd),
-                    "totalDistance" to (user.totalDistance + totalDistanceAdd),
-                    "totalSummits" to (user.totalSummits + summitsAdd)
-                )
-            )
-            .await()
-    }
 }

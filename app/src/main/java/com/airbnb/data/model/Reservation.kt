@@ -15,18 +15,18 @@ data class Reservation(
     val checkOutDate: Timestamp? = null,
     val numberOfGuests: Int = 1,
     val totalPrice: Double = 0.0,
-    val status: String = "pending", // pending, confirmed, cancelled, completed
+    val status: String = ReservationStatus.PENDING,
     val paymentStatus: String = "unpaid", // unpaid, paid, refunded
     val createdAt: Timestamp? = null,
     val updatedAt: Timestamp? = null
 ) {
     /** Returns true if the reservation is active (not cancelled or completed). */
-    fun isActive(): Boolean = status.equals("pending", ignoreCase = true) || 
-                              status.equals("confirmed", ignoreCase = true)
+    fun isActive(): Boolean = status.equals(ReservationStatus.PENDING, ignoreCase = true) || 
+                              status.equals(ReservationStatus.CONFIRMED, ignoreCase = true)
 
     /** Returns true if the reservation can be cancelled. */
-    fun isCancellable(): Boolean = status.equals("pending", ignoreCase = true) || 
-                                    status.equals("confirmed", ignoreCase = true)
+    fun isCancellable(): Boolean = status.equals(ReservationStatus.PENDING, ignoreCase = true) || 
+                                    status.equals(ReservationStatus.CONFIRMED, ignoreCase = true)
 
     /** Returns a formatted total price string. */
     fun formattedTotalPrice(): String = "₱${totalPrice.toInt()}"
@@ -41,6 +41,7 @@ data class Reservation(
     fun statusLabel(): String = when (status.lowercase()) {
         "pending" -> "Pending"
         "confirmed" -> "Confirmed"
+        "rejected" -> "Rejected"
         "cancelled" -> "Cancelled"
         "completed" -> "Completed"
         else -> status.replaceFirstChar { it.uppercase() }

@@ -12,8 +12,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
-import com.airbnb.core.auth.AuthState
-import com.airbnb.data.session.UserSessionManager
 import com.airbnb.databinding.FragmentExploreBinding
 import com.airbnb.ui.explore.adapter.ListingAdapter
 import kotlinx.coroutines.launch
@@ -36,80 +34,70 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
         _binding = FragmentExploreBinding.bind(view)
 
         setupAdapter()
-        setupTopBar()
         setupRecycler()
         setupSearch()
         setupFilters()
         observeUi()
     }
 
+    // =====================================================
+    // Adapter
+    // =====================================================
     private fun setupAdapter() {
+
         adapter = ListingAdapter(
+
             onItemClick = { listing ->
+
                 val bundle = Bundle().apply {
                     putString(ARG_LISTING_ID, listing.id)
                 }
 
                 try {
+
                     findNavController().navigate(
                         R.id.action_exploreFragment_to_listingDetailFragment,
                         bundle
                     )
+
                 } catch (e: IllegalArgumentException) {
-                    Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Listing details coming soon",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             },
+
             onWishlistClick = { listing ->
-                viewModel.toggleWishlist(listing.id)
+
+                viewModel.toggleWishlist(
+                    listing.id
+                )
             }
         )
     }
 
-    private fun setupTopBar() {
-
-        binding.btnNotifications.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.notificationsFragment
-            )
-        }
-
-        binding.btnSettings.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.settingsFragment
-            )
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-
-            viewLifecycleOwner.repeatOnLifecycle(
-                Lifecycle.State.STARTED
-            ) {
-
-                UserSessionManager.authState.collect { state ->
-
-                    val visible =
-                        if (state is AuthState.Guest)
-                            View.GONE
-                        else
-                            View.VISIBLE
-
-                    binding.btnNotifications.visibility = visible
-                    binding.btnSettings.visibility = visible
-                }
-            }
-        }
-    }
-
+    // =====================================================
+    // RecyclerView
+    // =====================================================
     private fun setupRecycler() {
 
         binding.recyclerHikes.layoutManager =
-            LinearLayoutManager(requireContext())
+
+            LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
 
         binding.recyclerHikes.adapter = adapter
     }
 
+    // =====================================================
+    // Search
+    // =====================================================
     private fun setupSearch() {
 
         binding.etSearch.doAfterTextChanged { text ->
@@ -120,9 +108,12 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
         }
     }
 
+    // =====================================================
+    // Filters
+    // =====================================================
     private fun setupFilters() {
 
-        // ── Filter panel toggle ───────────────────────────────
+        // Toggle filters panel
         binding.btnToggleFilters.setOnClickListener {
 
             val panel = binding.layoutFilters
@@ -131,16 +122,24 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             if (panel.visibility == View.GONE) {
 
                 panel.visibility = View.VISIBLE
-                chevron.rotation = 270f
+
+                chevron.animate()
+                    .rotation(270f)
+                    .setDuration(180)
+                    .start()
 
             } else {
 
                 panel.visibility = View.GONE
-                chevron.rotation = 90f
+
+                chevron.animate()
+                    .rotation(90f)
+                    .setDuration(180)
+                    .start()
             }
         }
 
-        // ── Clear filters ─────────────────────────────────────
+        // Clear filters
         binding.tvClearFilters.setOnClickListener {
 
             binding.etMaxPrice.text?.clear()
@@ -150,7 +149,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             viewModel.setMinGuests(null)
         }
 
-        // ── Numeric filters ───────────────────────────────────
+        // Max price filter
         binding.etMaxPrice.doAfterTextChanged {
 
             viewModel.setMaxPrice(
@@ -158,6 +157,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             )
         }
 
+        // Guest filter
         binding.etMinGuests.doAfterTextChanged {
 
             viewModel.setMinGuests(
@@ -166,6 +166,9 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
         }
     }
 
+    // =====================================================
+    // Observe UI State
+    // =====================================================
     private fun observeUi() {
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -174,6 +177,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
                 Lifecycle.State.STARTED
             ) {
 
+                // Listings
                 launch {
 
                     viewModel.displayListings.collect { listings ->
@@ -181,6 +185,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
                         adapter.submitList(listings)
 
                         binding.tvEmpty.visibility =
+
                             if (listings.isEmpty())
                                 View.VISIBLE
                             else
@@ -188,35 +193,55 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
                     }
                 }
 
+                // Wishlist state
                 launch {
 
                     viewModel.wishlistIds.collect { wishlistIds ->
-                        // Recreate adapter with updated wishlist state
+
                         adapter = ListingAdapter(
+
                             onItemClick = { listing ->
+
                                 val bundle = Bundle().apply {
                                     putString(ARG_LISTING_ID, listing.id)
                                 }
 
                                 try {
+
                                     findNavController().navigate(
                                         R.id.action_exploreFragment_to_listingDetailFragment,
                                         bundle
                                     )
+
                                 } catch (e: IllegalArgumentException) {
-                                    Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
+
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Listing details coming soon",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             },
+
                             onWishlistClick = { listing ->
-                                viewModel.toggleWishlist(listing.id)
+
+                                viewModel.toggleWishlist(
+                                    listing.id
+                                )
                             },
+
                             wishlistIds = wishlistIds
                         )
+
                         binding.recyclerHikes.adapter = adapter
-                        adapter.submitList(viewModel.displayListings.value)
+
+                        adapter.submitList(
+                            viewModel.displayListings.value
+                        )
                     }
                 }
 
+                // Toast messages
                 launch {
 
                     viewModel.toast.collect { msg ->
@@ -243,10 +268,11 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
     }
 
     companion object {
-        // Listing-related constant (Phase 2+)
+
+        // Listing ID
         const val ARG_LISTING_ID = "listingId"
-        
-        // Hiking-related constant (backward compatibility)
+
+        // Backward compatibility
         const val ARG_HIKE_ID = "hikeId"
     }
 }

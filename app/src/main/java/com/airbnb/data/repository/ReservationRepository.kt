@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.airbnb.data.model.Reservation
+import com.airbnb.data.model.ReservationStatus
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -90,7 +91,7 @@ class ReservationRepository(
     suspend fun createReservation(reservation: Reservation): Result<String> = runCatching {
         val data = reservation.copy(
             id = "",
-            status = "pending",
+            status = ReservationStatus.PENDING,
             paymentStatus = "unpaid",
             createdAt = Timestamp.now(),
             updatedAt = Timestamp.now()
@@ -119,19 +120,25 @@ class ReservationRepository(
      * Cancels a reservation.
      */
     suspend fun cancelReservation(reservationId: String): Result<Unit> =
-        updateReservationStatus(reservationId, "cancelled")
+        updateReservationStatus(reservationId, ReservationStatus.CANCELLED)
 
     /**
      * Confirms a reservation.
      */
     suspend fun confirmReservation(reservationId: String): Result<Unit> =
-        updateReservationStatus(reservationId, "confirmed")
+        updateReservationStatus(reservationId, ReservationStatus.CONFIRMED)
+
+    /**
+     * Rejects a reservation.
+     */
+    suspend fun rejectReservation(reservationId: String): Result<Unit> =
+        updateReservationStatus(reservationId, ReservationStatus.REJECTED)
 
     /**
      * Completes a reservation.
      */
     suspend fun completeReservation(reservationId: String): Result<Unit> =
-        updateReservationStatus(reservationId, "completed")
+        updateReservationStatus(reservationId, ReservationStatus.COMPLETED)
 
     /**
      * Deletes a reservation.
@@ -147,7 +154,7 @@ class ReservationRepository(
         val snapshot = reservationsCol
             .whereEqualTo("guestId", guestId)
             .whereEqualTo("listingId", listingId)
-            .whereIn("status", listOf("pending", "confirmed"))
+            .whereIn("status", listOf(ReservationStatus.PENDING, ReservationStatus.CONFIRMED))
             .get()
             .await()
         snapshot.documents.isNotEmpty()
@@ -159,7 +166,7 @@ class ReservationRepository(
     suspend fun getActiveReservationCount(listingId: String): Int = runCatching {
         val snapshot = reservationsCol
             .whereEqualTo("listingId", listingId)
-            .whereIn("status", listOf("pending", "confirmed"))
+            .whereIn("status", listOf(ReservationStatus.PENDING, ReservationStatus.CONFIRMED))
             .get()
             .await()
         snapshot.size()

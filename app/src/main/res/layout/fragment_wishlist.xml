@@ -34,6 +34,17 @@
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         tools:listitem="@layout/item_wishlist" />
 
+    <!-- Guest Prompt -->
+    <include
+        android:id="@+id/layoutGuestPrompt"
+        layout="@layout/layout_guest_prompt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
     <!-- Empty State -->
     <LinearLayout
         android:id="@+id/emptyStateLayout"

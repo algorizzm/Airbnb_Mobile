@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="#02D083" android:state_checked="true" />
-    <item android:color="#666666" />
+
+    <!-- Selected -->
+    <item
+        android:color="@color/airbnb_red"
+        android:state_checked="true" />
+
+    <!-- Unselected -->
+    <item
+        android:color="@color/airbnb_gray" />
+
 </selector>

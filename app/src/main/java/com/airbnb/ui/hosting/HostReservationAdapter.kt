@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class HostReservationAdapter(
+    private val onApproveClick: (Reservation) -> Unit,
+    private val onRejectClick: (Reservation) -> Unit,
     private val onCancelClick: (Reservation) -> Unit
 ) : ListAdapter<Reservation, HostReservationAdapter.ViewHolder>(DiffCallback()) {
 
@@ -64,19 +66,40 @@ class HostReservationAdapter(
                 tvStatus.text = reservation.status.replaceFirstChar { it.uppercase() }
                 
                 val statusColor = when (reservation.status) {
-                    "confirmed", "pending" -> ContextCompat.getColor(root.context, R.color.status_active)
+                    "confirmed" -> ContextCompat.getColor(root.context, R.color.status_active)
+                    "pending" -> ContextCompat.getColor(root.context, R.color.status_pending)
+                    "rejected" -> ContextCompat.getColor(root.context, R.color.status_rejected)
                     "cancelled" -> ContextCompat.getColor(root.context, R.color.status_cancelled)
                     "completed" -> ContextCompat.getColor(root.context, R.color.status_completed)
                     else -> ContextCompat.getColor(root.context, R.color.gray)
                 }
                 tvStatus.setTextColor(statusColor)
 
-                // Cancel button (only for pending/confirmed)
-                if (reservation.status in listOf("pending", "confirmed")) {
-                    btnCancel.visibility = View.VISIBLE
-                    btnCancel.setOnClickListener { onCancelClick(reservation) }
-                } else {
-                    btnCancel.visibility = View.GONE
+                // Action buttons based on status
+                when (reservation.status) {
+                    "pending" -> {
+                        // Show approve and reject buttons for pending reservations
+                        btnApprove.visibility = View.VISIBLE
+                        btnReject.visibility = View.VISIBLE
+                        btnCancel.visibility = View.GONE
+                        
+                        btnApprove.setOnClickListener { onApproveClick(reservation) }
+                        btnReject.setOnClickListener { onRejectClick(reservation) }
+                    }
+                    "confirmed" -> {
+                        // Show cancel button for confirmed reservations
+                        btnApprove.visibility = View.GONE
+                        btnReject.visibility = View.GONE
+                        btnCancel.visibility = View.VISIBLE
+                        
+                        btnCancel.setOnClickListener { onCancelClick(reservation) }
+                    }
+                    else -> {
+                        // No actions for rejected, cancelled, or completed
+                        btnApprove.visibility = View.GONE
+                        btnReject.visibility = View.GONE
+                        btnCancel.visibility = View.GONE
+                    }
                 }
             }
         }

@@ -2,18 +2,18 @@ package com.airbnb.ui.main
 
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.airbnb.R
 import com.airbnb.core.auth.AuthManager
-import com.airbnb.core.navigation.ProtectedNav
 import com.airbnb.core.ui.AvatarHelper
+import com.airbnb.core.ui.GuestPromptDialog
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -29,11 +29,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navIconTrips: ImageView
     private lateinit var navIconMessages: ImageView
     private lateinit var navIconProfile: ImageView
-    private lateinit var navProfileInit: TextView
 
+    private lateinit var navLabelExplore: TextView
+    private lateinit var navLabelWishlists: TextView
+    private lateinit var navLabelTrips: TextView
+    private lateinit var navLabelMessages: TextView
+    private lateinit var navLabelProfile: TextView
+
+    private lateinit var navProfileInit: TextView
     private lateinit var customNavBar: LinearLayout
 
-    // Prevent rapid duplicate navigations
     private var lastNavTime = 0L
 
     companion object {
@@ -42,112 +47,101 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(
+                R.id.nav_host_fragment
+            ) as? NavHostFragment ?: return
 
         val navController = navHostFragment.navController
 
-        // ─────────────────────────────────────────────
-        // Bind Views
-        // ─────────────────────────────────────────────
+        // NAV ROOT
         customNavBar = findViewById(R.id.navBarBg)
 
+        // NAV ITEMS
         navExplore = findViewById(R.id.navExplore)
         navWishlists = findViewById(R.id.navWishlists)
         navTrips = findViewById(R.id.navTrips)
         navMessages = findViewById(R.id.navMessages)
         navProfile = findViewById(R.id.navProfile)
-        navProfileInit = findViewById(R.id.navProfileInitial)
 
+        // ICONS
         navIconExplore = findViewById(R.id.navIconExplore)
         navIconWishlists = findViewById(R.id.navIconWishlists)
         navIconTrips = findViewById(R.id.navIconTrips)
         navIconMessages = findViewById(R.id.navIconMessages)
         navIconProfile = findViewById(R.id.navIconProfile)
 
-        // Observe avatar updates
+        // LABELS
+        navLabelExplore = findViewById(R.id.navLabelExplore)
+        navLabelWishlists = findViewById(R.id.navLabelWishlists)
+        navLabelTrips = findViewById(R.id.navLabelTrips)
+        navLabelMessages = findViewById(R.id.navLabelMessages)
+        navLabelProfile = findViewById(R.id.navLabelProfile)
+
+        navProfileInit = findViewById(R.id.navProfileInitial)
+
         observeBottomAvatar()
 
         val protectedTabs = setOf(
-            R.id.messagesFragment,
-            R.id.exploreFragment,
-            R.id.profileFragment,
             R.id.wishlistFragment,
-            R.id.tripsFragment
+            R.id.tripsFragment,
+            R.id.messagesFragment,
+            R.id.profileFragment
         )
 
-        // ─────────────────────────────────────────────
-        // Navigation Options
-        // ─────────────────────────────────────────────
         fun navOptions() = NavOptions.Builder()
             .setLaunchSingleTop(true)
+            .setRestoreState(true)
             .setPopUpTo(
                 navController.graph.startDestinationId,
-                inclusive = false
+                false,
+                true
             )
-            .setEnterAnim(R.anim.nav_enter)
-            .setExitAnim(R.anim.nav_exit)
-            .setPopEnterAnim(R.anim.nav_pop_enter)
-            .setPopExitAnim(R.anim.nav_pop_exit)
             .build()
 
-        // ─────────────────────────────────────────────
-        // Navigation Helper
-        // ─────────────────────────────────────────────
         fun navigateTo(destId: Int) {
 
-            // Prevent rapid duplicate taps
             val now = System.currentTimeMillis()
 
-            if (now - lastNavTime < NAV_DEBOUNCE_MS) {
-                return
-            }
+            if (now - lastNavTime < NAV_DEBOUNCE_MS) return
 
             lastNavTime = now
 
-            // Prevent navigating to same destination
-            if (navController.currentDestination?.id == destId) {
-                return
-            }
+            if (navController.currentDestination?.id == destId) return
 
-            // Protected tabs
-            if (destId in protectedTabs && !AuthManager.isAuthenticated()) {
+            if (destId in protectedTabs &&
+                !AuthManager.isAuthenticated()
+            ) {
 
                 val currentFragment =
-                    navHostFragment.childFragmentManager.primaryNavigationFragment
+                    navHostFragment.childFragmentManager
+                        .primaryNavigationFragment
 
                 if (currentFragment != null) {
 
-                    com.airbnb.core.ui.GuestPromptDialog.show(
+                    GuestPromptDialog.show(
                         currentFragment.childFragmentManager
                     )
 
                 } else {
 
-                    ProtectedNav.navigate(
-                        navController = navController,
-                        destId = destId,
-                        args = null,
-                        navOptions = null,
-                        isProtected = false
-                    )
+                    navController.navigate(R.id.loginFragment)
                 }
 
-            } else {
-
-                navController.navigate(
-                    destId,
-                    null,
-                    navOptions()
-                )
+                return
             }
+
+            navController.navigate(
+                destId,
+                null,
+                navOptions()
+            )
         }
 
-        // ─────────────────────────────────────────────
-        // Bottom Nav Clicks
-        // ─────────────────────────────────────────────
+        // CLICK EVENTS
         navExplore.setOnClickListener {
             navigateTo(R.id.exploreFragment)
         }
@@ -168,70 +162,76 @@ class MainActivity : AppCompatActivity() {
             navigateTo(R.id.profileFragment)
         }
 
-        // ─────────────────────────────────────────────
-        // Destination Changes
-        // ─────────────────────────────────────────────
+        // DESTINATION LISTENER
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
-            val authScreens = setOf(
+            val hiddenScreens = setOf(
+                R.id.splashFragment,
                 R.id.loginFragment,
                 R.id.signupFragment,
-                R.id.splashFragment,
-                R.id.onboardingFragment,
-                R.id.settingsFragment,
-                R.id.accountInformationFragment,
-                R.id.privacySecurityFragment,
-                R.id.notificationSettingsFragment,
-                R.id.changePasswordFragment
+                R.id.onboardingFragment
             )
 
-            val showNav = destination.id !in authScreens
-
             customNavBar.visibility =
-                if (showNav) View.VISIBLE else View.GONE
+                if (destination.id in hiddenScreens)
+                    View.GONE
+                else
+                    View.VISIBLE
 
-            // Colors
-            val inactive = 0xFFAAAAAA.toInt()
-            val active = 0xFF02D083.toInt()
+            val active =
+                ContextCompat.getColor(this, R.color.airbnb_red)
 
-            // Reset all icon colors
+            val inactive =
+                ContextCompat.getColor(this, R.color.airbnb_gray)
+
+            // RESET ICONS
             navIconExplore.setColorFilter(inactive)
             navIconWishlists.setColorFilter(inactive)
             navIconTrips.setColorFilter(inactive)
             navIconMessages.setColorFilter(inactive)
 
-            // Do NOT tint profile avatar
-            navProfile.alpha = 0.7f
+            // RESET LABELS
+            navLabelExplore.setTextColor(inactive)
+            navLabelWishlists.setTextColor(inactive)
+            navLabelTrips.setTextColor(inactive)
+            navLabelMessages.setTextColor(inactive)
+            navLabelProfile.setTextColor(inactive)
 
-            // Highlight active tab
+            navProfile.alpha =
+                if (destination.id == R.id.profileFragment)
+                    1f
+                else
+                    0.7f
+
             when (destination.id) {
 
                 R.id.exploreFragment -> {
                     navIconExplore.setColorFilter(active)
+                    navLabelExplore.setTextColor(active)
                 }
 
                 R.id.wishlistFragment -> {
                     navIconWishlists.setColorFilter(active)
+                    navLabelWishlists.setTextColor(active)
                 }
 
                 R.id.tripsFragment -> {
                     navIconTrips.setColorFilter(active)
+                    navLabelTrips.setTextColor(active)
                 }
 
                 R.id.messagesFragment -> {
                     navIconMessages.setColorFilter(active)
+                    navLabelMessages.setTextColor(active)
                 }
 
                 R.id.profileFragment -> {
-                    navProfile.alpha = 1f
+                    navLabelProfile.setTextColor(active)
                 }
             }
         }
     }
 
-    // ─────────────────────────────────────────────
-    // Observe User Avatar
-    // ─────────────────────────────────────────────
     private fun observeBottomAvatar() {
 
         lifecycleScope.launch {
@@ -243,13 +243,19 @@ class MainActivity : AppCompatActivity() {
                     AvatarHelper.bind(
                         imgView = navIconProfile,
                         tvInitial = navProfileInit,
-                        name = user.name.ifBlank { user.email },
+                        name = user.name.ifBlank {
+                            user.email
+                        },
                         imageUrl = user.profileImage
                     )
 
                 } else {
 
-                    navIconProfile.setImageResource(R.drawable.ic_profile)
+                    navIconProfile.setImageResource(
+                        R.drawable.ic_profile
+                    )
+
+                    navProfileInit.visibility = View.GONE
                 }
             }
         }

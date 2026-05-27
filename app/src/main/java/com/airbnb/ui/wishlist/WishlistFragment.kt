@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.databinding.FragmentWishlistBinding
 import com.airbnb.ui.wishlist.adapter.WishlistAdapter
+import com.airbnb.core.ui.GuestPromptHelper
+import com.airbnb.core.ui.isUserAuthenticated
 import kotlinx.coroutines.launch
 
 class WishlistFragment : Fragment() {
@@ -35,8 +37,30 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Check authentication status
+        if (!isUserAuthenticated()) {
+            showGuestState()
+            return
+        }
+
         setupRecyclerView()
         observeViewModel()
+    }
+
+    private fun showGuestState() {
+        GuestPromptHelper.setupGuestPrompt(
+            promptLayout = binding.layoutGuestPrompt.root,
+            fragment = this,
+            title = "Sign in to view your wishlist",
+            message = "Save your favorite listings and access them anytime",
+            iconRes = R.drawable.ic_heart
+        )
+        GuestPromptHelper.showGuestPrompt(
+            promptLayout = binding.layoutGuestPrompt.root,
+            contentLayout = binding.recyclerView
+        )
+        binding.emptyStateLayout.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun setupRecyclerView() {

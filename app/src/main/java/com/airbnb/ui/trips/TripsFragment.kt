@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.databinding.FragmentTripsBinding
 import com.airbnb.ui.trips.adapter.TripAdapter
+import com.airbnb.core.ui.GuestPromptHelper
+import com.airbnb.core.ui.isUserAuthenticated
 import kotlinx.coroutines.launch
 
 class TripsFragment : Fragment(R.layout.fragment_trips) {
@@ -32,10 +34,35 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
 
         _binding = FragmentTripsBinding.bind(view)
 
+        // Check authentication status
+        if (!isUserAuthenticated()) {
+            showGuestState()
+            return
+        }
+
         setupAdapter()
         setupRecycler()
         setupFilters()
         observeUi()
+    }
+
+    private fun showGuestState() {
+        GuestPromptHelper.setupGuestPrompt(
+            promptLayout = binding.layoutGuestPrompt.root,
+            fragment = this,
+            title = "Sign in to view your trips",
+            message = "Book amazing places and manage your reservations",
+            iconRes = R.drawable.ic_calendar
+        )
+        
+        // Hide filters and show guest prompt
+        binding.layoutFilters.visibility = View.GONE
+        GuestPromptHelper.showGuestPrompt(
+            promptLayout = binding.layoutGuestPrompt.root,
+            contentLayout = binding.recyclerTrips
+        )
+        binding.tvEmpty.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun setupAdapter() {

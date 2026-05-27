@@ -49,6 +49,44 @@ class HostReservationsViewModel(
     }
 
     /**
+     * Approves/confirms a reservation.
+     */
+    fun approveReservation(reservationId: String) {
+        viewModelScope.launch {
+            reservationRepository.confirmReservation(reservationId)
+                .onSuccess {
+                    _state.value = _state.value.copy(
+                        message = "Reservation approved"
+                    )
+                }
+                .onFailure { e ->
+                    _state.value = _state.value.copy(
+                        error = e.message ?: "Failed to approve reservation"
+                    )
+                }
+        }
+    }
+
+    /**
+     * Rejects a reservation.
+     */
+    fun rejectReservation(reservationId: String) {
+        viewModelScope.launch {
+            reservationRepository.rejectReservation(reservationId)
+                .onSuccess {
+                    _state.value = _state.value.copy(
+                        message = "Reservation rejected"
+                    )
+                }
+                .onFailure { e ->
+                    _state.value = _state.value.copy(
+                        error = e.message ?: "Failed to reject reservation"
+                    )
+                }
+        }
+    }
+
+    /**
      * Cancels a reservation.
      */
     fun cancelReservation(reservationId: String) {

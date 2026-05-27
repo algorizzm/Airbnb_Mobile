@@ -53,12 +53,13 @@
             android:layout_marginVertical="12dp"
             android:background="@color/light_gray" />
 
-        <!-- Bottom Row -->
+        <!-- Status and Price Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
 
             <!-- Status -->
             <TextView
@@ -76,11 +77,47 @@
                 android:id="@+id/tvTotalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 tools:text="$750" />
+
+        </LinearLayout>
+
+        <!-- Action Buttons Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <!-- Approve Button -->
+            <Button
+                android:id="@+id/btnApprove"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Approve"
+                android:textSize="12sp"
+                android:textColor="@color/green"
+                android:minHeight="0dp"
+                android:paddingVertical="4dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- Reject Button -->
+            <Button
+                android:id="@+id/btnReject"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Reject"
+                android:textSize="12sp"
+                android:textColor="@color/red"
+                android:minHeight="0dp"
+                android:paddingVertical="4dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <!-- Cancel Button -->
             <Button
@@ -92,7 +129,9 @@
                 android:textSize="12sp"
                 android:textColor="@color/red"
                 android:minHeight="0dp"
-                android:paddingVertical="4dp" />
+                android:paddingVertical="4dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
