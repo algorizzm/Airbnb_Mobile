@@ -61,7 +61,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Explore Hikes"
+            android:text="Explore Stays"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:fontFamily="@font/poppins_bold" />
@@ -69,7 +69,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Discover trails and adventures"
+            android:text="Discover unique places to stay"
             android:textColor="#80FFFFFF"
             android:textSize="13sp"
             android:layout_marginTop="2dp"
@@ -156,155 +156,13 @@
         android:padding="16dp"
         android:visibility="gone">
 
-        <!-- Difficulty -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Difficulty"
-            android:textColor="#80FFFFFF"
-            android:textSize="11sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginBottom="4dp" />
-
-        <!-- Difficulty Chips -->
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupDifficultyFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:singleSelection="true"
-            app:selectionRequired="false">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterAll"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="All"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/poppins_medium"
-                android:checked="true"
-                app:chipBackgroundColor="@color/chip_state_color"
-                app:chipStrokeColor="#02D083"
-                app:chipStrokeWidth="1dp"
-                app:checkedIconTint="#000000" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterEasy"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Easy"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/poppins_medium"
-                app:chipBackgroundColor="@color/chip_state_color"
-                app:chipStrokeColor="#02D083"
-                app:chipStrokeWidth="1dp"
-                app:checkedIconTint="#000000" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterModerate"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Moderate"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/poppins_medium"
-                app:chipBackgroundColor="@color/chip_state_color"
-                app:chipStrokeColor="#02D083"
-                app:chipStrokeWidth="1dp"
-                app:checkedIconTint="#000000" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterHard"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hard"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/poppins_medium"
-                app:chipBackgroundColor="@color/chip_state_color"
-                app:chipStrokeColor="#02D083"
-                app:chipStrokeWidth="1dp"
-                app:checkedIconTint="#000000" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterExpert"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expert"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/poppins_medium"
-                app:chipBackgroundColor="@color/chip_state_color"
-                app:chipStrokeColor="#02D083"
-                app:chipStrokeWidth="1dp"
-                app:checkedIconTint="#000000" />
-
-        </com.google.android.material.chip.ChipGroup>
-
-        <!-- Hidden Spinner kept for compatibility -->
-        <Spinner
-            android:id="@+id/spinnerDifficulty"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone" />
-
-        <!-- Distance -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Distance (km)"
-            android:textColor="#80FFFFFF"
-            android:textSize="11sp"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/poppins_medium" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/etMinDistance"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_edittext_border"
-                android:hint="Min"
-                android:inputType="numberDecimal"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666666"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp" />
-
-            <Space
-                android:layout_width="8dp"
-                android:layout_height="1dp" />
-
-            <EditText
-                android:id="@+id/etMaxDistance"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_edittext_border"
-                android:hint="Max"
-                android:inputType="numberDecimal"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666666"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp" />
-
-        </LinearLayout>
-
         <!-- Max Price -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Price (₱)"
+            android:text="Max Price per Night (₱)"
             android:textColor="#80FFFFFF"
             android:textSize="11sp"
-            android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_medium" />
 
         <EditText
@@ -313,31 +171,31 @@
             android:layout_height="44dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/bg_edittext_border"
-            android:hint="e.g. 500"
+            android:hint="e.g. 5000"
             android:inputType="numberDecimal"
             android:textColor="#FFFFFF"
             android:textColorHint="#666666"
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
-        <!-- Max Duration -->
+        <!-- Min Guests -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Duration (hrs)"
+            android:text="Minimum Guests"
             android:textColor="#80FFFFFF"
             android:textSize="11sp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_medium" />
 
         <EditText
-            android:id="@+id/etMaxDuration"
+            android:id="@+id/etMinGuests"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/bg_edittext_border"
-            android:hint="e.g. 8"
-            android:inputType="numberDecimal"
+            android:hint="e.g. 2"
+            android:inputType="number"
             android:textColor="#FFFFFF"
             android:textColorHint="#666666"
             android:paddingStart="12dp"
@@ -363,7 +221,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:gravity="center"
-        android:text="No hikes found"
+        android:text="No listings found"
         android:textColor="#80FFFFFF"
         android:textSize="15sp"
         android:fontFamily="@font/poppins_regular"

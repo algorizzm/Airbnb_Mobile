@@ -15,7 +15,7 @@ import com.airbnb.R
 import com.airbnb.core.auth.AuthState
 import com.airbnb.data.session.UserSessionManager
 import com.airbnb.databinding.FragmentExploreBinding
-import com.airbnb.ui.explore.adapter.HikeAdapter
+import com.airbnb.ui.explore.adapter.ListingAdapter
 import kotlinx.coroutines.launch
 
 class ExploreFragment : Fragment(R.layout.fragment_explore) {
@@ -25,19 +25,20 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
 
     private val viewModel: ExploreViewModel by viewModels()
 
-    private val adapter = HikeAdapter { hike ->
+    private val adapter = ListingAdapter { listing ->
 
         val bundle = Bundle().apply {
-            putString(ARG_HIKE_ID, hike.id)
+            putString(ARG_LISTING_ID, listing.id)
         }
 
         try {
             findNavController().navigate(
-                R.id.action_exploreFragment_to_hikeDetailFragment,
+                R.id.action_exploreFragment_to_listingDetailFragment,
                 bundle
             )
         } catch (e: IllegalArgumentException) {
-            // ignore double click
+            // Navigation action not yet defined - placeholder
+            Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -134,65 +135,14 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
         // ── Clear filters ─────────────────────────────────────
         binding.tvClearFilters.setOnClickListener {
 
-            binding.chipGroupDifficultyFilter
-                .check(R.id.chipFilterAll)
-
-            binding.etMinDistance.text?.clear()
-            binding.etMaxDistance.text?.clear()
             binding.etMaxPrice.text?.clear()
-            binding.etMaxDuration.text?.clear()
+            binding.etMinGuests.text?.clear()
 
-            viewModel.setDifficultyFilter(null)
-            viewModel.setMinDistance(null)
-            viewModel.setMaxDistance(null)
             viewModel.setMaxPrice(null)
-            viewModel.setMaxDuration(null)
+            viewModel.setMinGuests(null)
         }
-
-        // ── Difficulty chip filter ────────────────────────────
-        binding.chipGroupDifficultyFilter
-            .setOnCheckedStateChangeListener { _, checkedIds ->
-
-                val difficulty = when (
-                    checkedIds.firstOrNull()
-                ) {
-
-                    R.id.chipFilterEasy ->
-                        "Easy"
-
-                    R.id.chipFilterModerate ->
-                        "Moderate"
-
-                    R.id.chipFilterHard ->
-                        "Hard"
-
-                    R.id.chipFilterExpert ->
-                        "Expert"
-
-                    else ->
-                        null
-                }
-
-                viewModel.setDifficultyFilter(
-                    difficulty
-                )
-            }
 
         // ── Numeric filters ───────────────────────────────────
-        binding.etMinDistance.doAfterTextChanged {
-
-            viewModel.setMinDistance(
-                it?.toString()?.toDoubleOrNull()
-            )
-        }
-
-        binding.etMaxDistance.doAfterTextChanged {
-
-            viewModel.setMaxDistance(
-                it?.toString()?.toDoubleOrNull()
-            )
-        }
-
         binding.etMaxPrice.doAfterTextChanged {
 
             viewModel.setMaxPrice(
@@ -200,10 +150,10 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             )
         }
 
-        binding.etMaxDuration.doAfterTextChanged {
+        binding.etMinGuests.doAfterTextChanged {
 
-            viewModel.setMaxDuration(
-                it?.toString()?.toDoubleOrNull()
+            viewModel.setMinGuests(
+                it?.toString()?.toIntOrNull()
             )
         }
     }
@@ -218,12 +168,12 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
 
                 launch {
 
-                    viewModel.displayHikes.collect { hikes ->
+                    viewModel.displayListings.collect { listings ->
 
-                        adapter.submitList(hikes)
+                        adapter.submitList(listings)
 
                         binding.tvEmpty.visibility =
-                            if (hikes.isEmpty())
+                            if (listings.isEmpty())
                                 View.VISIBLE
                             else
                                 View.GONE
@@ -256,6 +206,10 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
     }
 
     companion object {
+        // Listing-related constant (Phase 2+)
+        const val ARG_LISTING_ID = "listingId"
+        
+        // Hiking-related constant (backward compatibility)
         const val ARG_HIKE_ID = "hikeId"
     }
 }

@@ -32,6 +32,10 @@
             android:id="@+id/action_exploreFragment_to_hikeDetailFragment"
             app:destination="@id/hikeDetailFragment" />
 
+        <action
+            android:id="@+id/action_exploreFragment_to_listingDetailFragment"
+            app:destination="@id/listingDetailFragment" />
+
     </fragment>
 
     <!-- Profile -->
@@ -75,6 +79,24 @@
         android:id="@+id/hikeDetailFragment"
         android:name="com.airbnb.ui.explore.HikeDetailFragment"
         android:label="Hike details" />
+
+    <!-- Listing Details -->
+    <fragment
+        android:id="@+id/listingDetailFragment"
+        android:name="com.airbnb.ui.listings.ListingDetailFragment"
+        android:label="Listing details">
+
+        <action
+            android:id="@+id/action_listingDetailFragment_to_createReservationFragment"
+            app:destination="@id/createReservationFragment" />
+
+    </fragment>
+
+    <!-- Create Reservation -->
+    <fragment
+        android:id="@+id/createReservationFragment"
+        android:name="com.airbnb.ui.reservations.CreateReservationFragment"
+        android:label="Reserve" />
 
     <!-- Create/Edit Hike (multi-step host) -->
     <fragment

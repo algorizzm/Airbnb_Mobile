@@ -16,30 +16,10 @@ class ReservationRepository(
     private val reservationsCol get() = db.collection("reservations")
 
     /**
-     * Observes reservations for a specific listing in real-time.
-     */
-    fun observeReservationsForListing(listingId: String): Flow<List<Reservation>> = callbackFlow {
-        val reg = reservationsCol
-            .whereEqualTo("listingId", listingId)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    close(error)
-                    return@addSnapshotListener
-                }
-                val list = snapshot?.documents?.mapNotNull { doc ->
-                    doc.toObject(Reservation::class.java)?.copy(id = doc.id)
-                }.orEmpty()
-                trySend(list)
-            }
-        awaitClose { reg.remove() }
-    }
-
-    /**
-     * Observes reservations for a specific guest (user) in real-time.
+     * Observes all reservations for a specific guest in real-time.
      */
     fun observeReservationsForGuest(guestId: String): Flow<List<Reservation>> = callbackFlow {
-        val reg = reservationsCol
+        val registration = reservationsCol
             .whereEqualTo("guestId", guestId)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
@@ -52,14 +32,14 @@ class ReservationRepository(
                 }.orEmpty()
                 trySend(list)
             }
-        awaitClose { reg.remove() }
+        awaitClose { registration.remove() }
     }
 
     /**
-     * Observes reservations for a specific host in real-time.
+     * Observes all reservations for a specific host in real-time.
      */
     fun observeReservationsForHost(hostId: String): Flow<List<Reservation>> = callbackFlow {
-        val reg = reservationsCol
+        val registration = reservationsCol
             .whereEqualTo("hostId", hostId)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
@@ -72,16 +52,15 @@ class ReservationRepository(
                 }.orEmpty()
                 trySend(list)
             }
-        awaitClose { reg.remove() }
+        awaitClose { registration.remove() }
     }
 
     /**
-     * Observes active reservations (pending or confirmed) for a guest.
+     * Observes all reservations for a specific listing in real-time.
      */
-    fun observeActiveReservationsForGuest(guestId: String): Flow<List<Reservation>> = callbackFlow {
-        val reg = reservationsCol
-            .whereEqualTo("guestId", guestId)
-            .whereIn("status", listOf("pending", "confirmed"))
+    fun observeReservationsForListing(listingId: String): Flow<List<Reservation>> = callbackFlow {
+        val registration = reservationsCol
+            .whereEqualTo("listingId", listingId)
             .orderBy("checkInDate", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
@@ -93,7 +72,7 @@ class ReservationRepository(
                 }.orEmpty()
                 trySend(list)
             }
-        awaitClose { reg.remove() }
+        awaitClose { registration.remove() }
     }
 
     /**
@@ -106,88 +85,31 @@ class ReservationRepository(
     }
 
     /**
-     * Checks if a guest already has an active reservation for a specific listing.
+     * Creates a new reservation in Firestore.
      */
-    suspend fun findActiveReservationForGuestOnListing(
-        listingId: String,
-        guestId: String
-    ): Reservation? {
-        val snap = runCatching {
-            reservationsCol
-                .whereEqualTo("listingId", listingId)
-                .whereEqualTo("guestId", guestId)
-                .get()
-                .await()
-        }.getOrNull() ?: return null
-        
-        return snap.documents
-            .mapNotNull { it.toObject(Reservation::class.java)?.copy(id = it.id) }
-            .firstOrNull { it.isActive() }
-    }
-
-    /**
-     * Creates a new reservation.
-     */
-    suspend fun createReservation(
-        listingId: String,
-        listingTitle: String,
-        listingImageUrl: String,
-        guestId: String,
-        guestName: String,
-        hostId: String,
-        hostName: String,
-        checkInDate: Timestamp,
-        checkOutDate: Timestamp,
-        numberOfGuests: Int,
-        totalPrice: Double
-    ): Result<String> = runCatching {
-        // Check if guest already has an active reservation for this listing
-        if (findActiveReservationForGuestOnListing(listingId, guestId) != null) {
-            error("You already have an active reservation for this listing.")
-        }
-
+    suspend fun createReservation(reservation: Reservation): Result<String> = runCatching {
+        val data = reservation.copy(
+            id = "",
+            status = "pending",
+            paymentStatus = "unpaid",
+            createdAt = Timestamp.now(),
+            updatedAt = Timestamp.now()
+        )
         val ref = reservationsCol.document()
-        ref.set(
-            mapOf(
-                "listingId" to listingId,
-                "listingTitle" to listingTitle,
-                "listingImageUrl" to listingImageUrl,
-                "guestId" to guestId,
-                "guestName" to guestName,
-                "hostId" to hostId,
-                "hostName" to hostName,
-                "checkInDate" to checkInDate,
-                "checkOutDate" to checkOutDate,
-                "numberOfGuests" to numberOfGuests,
-                "totalPrice" to totalPrice,
-                "status" to "pending",
-                "paymentStatus" to "unpaid",
-                "createdAt" to Timestamp.now(),
-                "updatedAt" to Timestamp.now()
-            )
-        ).await()
+        ref.set(data.toFirestoreMap()).await()
         ref.id
     }
 
     /**
-     * Updates the status of a reservation.
+     * Updates an existing reservation's status.
      */
-    suspend fun updateReservationStatus(reservationId: String, status: String): Result<Unit> = runCatching {
+    suspend fun updateReservationStatus(
+        reservationId: String,
+        status: String
+    ): Result<Unit> = runCatching {
         reservationsCol.document(reservationId).update(
             mapOf(
                 "status" to status,
-                "updatedAt" to Timestamp.now()
-            )
-        ).await()
-    }
-
-    /**
-     * Updates the payment status of a reservation.
-     */
-    suspend fun updatePaymentStatus(reservationId: String, paymentStatus: String): Result<Unit> = runCatching {
-        reservationsCol.document(reservationId).update(
-            mapOf(
-                "paymentStatus" to paymentStatus,
                 "updatedAt" to Timestamp.now()
             )
         ).await()
@@ -200,63 +122,69 @@ class ReservationRepository(
         updateReservationStatus(reservationId, "cancelled")
 
     /**
-     * Confirms a reservation (host accepts).
+     * Confirms a reservation.
      */
     suspend fun confirmReservation(reservationId: String): Result<Unit> =
         updateReservationStatus(reservationId, "confirmed")
 
     /**
-     * Completes a reservation (after checkout).
+     * Completes a reservation.
      */
     suspend fun completeReservation(reservationId: String): Result<Unit> =
         updateReservationStatus(reservationId, "completed")
 
     /**
-     * Gets the count of confirmed reservations for a specific listing.
+     * Deletes a reservation.
      */
-    suspend fun countConfirmedForListing(listingId: String): Int = runCatching {
-        val snap = reservationsCol
+    suspend fun deleteReservation(reservationId: String): Result<Unit> = runCatching {
+        reservationsCol.document(reservationId).delete().await()
+    }
+
+    /**
+     * Checks if a guest has an active reservation for a specific listing.
+     */
+    suspend fun hasActiveReservation(guestId: String, listingId: String): Boolean = runCatching {
+        val snapshot = reservationsCol
+            .whereEqualTo("guestId", guestId)
             .whereEqualTo("listingId", listingId)
-            .whereEqualTo("status", "confirmed")
+            .whereIn("status", listOf("pending", "confirmed"))
             .get()
             .await()
-        snap.size()
+        snapshot.documents.isNotEmpty()
+    }.getOrDefault(false)
+
+    /**
+     * Gets the count of active reservations for a listing.
+     */
+    suspend fun getActiveReservationCount(listingId: String): Int = runCatching {
+        val snapshot = reservationsCol
+            .whereEqualTo("listingId", listingId)
+            .whereIn("status", listOf("pending", "confirmed"))
+            .get()
+            .await()
+        snapshot.size()
     }.getOrDefault(0)
+}
 
-    /**
-     * Gets all confirmed reservations for a listing (one-time fetch).
-     */
-    suspend fun getConfirmedReservationsForListing(listingId: String): Result<List<Reservation>> = runCatching {
-        val snap = reservationsCol
-            .whereEqualTo("listingId", listingId)
-            .whereEqualTo("status", "confirmed")
-            .get()
-            .await()
-        snap.documents.mapNotNull { doc ->
-            doc.toObject(Reservation::class.java)?.copy(id = doc.id)
-        }
-    }
-
-    /**
-     * Completes all confirmed reservations for a listing (batch operation).
-     */
-    suspend fun completeConfirmedReservationsForListing(listingId: String): Result<Unit> = runCatching {
-        val snap = reservationsCol
-            .whereEqualTo("listingId", listingId)
-            .whereEqualTo("status", "confirmed")
-            .get()
-            .await()
-        
-        val batch = db.batch()
-        snap.documents.forEach { doc ->
-            batch.update(
-                doc.reference,
-                mapOf(
-                    "status" to "completed",
-                    "updatedAt" to Timestamp.now()
-                )
-            )
-        }
-        batch.commit().await()
-    }
+/**
+ * Converts a Reservation to a Firestore-compatible map.
+ */
+private fun Reservation.toFirestoreMap(): Map<String, Any?> {
+    return mapOf(
+        "listingId" to listingId,
+        "listingTitle" to listingTitle,
+        "listingImageUrl" to listingImageUrl,
+        "guestId" to guestId,
+        "guestName" to guestName,
+        "hostId" to hostId,
+        "hostName" to hostName,
+        "checkInDate" to checkInDate,
+        "checkOutDate" to checkOutDate,
+        "numberOfGuests" to numberOfGuests,
+        "totalPrice" to totalPrice,
+        "status" to status,
+        "paymentStatus" to paymentStatus,
+        "createdAt" to createdAt,
+        "updatedAt" to updatedAt
+    ).filterValues { it != null }
 }
