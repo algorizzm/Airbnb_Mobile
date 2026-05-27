@@ -27,35 +27,38 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
 
         dialog.setOnShowListener {
 
-            val bottomSheet =
-                dialog.findViewById<View>(
-                    com.google.android.material.R.id.design_bottom_sheet
-                )
+            val bottomSheet = dialog.findViewById<View>(
+                com.google.android.material.R.id.design_bottom_sheet
+            )
 
             bottomSheet?.let { sheet ->
 
                 val behavior = BottomSheetBehavior.from(sheet)
 
-                // Get screen height
-                val displayMetrics = resources.displayMetrics
-                val screenHeight = displayMetrics.heightPixels
+                // Screen height
+                val screenHeight = resources.displayMetrics.heightPixels
 
-                // 80% height
-                val desiredHeight = (screenHeight * 0.80).toInt()
+                // 80% of screen
+                val desiredHeight = (screenHeight * 0.85f).toInt()
 
-                // Apply height
-                sheet.layoutParams.height = desiredHeight
+                // Apply height properly
+                sheet.layoutParams = sheet.layoutParams.apply {
+                    height = desiredHeight
+                }
 
-                // Expand fully
+                // IMPORTANT
+                sheet.minimumHeight = desiredHeight
+
+                // Expand immediately
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
 
-                // Allow drag dismiss
-                behavior.isDraggable = true
-
-                // Prevent tiny collapsed state
+                // Prevent collapsed mode
                 behavior.skipCollapsed = true
 
-                // Smooth interaction
+                // Allow drag
+                behavior.isDraggable = true
+
+                // Optional smoother behavior
                 behavior.peekHeight = desiredHeight
             }
         }

@@ -143,7 +143,7 @@
                 android:id="@+id/navIconMessages"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_messages"
+                android:src="@drawable/ic_message"
                 app:tint="#717171"
                 android:contentDescription="Messages"/>
 

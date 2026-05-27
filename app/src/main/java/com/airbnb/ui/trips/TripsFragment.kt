@@ -116,16 +116,30 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
     }
 
     private fun updateFilterButtons() {
-        // Reset all buttons
-        binding.btnUpcoming.setBackgroundResource(R.drawable.bg_filter_inactive)
-        binding.btnPast.setBackgroundResource(R.drawable.bg_filter_inactive)
-        binding.btnCancelled.setBackgroundResource(R.drawable.bg_filter_inactive)
 
-        // Highlight active button
+        binding.btnUpcoming.setBackgroundResource(R.drawable.bg_chip_unselected)
+        binding.btnPast.setBackgroundResource(R.drawable.bg_chip_unselected)
+        binding.btnCancelled.setBackgroundResource(R.drawable.bg_chip_unselected)
+
+        binding.btnUpcoming.setTextColor(requireContext().getColor(R.color.black))
+        binding.btnPast.setTextColor(requireContext().getColor(R.color.black))
+        binding.btnCancelled.setTextColor(requireContext().getColor(R.color.black))
+
         when (currentFilter) {
-            TripFilter.UPCOMING -> binding.btnUpcoming.setBackgroundResource(R.drawable.bg_filter_active)
-            TripFilter.PAST -> binding.btnPast.setBackgroundResource(R.drawable.bg_filter_active)
-            TripFilter.CANCELLED -> binding.btnCancelled.setBackgroundResource(R.drawable.bg_filter_active)
+            TripFilter.UPCOMING -> {
+                binding.btnUpcoming.setBackgroundResource(R.drawable.bg_chip_selected)
+                binding.btnUpcoming.setTextColor(requireContext().getColor(android.R.color.white))
+            }
+
+            TripFilter.PAST -> {
+                binding.btnPast.setBackgroundResource(R.drawable.bg_chip_selected)
+                binding.btnPast.setTextColor(requireContext().getColor(android.R.color.white))
+            }
+
+            TripFilter.CANCELLED -> {
+                binding.btnCancelled.setBackgroundResource(R.drawable.bg_chip_selected)
+                binding.btnCancelled.setTextColor(requireContext().getColor(android.R.color.white))
+            }
         }
     }
 
@@ -185,7 +199,8 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
         adapter.submitList(trips)
 
         // Show/hide empty state
-        binding.tvEmpty.visibility = if (trips.isEmpty()) View.VISIBLE else View.GONE
+        binding.layoutEmptyState.visibility =
+            if (trips.isEmpty()) View.VISIBLE else View.GONE
         binding.recyclerTrips.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
 
         // Update empty message based on filter
