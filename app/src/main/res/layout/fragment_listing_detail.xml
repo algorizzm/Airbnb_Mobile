@@ -241,6 +241,46 @@
 
         </LinearLayout>
 
+        <!-- Own Listing Message -->
+        <LinearLayout
+            android:id="@+id/tvOwnListingMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/bg_dark_card"
+            android:padding="24dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_home"
+                android:alpha="0.5"
+                app:tint="#02D083"
+                android:contentDescription="Your listing" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="This is your listing"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="You cannot book your own property"
+                android:textColor="#80FFFFFF"
+                android:textSize="13sp"
+                android:fontFamily="@font/poppins_regular" />
+
+        </LinearLayout>
+
         <!-- Bottom Reserve Section -->
         <LinearLayout
             android:id="@+id/bottomReserveSection"

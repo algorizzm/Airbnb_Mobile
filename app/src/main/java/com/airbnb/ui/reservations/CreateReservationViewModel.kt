@@ -130,6 +130,13 @@ class CreateReservationViewModel(
                 return@launch
             }
 
+            // Prevent host from booking their own listing
+            if (user.id == listing.hostId) {
+                _toast.value = "You cannot book your own listing"
+                _isLoading.value = false
+                return@launch
+            }
+
             if (checkIn == null || checkOut == null) {
                 _toast.value = "Please select check-in and check-out dates"
                 return@launch

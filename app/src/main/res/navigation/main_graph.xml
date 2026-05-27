@@ -76,7 +76,39 @@
             android:id="@+id/action_profileFragment_to_hikeDetailFragment"
             app:destination="@id/hikeDetailFragment" />
 
+        <action
+            android:id="@+id/action_profileFragment_to_hostListingsFragment"
+            app:destination="@id/hostListingsFragment" />
+
     </fragment>
+
+    <!-- Host Listings -->
+    <fragment
+        android:id="@+id/hostListingsFragment"
+        android:name="com.airbnb.ui.hosting.HostListingsFragment"
+        android:label="My Listings">
+
+        <action
+            android:id="@+id/action_hostListingsFragment_to_createListingFragment"
+            app:destination="@id/createListingFragment" />
+
+        <action
+            android:id="@+id/action_hostListingsFragment_to_hostReservationsFragment"
+            app:destination="@id/hostReservationsFragment" />
+
+    </fragment>
+
+    <!-- Create/Edit Listing -->
+    <fragment
+        android:id="@+id/createListingFragment"
+        android:name="com.airbnb.ui.hosting.CreateListingFragment"
+        android:label="Create Listing" />
+
+    <!-- Host Reservations -->
+    <fragment
+        android:id="@+id/hostReservationsFragment"
+        android:name="com.airbnb.ui.hosting.HostReservationsFragment"
+        android:label="Reservations" />
 
     <!-- Hike -->
     <fragment

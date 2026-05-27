@@ -9,6 +9,7 @@ import com.airbnb.data.repository.ReservationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class TripsViewModel(
@@ -45,24 +46,29 @@ class TripsViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                reservationRepository.observeReservationsForGuest(userId).collect { reservations ->
-                    // Fetch listing details for each reservation
-                    val tripItems = reservations.mapNotNull { reservation ->
-                        val listing = try {
-                            listingRepository.getListing(reservation.listingId).getOrNull()
-                        } catch (e: Exception) {
-                            null
-                        }
-                        TripItem(reservation, listing)
+                reservationRepository.observeReservationsForGuest(userId)
+                    .catch { e ->
+                        _toast.value = "Failed to load trips: ${e.message}"
+                        _isLoading.value = false
                     }
+                    .collect { reservations ->
+                        // Fetch listing details for each reservation
+                        val tripItems = reservations.mapNotNull { reservation ->
+                            val listing = try {
+                                listingRepository.getListing(reservation.listingId).getOrNull()
+                            } catch (e: Exception) {
+                                null
+                            }
+                            TripItem(reservation, listing)
+                        }
 
-                    // Group trips by status
-                    _upcomingTrips.value = tripItems.filter { it.isUpcoming() }
-                    _pastTrips.value = tripItems.filter { it.isCompleted() }
-                    _cancelledTrips.value = tripItems.filter { it.isCancelled() }
+                        // Group trips by status
+                        _upcomingTrips.value = tripItems.filter { it.isUpcoming() }
+                        _pastTrips.value = tripItems.filter { it.isCompleted() }
+                        _cancelledTrips.value = tripItems.filter { it.isCancelled() }
 
-                    _isLoading.value = false
-                }
+                        _isLoading.value = false
+                    }
             } catch (e: Exception) {
                 _toast.value = "Failed to load trips: ${e.message}"
                 _isLoading.value = false

@@ -135,6 +135,19 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_detail) {
                         }
                     }
                 }
+
+                // Observe if this is user's own listing
+                launch {
+                    viewModel.isOwnListing.collect { isOwnListing ->
+                        if (isOwnListing) {
+                            binding.bottomReserveSection.visibility = View.GONE
+                            binding.tvOwnListingMessage.visibility = View.VISIBLE
+                        } else {
+                            binding.bottomReserveSection.visibility = View.VISIBLE
+                            binding.tvOwnListingMessage.visibility = View.GONE
+                        }
+                    }
+                }
             }
         }
     }

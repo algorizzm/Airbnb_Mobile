@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.airbnb.data.model.Listing
 import com.airbnb.data.repository.ListingRepository
+import com.airbnb.data.session.UserSessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +28,9 @@ class ListingDetailViewModel(
     private val _toast = MutableStateFlow<String?>(null)
     val toast: StateFlow<String?> = _toast.asStateFlow()
 
+    private val _isOwnListing = MutableStateFlow(false)
+    val isOwnListing: StateFlow<Boolean> = _isOwnListing.asStateFlow()
+
     init {
         loadListing()
     }
@@ -43,6 +47,10 @@ class ListingDetailViewModel(
 
                     if (listing == null) {
                         _error.value = "Listing not found"
+                    } else {
+                        // Check if current user is the host
+                        val currentUser = UserSessionManager.currentUser.value
+                        _isOwnListing.value = currentUser?.id == listing.hostId
                     }
                 }
             } catch (e: Exception) {

@@ -68,6 +68,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         setupGuestActions()
         setupImagePickers()
         setupBioEdit()
+        setupHostingButton()
         setupHikeNavigation()
         observeState()
     }
@@ -131,6 +132,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 maxLength = 200,
                 multiLine = true
             ) { newBio -> viewModel.updateBio(newBio) }
+        }
+    }
+
+    // ── Hosting Button ───────────────────────────────────────────────────────
+    private fun setupHostingButton() {
+        binding.btnSwitchToHosting.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_hostListingsFragment)
         }
     }
 
