@@ -1,0 +1,193 @@
+package com.airbnb.ui.trips
+
+import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.R
+import com.airbnb.databinding.FragmentTripsBinding
+import com.airbnb.ui.trips.adapter.TripAdapter
+import kotlinx.coroutines.launch
+
+class TripsFragment : Fragment(R.layout.fragment_trips) {
+
+    private var _binding: FragmentTripsBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: TripsViewModel by viewModels()
+
+    private lateinit var adapter: TripAdapter
+
+    private var currentFilter: TripFilter = TripFilter.UPCOMING
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _binding = FragmentTripsBinding.bind(view)
+
+        setupAdapter()
+        setupRecycler()
+        setupFilters()
+        observeUi()
+    }
+
+    private fun setupAdapter() {
+        adapter = TripAdapter(
+            onItemClick = { tripItem ->
+                // Navigate to listing detail
+                val bundle = Bundle().apply {
+                    putString("listingId", tripItem.reservation.listingId)
+                }
+                try {
+                    findNavController().navigate(
+                        R.id.action_tripsFragment_to_listingDetailFragment,
+                        bundle
+                    )
+                } catch (e: IllegalArgumentException) {
+                    Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onCancelClick = { tripItem ->
+                showCancelConfirmationDialog(tripItem.reservation.id)
+            }
+        )
+    }
+
+    private fun setupRecycler() {
+        binding.recyclerTrips.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerTrips.adapter = adapter
+    }
+
+    private fun setupFilters() {
+        // Set initial filter state
+        updateFilterButtons()
+
+        binding.btnUpcoming.setOnClickListener {
+            currentFilter = TripFilter.UPCOMING
+            updateFilterButtons()
+            updateTripsList()
+        }
+
+        binding.btnPast.setOnClickListener {
+            currentFilter = TripFilter.PAST
+            updateFilterButtons()
+            updateTripsList()
+        }
+
+        binding.btnCancelled.setOnClickListener {
+            currentFilter = TripFilter.CANCELLED
+            updateFilterButtons()
+            updateTripsList()
+        }
+    }
+
+    private fun updateFilterButtons() {
+        // Reset all buttons
+        binding.btnUpcoming.setBackgroundResource(R.drawable.bg_filter_inactive)
+        binding.btnPast.setBackgroundResource(R.drawable.bg_filter_inactive)
+        binding.btnCancelled.setBackgroundResource(R.drawable.bg_filter_inactive)
+
+        // Highlight active button
+        when (currentFilter) {
+            TripFilter.UPCOMING -> binding.btnUpcoming.setBackgroundResource(R.drawable.bg_filter_active)
+            TripFilter.PAST -> binding.btnPast.setBackgroundResource(R.drawable.bg_filter_active)
+            TripFilter.CANCELLED -> binding.btnCancelled.setBackgroundResource(R.drawable.bg_filter_active)
+        }
+    }
+
+    private fun observeUi() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                launch {
+                    viewModel.upcomingTrips.collect {
+                        if (currentFilter == TripFilter.UPCOMING) {
+                            updateTripsList()
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.pastTrips.collect {
+                        if (currentFilter == TripFilter.PAST) {
+                            updateTripsList()
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.cancelledTrips.collect {
+                        if (currentFilter == TripFilter.CANCELLED) {
+                            updateTripsList()
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.isLoading.collect { isLoading ->
+                        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+                    }
+                }
+
+                launch {
+                    viewModel.toast.collect { msg ->
+                        if (!msg.isNullOrBlank()) {
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                            viewModel.consumeToast()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateTripsList() {
+        val trips = when (currentFilter) {
+            TripFilter.UPCOMING -> viewModel.upcomingTrips.value
+            TripFilter.PAST -> viewModel.pastTrips.value
+            TripFilter.CANCELLED -> viewModel.cancelledTrips.value
+        }
+
+        adapter.submitList(trips)
+
+        // Show/hide empty state
+        binding.tvEmpty.visibility = if (trips.isEmpty()) View.VISIBLE else View.GONE
+        binding.recyclerTrips.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
+
+        // Update empty message based on filter
+        binding.tvEmpty.text = when (currentFilter) {
+            TripFilter.UPCOMING -> "No upcoming trips"
+            TripFilter.PAST -> "No past trips"
+            TripFilter.CANCELLED -> "No cancelled trips"
+        }
+    }
+
+    private fun showCancelConfirmationDialog(reservationId: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Cancel Reservation")
+            .setMessage("Are you sure you want to cancel this reservation?")
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.cancelReservation(reservationId)
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private enum class TripFilter {
+        UPCOMING,
+        PAST,
+        CANCELLED
+    }
+}

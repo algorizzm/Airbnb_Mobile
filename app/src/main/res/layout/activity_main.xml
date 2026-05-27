@@ -34,27 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Home -->
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:id="@+id/navIconHome"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:src="@drawable/ic_home"
-                android:contentDescription="Home" />
-
-        </LinearLayout>
-
-        <!-- Explore / Search -->
+        <!-- Explore -->
         <LinearLayout
             android:id="@+id/navExplore"
             android:layout_width="0dp"
@@ -70,16 +50,52 @@
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/ic_explore"
-                android:tint="#AAAAAA"
+                android:tint="#02D083"
                 android:contentDescription="Explore" />
 
         </LinearLayout>
 
-        <!-- Center FAB placeholder (takes up space so FAB sits centered) -->
-        <FrameLayout
+        <!-- Wishlists -->
+        <LinearLayout
+            android:id="@+id/navWishlists"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navIconWishlists"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_heart"
+                android:tint="#AAAAAA"
+                android:contentDescription="Wishlists" />
+
+        </LinearLayout>
+
+        <!-- Trips -->
+        <LinearLayout
+            android:id="@+id/navTrips"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navIconTrips"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_calendar"
+                android:tint="#AAAAAA"
+                android:contentDescription="Trips" />
+
+        </LinearLayout>
 
         <!-- Messages -->
         <LinearLayout
@@ -102,8 +118,7 @@
 
         </LinearLayout>
 
-        <!-- Profile avatar -->
-        <!-- Profile avatar -->
+        <!-- Profile -->
         <LinearLayout
             android:id="@+id/navProfile"
             android:layout_width="0dp"
@@ -139,29 +154,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <!-- Center FAB — floats above the bar, centered horizontally -->
-    <FrameLayout
-        android:id="@+id/navFab"
-        android:layout_width="58dp"
-        android:layout_height="58dp"
-        android:background="@drawable/bg_fab_green"
-        android:elevation="12dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toBottomOf="@id/navBarBg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_verdant_logo"
-            android:scaleType="fitCenter"
-            android:contentDescription="Hike" />
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

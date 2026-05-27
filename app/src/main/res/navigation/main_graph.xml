@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/exploreFragment">
 
     <!-- Home -->
     <fragment
@@ -46,6 +46,18 @@
 
         <action
             android:id="@+id/action_wishlistFragment_to_listingDetailFragment"
+            app:destination="@id/listingDetailFragment" />
+
+    </fragment>
+
+    <!-- Trips -->
+    <fragment
+        android:id="@+id/tripsFragment"
+        android:name="com.airbnb.ui.trips.TripsFragment"
+        android:label="Trips">
+
+        <action
+            android:id="@+id/action_tripsFragment_to_listingDetailFragment"
             app:destination="@id/listingDetailFragment" />
 
     </fragment>

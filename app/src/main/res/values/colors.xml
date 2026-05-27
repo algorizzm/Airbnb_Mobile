@@ -21,4 +21,9 @@
     <color name="colorTextSecondary">#80FFFFFF</color>
     <color name="colorTextMuted">#666666</color>
 
+    <!-- Status Colors -->
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+    <color name="gray">#AAAAAA</color>
+
 </resources>

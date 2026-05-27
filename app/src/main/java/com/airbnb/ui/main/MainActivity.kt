@@ -18,20 +18,18 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var navHome: LinearLayout
     private lateinit var navExplore: LinearLayout
-    private lateinit var navFab: FrameLayout
+    private lateinit var navWishlists: LinearLayout
+    private lateinit var navTrips: LinearLayout
     private lateinit var navMessages: LinearLayout
     private lateinit var navProfile: LinearLayout
 
-    private lateinit var navIconHome: ImageView
     private lateinit var navIconExplore: ImageView
+    private lateinit var navIconWishlists: ImageView
+    private lateinit var navIconTrips: ImageView
     private lateinit var navIconMessages: ImageView
     private lateinit var navIconProfile: ImageView
     private lateinit var navProfileInit: TextView
-
-    // Wishlist navigation (will replace Home in future)
-    private var isWishlistMode = false
 
     private lateinit var customNavBar: LinearLayout
 
@@ -56,15 +54,16 @@ class MainActivity : AppCompatActivity() {
         // ─────────────────────────────────────────────
         customNavBar = findViewById(R.id.navBarBg)
 
-        navHome = findViewById(R.id.navHome)
         navExplore = findViewById(R.id.navExplore)
-        navFab = findViewById(R.id.navFab)
+        navWishlists = findViewById(R.id.navWishlists)
+        navTrips = findViewById(R.id.navTrips)
         navMessages = findViewById(R.id.navMessages)
         navProfile = findViewById(R.id.navProfile)
         navProfileInit = findViewById(R.id.navProfileInitial)
 
-        navIconHome = findViewById(R.id.navIconHome)
         navIconExplore = findViewById(R.id.navIconExplore)
+        navIconWishlists = findViewById(R.id.navIconWishlists)
+        navIconTrips = findViewById(R.id.navIconTrips)
         navIconMessages = findViewById(R.id.navIconMessages)
         navIconProfile = findViewById(R.id.navIconProfile)
 
@@ -74,9 +73,9 @@ class MainActivity : AppCompatActivity() {
         val protectedTabs = setOf(
             R.id.messagesFragment,
             R.id.exploreFragment,
-            R.id.hikeFragment,
             R.id.profileFragment,
-            R.id.wishlistFragment
+            R.id.wishlistFragment,
+            R.id.tripsFragment
         )
 
         // ─────────────────────────────────────────────
@@ -149,22 +148,16 @@ class MainActivity : AppCompatActivity() {
         // ─────────────────────────────────────────────
         // Bottom Nav Clicks
         // ─────────────────────────────────────────────
-        navHome.setOnClickListener {
-            navigateTo(R.id.homeFragment)
-        }
-
-        // Long press Home to access Wishlist (temporary until full bottom nav refactor)
-        navHome.setOnLongClickListener {
-            navigateTo(R.id.wishlistFragment)
-            true
-        }
-
         navExplore.setOnClickListener {
             navigateTo(R.id.exploreFragment)
         }
 
-        navFab.setOnClickListener {
-            navigateTo(R.id.hikeFragment)
+        navWishlists.setOnClickListener {
+            navigateTo(R.id.wishlistFragment)
+        }
+
+        navTrips.setOnClickListener {
+            navigateTo(R.id.tripsFragment)
         }
 
         navMessages.setOnClickListener {
@@ -198,16 +191,14 @@ class MainActivity : AppCompatActivity() {
             customNavBar.visibility =
                 if (showNav) View.VISIBLE else View.GONE
 
-            navFab.visibility =
-                if (showNav) View.VISIBLE else View.GONE
-
             // Colors
             val inactive = 0xFFAAAAAA.toInt()
             val active = 0xFF02D083.toInt()
 
-            // Reset icon colors
-            navIconHome.setColorFilter(inactive)
+            // Reset all icon colors
             navIconExplore.setColorFilter(inactive)
+            navIconWishlists.setColorFilter(inactive)
+            navIconTrips.setColorFilter(inactive)
             navIconMessages.setColorFilter(inactive)
 
             // Do NOT tint profile avatar
@@ -216,16 +207,16 @@ class MainActivity : AppCompatActivity() {
             // Highlight active tab
             when (destination.id) {
 
-                R.id.homeFragment -> {
-                    navIconHome.setColorFilter(active)
+                R.id.exploreFragment -> {
+                    navIconExplore.setColorFilter(active)
                 }
 
                 R.id.wishlistFragment -> {
-                    navIconHome.setColorFilter(active)
+                    navIconWishlists.setColorFilter(active)
                 }
 
-                R.id.exploreFragment -> {
-                    navIconExplore.setColorFilter(active)
+                R.id.tripsFragment -> {
+                    navIconTrips.setColorFilter(active)
                 }
 
                 R.id.messagesFragment -> {

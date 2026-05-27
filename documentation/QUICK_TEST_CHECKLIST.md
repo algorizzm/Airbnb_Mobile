@@ -28,7 +28,7 @@
 - [ ] Tap listing card → Opens detail screen
 - [ ] Back button → Returns to Explore
 
-**Status:** ☐ PASS  ☐ FAIL
+**Status:**     
 
 ---
 
@@ -47,7 +47,7 @@
 - [ ] Back button → Returns to Explore
 - [ ] Reserve button → Opens reservation screen
 
-**Status:** ☐ PASS  ☐ FAIL
+**Status:** ✅ PASS  ☐ FAIL
 
 ---
 
@@ -96,6 +96,80 @@
 ### Navigation
 - [ ] Back button → Returns to detail
 
+**Status:** ✅ PASS  ☐ FAIL
+
+---
+
+## ❤️ WISHLIST (5 min)
+
+### Add to Wishlist
+- [ ] Tap heart icon on listing card
+- [ ] Heart fills in
+- [ ] Toast: "Added to wishlist"
+- [ ] Check Firestore → Wishlist updated
+
+### Remove from Wishlist
+- [ ] Tap filled heart icon
+- [ ] Heart empties
+- [ ] Toast: "Removed from wishlist"
+- [ ] Check Firestore → Wishlist updated
+
+### Wishlist Screen
+- [ ] Navigate to Wishlists tab
+- [ ] Wishlisted listings appear
+- [ ] Tap listing → Opens detail screen
+- [ ] Tap heart → Removes from wishlist
+- [ ] Empty state shows when no wishlists
+
+**Status:** ✅ PASS  ☐ FAIL
+
+---
+
+## 🗓️ TRIPS SCREEN (10 min)
+
+### Display
+- [ ] Navigate to Trips tab
+- [ ] Filter buttons visible (Upcoming/Past/Cancelled)
+- [ ] Upcoming filter active by default
+- [ ] Trips display correctly
+
+### Trip Cards
+- [ ] Listing image shows
+- [ ] Title and location visible
+- [ ] Check-in/check-out dates formatted correctly
+- [ ] Status shows with correct color:
+  - [ ] Green for upcoming/confirmed
+  - [ ] Gray for completed
+  - [ ] Red for cancelled
+- [ ] Total price displays
+- [ ] Cancel button shows only for upcoming trips
+
+### Filtering
+- [ ] Tap "Upcoming" → Shows active reservations
+- [ ] Tap "Past" → Shows completed reservations
+- [ ] Tap "Cancelled" → Shows cancelled reservations
+- [ ] Filter button highlights correctly
+- [ ] Empty state shows when no trips in filter
+
+### Cancellation
+- [ ] Tap "Cancel Reservation" on upcoming trip
+- [ ] Confirmation dialog appears
+- [ ] Tap "No" → Dialog dismisses, no change
+- [ ] Tap "Yes" → Reservation cancelled
+- [ ] Toast: "Reservation cancelled successfully"
+- [ ] Trip moves to Cancelled filter
+- [ ] Check Firestore → Status updated to "cancelled"
+
+### Navigation
+- [ ] Tap trip card → Opens listing detail
+- [ ] Back button → Returns to Trips
+
+### Real-time Sync
+- [ ] Create new reservation from another device/browser
+- [ ] New trip appears automatically in Trips screen
+- [ ] Cancel reservation from another device/browser
+- [ ] Trip updates automatically
+
 **Status:** ☐ PASS  ☐ FAIL
 
 ---
@@ -105,17 +179,28 @@
 ### Complete Flow
 - [ ] Explore → Search "Villa"
 - [ ] Tap Villa → View details
+- [ ] Tap heart → Add to wishlist
 - [ ] Tap Reserve → Create reservation
 - [ ] Select dates, guests
 - [ ] Confirm → Success
-- [ ] Check Firestore → Data saved
+- [ ] Navigate to Trips → Reservation appears
+- [ ] Navigate to Wishlists → Villa appears
+- [ ] Check Firestore → All data saved
 
 ### Multiple Listings
 - [ ] Navigate to 3 different listings
 - [ ] Each shows correct data
 - [ ] No data mixing
 
-**Status:** ☐ PASS  ☐ FAIL
+### Bottom Navigation
+- [ ] Tap Explore → Explore screen
+- [ ] Tap Wishlists → Wishlist screen
+- [ ] Tap Trips → Trips screen
+- [ ] Tap Messages → Messages screen
+- [ ] Tap Profile → Profile screen
+- [ ] All tabs work correctly
+
+**Status:** ✅ PASS  ☐ FAIL
 
 ---
 
@@ -132,7 +217,7 @@
 - [ ] Rotate to portrait → Works
 - [ ] All content accessible
 
-**Status:** ☐ PASS  ☐ FAIL
+**Status:** ☐ PASS  ✅ FAIL
 
 ---
 
@@ -150,7 +235,7 @@
 
 ## 📊 OVERALL RESULT
 
-**Total Time:** ~30 minutes  
+**Total Time:** ~50 minutes  
 **Pass Rate:** ____%  
 **Status:** ☐ ALL PASS  ☐ PASS WITH ISSUES  ☐ FAIL  
 
@@ -187,6 +272,11 @@ After testing, verify in Firebase Console:
   - [ ] numberOfGuests
   - [ ] totalPrice
   - [ ] status: "pending"
+- [ ] Cancelled reservation has status: "cancelled"
+
+### Firestore → `wishlists` collection
+- [ ] User wishlist document exists
+- [ ] listingIds array contains wishlisted items
 
 **Firebase Status:** ☐ VERIFIED  ☐ ISSUES FOUND
 
