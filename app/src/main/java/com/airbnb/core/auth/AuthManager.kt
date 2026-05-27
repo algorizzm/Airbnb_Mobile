@@ -23,6 +23,10 @@ object AuthManager {
         auth.signOut()
     }
 
+    fun currentUserId(): String? {
+        return auth.currentUser?.uid
+    }
+
     fun currentUserFlow() =
         UserSessionManager.currentUser
 

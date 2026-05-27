@@ -25,22 +25,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
 
     private val viewModel: ExploreViewModel by viewModels()
 
-    private val adapter = ListingAdapter { listing ->
-
-        val bundle = Bundle().apply {
-            putString(ARG_LISTING_ID, listing.id)
-        }
-
-        try {
-            findNavController().navigate(
-                R.id.action_exploreFragment_to_listingDetailFragment,
-                bundle
-            )
-        } catch (e: IllegalArgumentException) {
-            // Navigation action not yet defined - placeholder
-            Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
-        }
-    }
+    private lateinit var adapter: ListingAdapter
 
     override fun onViewCreated(
         view: View,
@@ -50,11 +35,34 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
 
         _binding = FragmentExploreBinding.bind(view)
 
+        setupAdapter()
         setupTopBar()
         setupRecycler()
         setupSearch()
         setupFilters()
         observeUi()
+    }
+
+    private fun setupAdapter() {
+        adapter = ListingAdapter(
+            onItemClick = { listing ->
+                val bundle = Bundle().apply {
+                    putString(ARG_LISTING_ID, listing.id)
+                }
+
+                try {
+                    findNavController().navigate(
+                        R.id.action_exploreFragment_to_listingDetailFragment,
+                        bundle
+                    )
+                } catch (e: IllegalArgumentException) {
+                    Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onWishlistClick = { listing ->
+                viewModel.toggleWishlist(listing.id)
+            }
+        )
     }
 
     private fun setupTopBar() {
@@ -177,6 +185,35 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
                                 View.VISIBLE
                             else
                                 View.GONE
+                    }
+                }
+
+                launch {
+
+                    viewModel.wishlistIds.collect { wishlistIds ->
+                        // Recreate adapter with updated wishlist state
+                        adapter = ListingAdapter(
+                            onItemClick = { listing ->
+                                val bundle = Bundle().apply {
+                                    putString(ARG_LISTING_ID, listing.id)
+                                }
+
+                                try {
+                                    findNavController().navigate(
+                                        R.id.action_exploreFragment_to_listingDetailFragment,
+                                        bundle
+                                    )
+                                } catch (e: IllegalArgumentException) {
+                                    Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                            onWishlistClick = { listing ->
+                                viewModel.toggleWishlist(listing.id)
+                            },
+                            wishlistIds = wishlistIds
+                        )
+                        binding.recyclerHikes.adapter = adapter
+                        adapter.submitList(viewModel.displayListings.value)
                     }
                 }
 

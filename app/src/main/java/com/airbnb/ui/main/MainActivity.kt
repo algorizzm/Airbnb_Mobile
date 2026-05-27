@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navIconProfile: ImageView
     private lateinit var navProfileInit: TextView
 
+    // Wishlist navigation (will replace Home in future)
+    private var isWishlistMode = false
+
     private lateinit var customNavBar: LinearLayout
 
     // Prevent rapid duplicate navigations
@@ -72,7 +75,8 @@ class MainActivity : AppCompatActivity() {
             R.id.messagesFragment,
             R.id.exploreFragment,
             R.id.hikeFragment,
-            R.id.profileFragment
+            R.id.profileFragment,
+            R.id.wishlistFragment
         )
 
         // ─────────────────────────────────────────────
@@ -149,6 +153,12 @@ class MainActivity : AppCompatActivity() {
             navigateTo(R.id.homeFragment)
         }
 
+        // Long press Home to access Wishlist (temporary until full bottom nav refactor)
+        navHome.setOnLongClickListener {
+            navigateTo(R.id.wishlistFragment)
+            true
+        }
+
         navExplore.setOnClickListener {
             navigateTo(R.id.exploreFragment)
         }
@@ -207,6 +217,10 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
 
                 R.id.homeFragment -> {
+                    navIconHome.setColorFilter(active)
+                }
+
+                R.id.wishlistFragment -> {
                     navIconHome.setColorFilter(active)
                 }
 

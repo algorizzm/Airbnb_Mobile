@@ -2,8 +2,10 @@ package com.airbnb.ui.explore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.airbnb.core.auth.AuthManager
 import com.airbnb.data.model.Listing
 import com.airbnb.data.repository.ListingRepository
+import com.airbnb.data.repository.WishlistRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ExploreViewModel(
-    private val listingRepository: ListingRepository = ListingRepository()
+    private val listingRepository: ListingRepository = ListingRepository(),
+    private val wishlistRepository: WishlistRepository = WishlistRepository()
 ) : ViewModel() {
 
     private val _allListings =
@@ -42,6 +45,12 @@ class ExploreViewModel(
 
     val toast: StateFlow<String?> =
         _toast.asStateFlow()
+
+    private val _wishlistIds =
+        MutableStateFlow<Set<String>>(emptySet())
+
+    val wishlistIds: StateFlow<Set<String>> =
+        _wishlistIds.asStateFlow()
 
     val displayListings: StateFlow<List<Listing>> = combine(
         _allListings,
@@ -96,6 +105,20 @@ class ExploreViewModel(
                 _isLoading.value = false
             }
         }
+
+        // Observe wishlist changes
+        val userId = AuthManager.currentUserId()
+        if (userId != null) {
+            viewModelScope.launch {
+                try {
+                    wishlistRepository.observeWishlist(userId).collect { wishlist ->
+                        _wishlistIds.value = wishlist.listingIds.toSet()
+                    }
+                } catch (e: Exception) {
+                    // Silently fail - wishlist is optional
+                }
+            }
+        }
     }
 
     fun setSearchQuery(value: String) {
@@ -112,5 +135,27 @@ class ExploreViewModel(
 
     fun consumeToast() {
         _toast.value = null
+    }
+
+    fun toggleWishlist(listingId: String) {
+        val userId = AuthManager.currentUserId()
+        if (userId == null) {
+            _toast.value = "Please log in to save listings"
+            return
+        }
+
+        viewModelScope.launch {
+            wishlistRepository.toggleWishlist(userId, listingId)
+                .onSuccess { isAdded ->
+                    _toast.value = if (isAdded) {
+                        "Added to wishlist"
+                    } else {
+                        "Removed from wishlist"
+                    }
+                }
+                .onFailure { error ->
+                    _toast.value = "Failed to update wishlist: ${error.message}"
+                }
+        }
     }
 }

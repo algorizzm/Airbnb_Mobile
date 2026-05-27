@@ -38,6 +38,18 @@
 
     </fragment>
 
+    <!-- Wishlist -->
+    <fragment
+        android:id="@+id/wishlistFragment"
+        android:name="com.airbnb.ui.wishlist.WishlistFragment"
+        android:label="Wishlists">
+
+        <action
+            android:id="@+id/action_wishlistFragment_to_listingDetailFragment"
+            app:destination="@id/listingDetailFragment" />
+
+    </fragment>
+
     <!-- Profile -->
     <fragment
         android:id="@+id/profileFragment"
