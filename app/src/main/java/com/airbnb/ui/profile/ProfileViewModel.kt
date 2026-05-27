@@ -88,7 +88,7 @@ class ProfileViewModel(
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // Recent hikes
+    // Recent trips (reservations)
     // ─────────────────────────────────────────────────────────────────────────
 
     private fun observeRecentHikes() {
@@ -98,7 +98,10 @@ class ProfileViewModel(
             UserSessionManager.currentUser.collect { user ->
                 if (user == null) return@collect
                 
+                // For Airbnb MVP: Show recent reservations as trips
+                // This is a simplified view - full trips are in TripsFragment
                 if (user.role == com.airbnb.utils.UserRole.GUIDE) {
+                    // Hosts see their listings (simplified for profile preview)
                     hikeRepo.observeHikesForGuide(uid).collect { hikes ->
                         val rows = hikes.filter { it.status == com.airbnb.utils.HikeStatus.COMPLETED }
                             .take(3)
@@ -117,6 +120,7 @@ class ProfileViewModel(
                         _state.value = _state.value.copy(recentHikes = rows)
                     }
                 } else {
+                    // Guests see their recent reservations
                     combine(
                         bookingRepo.observeBookingsForUser(uid),
                         hikeRepo.observeHikes()
@@ -128,7 +132,7 @@ class ProfileViewModel(
                                 val hike = hikes.firstOrNull { it.id == booking.hikeId }
                                 UserBookingRow(
                                     booking = booking,
-                                    hikeTitle = hike?.title ?: "Hike",
+                                    hikeTitle = hike?.title ?: "Property",
                                     hikeImageUrl = hike?.coverImageUrl() ?: "",
                                     hikeLocation = hike?.summaryLocation()?.ifBlank { hike?.location } ?: ""
                                 )

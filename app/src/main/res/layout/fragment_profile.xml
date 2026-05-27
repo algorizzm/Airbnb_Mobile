@@ -305,139 +305,9 @@
 
             </LinearLayout>
 
-            <!-- Stats row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="4dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/bg_stat_card"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_marginEnd="5dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_hiker"
-                        android:tint="#02D083"
-                        android:contentDescription="Hikes icon"
-                        android:layout_marginBottom="4dp" />
-
-                    <TextView
-                        android:id="@+id/tvStatHikes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12"
-                        android:textColor="#02D083"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:maxLines="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hikes"
-                        android:textColor="#80FFFFFF"
-                        android:textSize="10sp"
-                        android:fontFamily="@font/poppins_regular" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/bg_stat_card"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_marginEnd="5dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_distance"
-                        android:tint="#02D083"
-                        android:contentDescription="Distance icon"
-                        android:layout_marginBottom="4dp" />
-
-                    <TextView
-                        android:id="@+id/tvStatDistance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="86.4km"
-                        android:textColor="#02D083"
-                        android:textSize="15sp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:maxLines="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Distance"
-                        android:textColor="#80FFFFFF"
-                        android:textSize="10sp"
-                        android:fontFamily="@font/poppins_regular" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/bg_stat_card"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_check_circle"
-                        android:tint="#02D083"
-                        android:contentDescription="Summits icon"
-                        android:layout_marginBottom="4dp" />
-
-                    <TextView
-                        android:id="@+id/tvStatSummits"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4"
-                        android:textColor="#02D083"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:maxLines="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Summits"
-                        android:textColor="#80FFFFFF"
-                        android:textSize="10sp"
-                        android:fontFamily="@font/poppins_regular" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+            <!-- Stats row - REMOVED for Airbnb MVP -->
+            <!-- Hiking statistics (Hikes, Distance, Summits) removed -->
+            <!-- Future: Could add Trips, Reviews, Years Hosting stats -->
 
             <!-- About card -->
             <LinearLayout
@@ -537,7 +407,7 @@
 
             </LinearLayout>
 
-            <!-- Recent Hikes -->
+            <!-- Recent Trips -->
             <LinearLayout
                 android:id="@+id/layoutRecentHikes"
                 android:layout_width="match_parent"
@@ -559,7 +429,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Recent Hikes"
+                        android:text="Recent Trips"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
                         android:fontFamily="@font/poppins_bold" />
@@ -725,174 +595,9 @@
 
             </LinearLayout>
 
-            <!-- Achievements section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Achievements"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:paddingBottom="12dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <!-- Badge 1 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/bg_achievement_badge"
-                            android:src="@drawable/ic_badge_first_hike"
-                            android:padding="10dp"
-                            android:contentDescription="First Hike badge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="First Hike"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="10sp"
-                            android:gravity="center"
-                            android:fontFamily="@font/poppins_regular" />
-
-                    </LinearLayout>
-
-                    <!-- Badge 2 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/bg_achievement_badge"
-                            android:src="@drawable/ic_badge_explorer"
-                            android:padding="10dp"
-                            android:contentDescription="Explorer badge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Explorer"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="10sp"
-                            android:gravity="center"
-                            android:fontFamily="@font/poppins_regular" />
-
-                    </LinearLayout>
-
-                    <!-- Badge 3 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/bg_achievement_badge"
-                            android:src="@drawable/ic_badge_distance"
-                            android:padding="10dp"
-                            android:contentDescription="Distance badge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="50km Club"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="10sp"
-                            android:gravity="center"
-                            android:fontFamily="@font/poppins_regular" />
-
-                    </LinearLayout>
-
-                    <!-- Badge 4 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/bg_achievement_badge"
-                            android:src="@drawable/ic_badge_night"
-                            android:padding="10dp"
-                            android:contentDescription="Night Hiker badge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Night Hiker"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="10sp"
-                            android:gravity="center"
-                            android:fontFamily="@font/poppins_regular" />
-
-                    </LinearLayout>
-
-                    <!-- Badge 5 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/bg_achievement_badge"
-                            android:src="@drawable/ic_badge_sunrise"
-                            android:padding="10dp"
-                            android:contentDescription="Sunrise badge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Sunrise"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="10sp"
-                            android:gravity="center"
-                            android:fontFamily="@font/poppins_regular" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
+            <!-- Achievements section - REMOVED for Airbnb MVP -->
+            <!-- Hiking badges (First Hike, Explorer, 50km Club, etc.) removed -->
+            <!-- Future: Could add Airbnb-relevant badges (Superhost, Reviews, etc.) -->
 
         </LinearLayout>
 

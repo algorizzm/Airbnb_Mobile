@@ -142,10 +142,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    // ── Recent hikes thumbnails ──────────────────────────────────────────────
+    // ── Recent trips thumbnails ──────────────────────────────────────────────
     private fun setupHikeNavigation() {
         binding.tvSeeAllHikes.setOnClickListener {
-            findNavController().navigate(R.id.myBookingsFragment)
+            findNavController().navigate(R.id.tripsFragment)
         }
     }
 
@@ -223,13 +223,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         binding.tvLocation.text =
                             user.location.ifBlank { "Unknown location" }
 
-                        binding.tvStatHikes.text = user.totalHikes.toString()
-
-                        binding.tvStatDistance.text =
-                            "%.1fkm".format(user.totalDistance)
-
-                        binding.tvStatSummits.text =
-                            user.totalSummits.toString()
+                        // Hiking statistics removed for Airbnb MVP
+                        // Future: Could add Trips count, Reviews, Years hosting
 
                         // Avatar
                         AvatarHelper.bind(
