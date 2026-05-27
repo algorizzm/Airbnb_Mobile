@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.airbnb.data.model.Listing
+import com.airbnb.utils.PublicCodeGenerator
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -86,7 +87,8 @@ class ListingRepository(
         val data = listing.copy(
             id = "",
             createdAt = listing.createdAt ?: Timestamp.now(),
-            updatedAt = Timestamp.now()
+            updatedAt = Timestamp.now(),
+            listingCode = listing.listingCode ?: PublicCodeGenerator.generateListingCode()
         )
         val ref = listingsCol.document()
         ref.set(data.toFirestoreMap(includeCreatedAt = true)).await()
@@ -178,7 +180,8 @@ private fun Listing.toFirestoreMap(includeCreatedAt: Boolean): Map<String, Any?>
         "bedrooms" to bedrooms,
         "bathrooms" to bathrooms,
         "propertyType" to propertyType,
-        "updatedAt" to updatedAt
+        "updatedAt" to updatedAt,
+        "listingCode" to listingCode
     )
     if (includeCreatedAt) {
         map["createdAt"] = createdAt

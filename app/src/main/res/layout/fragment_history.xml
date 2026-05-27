@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="History"
+            android:text="@string/title_trips"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:fontFamily="@font/poppins_bold" />
@@ -34,7 +34,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/bg_translucent_circle"
             android:src="@drawable/ic_notification"
-            android:contentDescription="Notifications"
+            android:contentDescription="@string/content_description_notifications"
             android:padding="8dp" />
 
         <ImageButton
@@ -43,7 +43,7 @@
             android:layout_height="36dp"
             android:background="@drawable/bg_translucent_circle"
             android:src="@drawable/ic_settings"
-            android:contentDescription="Settings"
+            android:contentDescription="@string/content_description_settings"
             android:padding="8dp" />
 
     </LinearLayout>
@@ -125,13 +125,13 @@
             android:layout_height="64dp"
             android:src="@drawable/ic_explore"
             android:tint="#2A2A2A"
-            android:contentDescription="No bookings" />
+            android:contentDescription="@string/content_description_empty_state_reservations" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="No hike history yet"
+            android:text="@string/history_empty_title"
             android:textColor="#80FFFFFF"
             android:textSize="15sp"
             android:fontFamily="@font/poppins_medium" />
@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Completed hikes will appear here"
+            android:text="@string/history_empty_message"
             android:textColor="#4DFFFFFF"
             android:textSize="12sp"
             android:gravity="center"

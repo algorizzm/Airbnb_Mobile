@@ -12,6 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
 import com.airbnb.databinding.FragmentCreateListingBinding
+import com.airbnb.utils.Amenities
+import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
 
 class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
@@ -31,6 +33,7 @@ class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
         
         setupToolbar()
         setupPropertyTypeSpinner()
+        setupAmenitiesChips()
         setupGuestCounters()
         setupSaveButton()
         observeState()
@@ -109,6 +112,20 @@ class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
         }
     }
 
+    private fun setupAmenitiesChips() {
+        val chipGroup = binding.chipGroupAmenities
+        chipGroup.removeAllViews()
+
+        Amenities.DEFAULT_AMENITIES.forEach { amenity ->
+            val chip = Chip(requireContext()).apply {
+                text = amenity
+                isCheckable = true
+                isClickable = true
+            }
+            chipGroup.addView(chip)
+        }
+    }
+
     private fun setupSaveButton() {
         binding.btnSave.setOnClickListener {
             saveListing()
@@ -128,17 +145,11 @@ class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
 
         val price = priceText.toDoubleOrNull()
         if (price == null) {
-            Toast.makeText(requireContext(), "Invalid price", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_invalid_price), Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Parse amenities (comma-separated)
-        val amenitiesText = binding.etAmenities.text.toString().trim()
-        val amenities = if (amenitiesText.isNotBlank()) {
-            amenitiesText.split(",").map { it.trim() }.filter { it.isNotBlank() }
-        } else {
-            emptyList()
-        }
+        val amenities = getSelectedAmenities()
 
         viewModel.saveListing(
             listingId = listingId,
@@ -153,6 +164,23 @@ class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
             amenities = amenities,
             imageUrl = imageUrl
         )
+    }
+
+    private fun getSelectedAmenities(): List<String> {
+        val chipGroup = binding.chipGroupAmenities
+        val selected = chipGroup.checkedChipIds.mapNotNull { id ->
+            chipGroup.findViewById<Chip>(id)?.text?.toString()
+        }
+        return Amenities.standardize(selected)
+    }
+
+    private fun applySelectedAmenities(amenities: List<String>) {
+        val standardized = Amenities.standardize(amenities)
+        val chipGroup = binding.chipGroupAmenities
+        for (index in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(index) as? Chip ?: continue
+            chip.isChecked = standardized.contains(chip.text.toString())
+        }
     }
 
     private fun observeState() {
@@ -177,7 +205,7 @@ class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
                         binding.tvBedroomCount.text = listing.bedrooms.toString()
                         binding.tvBathroomCount.text = listing.bathrooms.toString()
                         binding.etImageUrl.setText(listing.imageUrl)
-                        binding.etAmenities.setText(listing.amenities.joinToString(", "))
+                        applySelectedAmenities(listing.amenities)
 
                         // Set property type spinner
                         val propertyTypes = listOf("Entire home", "Private room", "Shared room", "Hotel room")

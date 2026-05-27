@@ -5,6 +5,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.airbnb.data.model.Reservation
 import com.airbnb.data.model.ReservationStatus
+import com.airbnb.utils.PublicCodeGenerator
+import com.airbnb.utils.ReservationDateValidator
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -89,12 +91,22 @@ class ReservationRepository(
      * Creates a new reservation in Firestore.
      */
     suspend fun createReservation(reservation: Reservation): Result<String> = runCatching {
+        val checkInDate = reservation.checkInDate?.toDate()
+            ?: error("Check-in date is required")
+        val checkOutDate = reservation.checkOutDate?.toDate()
+            ?: error("Check-out date is required")
+
+        if (!ReservationDateValidator.isDateRangeValid(checkInDate, checkOutDate)) {
+            error("Invalid reservation date range")
+        }
+
         val data = reservation.copy(
             id = "",
             status = ReservationStatus.PENDING,
             paymentStatus = "unpaid",
             createdAt = Timestamp.now(),
-            updatedAt = Timestamp.now()
+            updatedAt = Timestamp.now(),
+            reservationCode = reservation.reservationCode ?: PublicCodeGenerator.generateReservationCode()
         )
         val ref = reservationsCol.document()
         ref.set(data.toFirestoreMap()).await()
@@ -192,6 +204,7 @@ private fun Reservation.toFirestoreMap(): Map<String, Any?> {
         "status" to status,
         "paymentStatus" to paymentStatus,
         "createdAt" to createdAt,
-        "updatedAt" to updatedAt
+        "updatedAt" to updatedAt,
+        "reservationCode" to reservationCode
     ).filterValues { it != null }
 }

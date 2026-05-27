@@ -20,7 +20,7 @@
         android:layout_alignStart="@id/iconBg"
         android:layout_alignEnd="@id/iconBg"
         android:layout_centerVertical="true"
-        android:contentDescription="Menu Icon"
+        android:contentDescription="@string/content_description_menu_icon"
         android:src="@android:drawable/ic_menu_agenda" />
 
     <LinearLayout
@@ -35,7 +35,7 @@
             android:id="@+id/tvMenuTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My bookings"
+            android:text="@string/title_reservations"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -44,7 +44,7 @@
             android:id="@+id/tvMenuSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Applications and approved hikes"
+            android:text="@string/profile_menu_my_bookings_subtitle"
             android:textColor="#757575"
             android:textSize="12sp" />
     </LinearLayout>

@@ -8,12 +8,12 @@ import com.airbnb.data.model.Reservation
 import com.airbnb.data.repository.ListingRepository
 import com.airbnb.data.repository.ReservationRepository
 import com.airbnb.data.session.UserSessionManager
+import com.airbnb.utils.ReservationDateValidator
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import java.util.Date
 
 class CreateReservationViewModel(
@@ -72,12 +72,31 @@ class CreateReservationViewModel(
     }
 
     fun setCheckInDate(date: Date) {
-        _checkInDate.value = date
+        if (!ReservationDateValidator.isCheckInValid(date)) {
+            _toast.value = "Check-in date cannot be in the past"
+            return
+        }
+        _checkInDate.value = ReservationDateValidator.startOfDay(date)
+        val selectedCheckOut = _checkOutDate.value
+        if (selectedCheckOut != null && !ReservationDateValidator.isDateRangeValid(_checkInDate.value!!, selectedCheckOut)) {
+            _checkOutDate.value = null
+            _toast.value = "Please select a new check-out date"
+        }
         calculatePricing()
     }
 
     fun setCheckOutDate(date: Date) {
-        _checkOutDate.value = date
+        val selectedCheckIn = _checkInDate.value
+        if (selectedCheckIn == null) {
+            _toast.value = "Please select check-in date first"
+            return
+        }
+        val normalizedCheckOut = ReservationDateValidator.startOfDay(date)
+        if (!ReservationDateValidator.isDateRangeValid(selectedCheckIn, normalizedCheckOut)) {
+            _toast.value = "Check-out must be at least 1 day after check-in"
+            return
+        }
+        _checkOutDate.value = normalizedCheckOut
         calculatePricing()
     }
 
@@ -107,9 +126,7 @@ class CreateReservationViewModel(
     }
 
     private fun calculateNights(checkIn: Date, checkOut: Date): Int {
-        val diffInMillis = checkOut.time - checkIn.time
-        val nights = (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
-        return nights
+        return ReservationDateValidator.calculateNights(checkIn, checkOut)
     }
 
     fun createReservation() {
@@ -142,7 +159,7 @@ class CreateReservationViewModel(
                 return@launch
             }
 
-            if (checkIn.after(checkOut) || checkIn == checkOut) {
+            if (!ReservationDateValidator.isDateRangeValid(checkIn, checkOut)) {
                 _toast.value = "Check-out must be after check-in"
                 return@launch
             }
@@ -164,6 +181,15 @@ class CreateReservationViewModel(
                     return@launch
                 }
 
+                val normalizedCheckIn = ReservationDateValidator.startOfDay(checkIn)
+                val normalizedCheckOut = ReservationDateValidator.startOfDay(checkOut)
+
+                if (!ReservationDateValidator.isDateRangeValid(normalizedCheckIn, normalizedCheckOut)) {
+                    _toast.value = "Invalid reservation dates"
+                    _isLoading.value = false
+                    return@launch
+                }
+
                 val reservation = Reservation(
                     listingId = listing.id,
                     listingTitle = listing.title,
@@ -172,8 +198,8 @@ class CreateReservationViewModel(
                     guestName = user.name,
                     hostId = listing.hostId,
                     hostName = listing.hostName,
-                    checkInDate = Timestamp(checkIn),
-                    checkOutDate = Timestamp(checkOut),
+                    checkInDate = Timestamp(normalizedCheckIn),
+                    checkOutDate = Timestamp(normalizedCheckOut),
                     numberOfGuests = _numberOfGuests.value,
                     totalPrice = _totalPrice.value
                 )

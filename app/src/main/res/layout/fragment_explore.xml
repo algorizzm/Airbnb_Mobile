@@ -56,7 +56,6 @@
         </LinearLayout>
 
         <!-- FILTER BUTTON -->
-        <!-- IMPORTANT IDS PRESERVED -->
         <LinearLayout
             android:id="@+id/btnToggleFilters"
             android:layout_width="56dp"
@@ -78,7 +77,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
     <!-- Divider -->
     <View
@@ -155,6 +153,29 @@
     </LinearLayout>
 
     <!-- ============================= -->
+    <!-- SECTION HEADER -->
+    <!-- ============================= -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:orientation="horizontal">
+
+        <!-- Section Title -->
+        <TextView
+            android:id="@+id/tvSectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Explore stays"
+            android:textColor="#111111"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_medium"/>
+
+    </LinearLayout>
+
+    <!-- ============================= -->
     <!-- EMPTY -->
     <!-- ============================= -->
     <TextView
@@ -169,17 +190,16 @@
         android:layout_marginTop="40dp"/>
 
     <!-- ============================= -->
-    <!-- MAIN CONTENT -->
-    <!-- SCROLLABLE HORIZONTAL TRIPS -->
-    <!-- IMPORTANT ID KEPT -->
+    <!-- HORIZONTAL LISTINGS -->
     <!-- ============================= -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerHikes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingBottom="90dp"
-        android:paddingTop="12dp"/>
+        android:layout_marginTop="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:clipToPadding="false"/>
 
 </LinearLayout>

@@ -1,152 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212">
+    android:background="#FFFFFF">
 
-    <!-- Main Screen -->
     <LinearLayout
-        android:id="@+id/layoutMessagesRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Header -->
+        <!-- TOP ACTIONS -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="end"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:paddingStart="24dp"
             android:paddingTop="44dp"
-            android:paddingBottom="12dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:paddingEnd="24dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Messages"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:fontFamily="@font/poppins_bold" />
-
+            <!-- Search -->
             <ImageButton
-                android:id="@+id/btnNotifications"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_translucent_circle"
-                android:src="@drawable/ic_notification"
-                android:contentDescription="Notifications"
-                android:padding="8dp" />
+                android:id="@+id/btnSearch"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_circle_light"
+                android:padding="10dp"
+                android:src="@drawable/ic_search"
+                android:contentDescription="Search"
+                app:tint="#222222" />
 
+            <!-- Settings -->
             <ImageButton
                 android:id="@+id/btnSettings"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_translucent_circle"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_circle_light"
+                android:padding="10dp"
                 android:src="@drawable/ic_settings"
                 android:contentDescription="Settings"
-                android:padding="8dp" />
+                app:tint="#222222" />
 
         </LinearLayout>
 
-        <!-- Authenticated Content -->
+        <!-- TITLE -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:text="Messages"
+            android:textColor="#111111"
+            android:textSize="28sp"
+            android:fontFamily="@font/poppins_medium" />
+
+        <!-- FILTER CHIPS -->
         <LinearLayout
-            android:id="@+id/layoutAuthenticatedContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingStart="32dp"
-            android:paddingEnd="32dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_notification"
-                android:tint="#02D083"
-                android:layout_marginBottom="20dp"
-                android:contentDescription="Messages icon" />
-
+            <!-- ALL -->
             <TextView
+                android:id="@+id/chipAll"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Messages Coming Soon"
+                android:layout_height="34dp"
+                android:background="@drawable/bg_chip_selected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="All"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"
-                android:fontFamily="@font/poppins_bold"
-                android:layout_marginBottom="8dp" />
+                android:textSize="13sp" />
 
+            <!-- HOSTING -->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chat with hosts and guests about your reservations and listings."
-                android:textColor="#80FFFFFF"
-                android:textSize="14sp"
+                android:id="@+id/chipHosting"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_unselected"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
-                android:lineSpacingMultiplier="1.4" />
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Hosting"
+                android:textColor="#222222"
+                android:textSize="13sp" />
 
-        </LinearLayout>
-
-        <!-- Guest Locked State -->
-        <LinearLayout
-            android:id="@+id/layoutGuestState"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingStart="32dp"
-            android:paddingEnd="32dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:src="@drawable/ic_hiker"
-                android:tint="#02D083"
-                android:layout_marginBottom="18dp" />
-
+            <!-- TRAVELLING -->
             <TextView
+                android:id="@+id/chipTravelling"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Messages Locked"
-                android:textColor="#FFFFFF"
-                android:textSize="22sp"
-                android:fontFamily="@font/poppins_bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_unselected"
+                android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
-                android:text="Log in to access your messages and conversations."
-                android:textColor="#80FFFFFF"
-                android:textSize="14sp"
-                android:fontFamily="@font/poppins_regular" />
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Travelling"
+                android:textColor="#222222"
+                android:textSize="13sp" />
+
+            <!-- SUPPORT -->
+            <TextView
+                android:id="@+id/chipSupport"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_unselected"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Support"
+                android:textColor="#222222"
+                android:textSize="13sp" />
 
         </LinearLayout>
+
+        <!-- MAIN CONTENT -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- AUTHENTICATED EMPTY STATE -->
+            <LinearLayout
+                android:id="@+id/layoutAuthenticatedContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Icon Bubble -->
+                <FrameLayout
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:background="@drawable/bg_empty_icon_circle"
+                    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_message"
+                        app:tint="#222222" />
+
+                </FrameLayout>
+
+                <!-- Title -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="You don’t have any messages"
+                    android:textColor="#111111"
+                    android:textSize="21sp" />
+
+                <!-- Subtitle -->
+                <TextView
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    android:text="When you receive a new message, it will appear here."
+                    android:textColor="#8B8B8B"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <!-- GUEST STATE -->
+            <LinearLayout
+                android:id="@+id/layoutGuestState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Log in to view messages"
+                    android:textColor="#111111"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:text="Connect with hosts, ask questions, and manage your trips."
+                    android:textColor="#8B8B8B"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="28dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
+                    android:text="Log in"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    app:backgroundTint="#FF385C"
+                    app:cornerRadius="24dp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
-
-    <!-- Dim Background -->
-    <View
-        android:id="@+id/viewGuestOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#88000000"
-        android:visibility="gone" />
-
-    <!-- Popup Prompt -->
-    <include
-        android:id="@+id/layoutGuestPrompt"
-        layout="@layout/dialog_guest_prompt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="20dp"
-        android:visibility="gone" />
 
 </FrameLayout>

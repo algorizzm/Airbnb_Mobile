@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.airbnb.data.model.Listing
 import com.airbnb.data.repository.ListingRepository
 import com.airbnb.data.repository.UserRepository
+import com.airbnb.utils.Amenities
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -103,6 +104,8 @@ class CreateListingViewModel(
                 ?: currentUser.email?.substringBefore("@") 
                 ?: "Host"
 
+            val standardizedAmenities = Amenities.standardize(amenities)
+
             val listing = Listing(
                 id = listingId ?: "",
                 title = title,
@@ -113,7 +116,7 @@ class CreateListingViewModel(
                 maxGuests = maxGuests,
                 bedrooms = bedrooms,
                 bathrooms = bathrooms,
-                amenities = amenities,
+                amenities = standardizedAmenities,
                 imageUrl = imageUrl,
                 hostId = currentUser.uid,
                 hostName = hostName,

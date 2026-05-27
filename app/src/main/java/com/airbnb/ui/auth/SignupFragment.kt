@@ -38,7 +38,7 @@ class SignupFragment : Fragment() {
 
         val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
         val btnHiker = view.findViewById<MaterialButton>(R.id.btnHiker)
-        val btnGuide = view.findViewById<MaterialButton>(R.id.btnGuide)
+        val btnHost = view.findViewById<MaterialButton>(R.id.btnHost)
 
         val tvError = view.findViewById<TextView>(R.id.tvError)
         val tvLoginRedirect = view.findViewById<TextView>(R.id.tvFooter)
@@ -66,7 +66,7 @@ class SignupFragment : Fragment() {
             )
         }
 
-        // 🔵 Continue as Hiker
+        // Primary sign-up flow
         btnHiker.setOnClickListener {
 
             val name = etName.text.toString().trim()
@@ -80,8 +80,8 @@ class SignupFragment : Fragment() {
         }
 
 
-        // 🟢 Continue as Guide
-        btnGuide.setOnClickListener {
+        // Hosting sign-up flow (preserves existing backend role contract)
+        btnHost.setOnClickListener {
 
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()

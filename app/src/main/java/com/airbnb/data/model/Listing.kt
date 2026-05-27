@@ -17,8 +17,10 @@ data class Listing(
     val bedrooms: Int = 1,
     val bathrooms: Int = 1,
     val propertyType: String = "", // e.g., "Apartment", "House", "Villa"
+    val rating: Double = 0.0,
     val createdAt: Timestamp? = null,
-    val updatedAt: Timestamp? = null
+    val updatedAt: Timestamp? = null,
+    val listingCode: String? = null
 ) {
     /** Returns the cover image URL for the listing. */
     fun coverImageUrl(): String = imageUrl.trim()

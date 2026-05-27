@@ -9,6 +9,7 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
+    // Deprecated in Sprint 6: settings actions are now available in Profile.
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!

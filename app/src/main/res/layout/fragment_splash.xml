@@ -24,8 +24,8 @@
             android:id="@+id/splashLogo"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/verdant_logo"
-            android:contentDescription="Verdant Logo"
+            android:src="@drawable/ic_airbnb"
+            android:contentDescription="@string/splash_logo_content_description"
             android:scaleType="fitCenter" />
 
         <Space
@@ -36,7 +36,7 @@
             android:id="@+id/splashAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VERDANT"
+            android:text="@string/app_name_display"
             android:textColor="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Explore. Conquer. Connect."
+            android:text="@string/splash_tagline"
             android:textColor="#00C853"
             android:textSize="12sp"
             android:textStyle="italic"

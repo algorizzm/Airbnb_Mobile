@@ -1,6 +1,7 @@
 package com.airbnb.ui.profile
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -18,9 +19,9 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.airbnb.R
+import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.ui.AvatarHelper
 import com.airbnb.databinding.FragmentProfileBinding
-import com.airbnb.ui.explore.ExploreFragment
 import kotlinx.coroutines.launch
 import com.airbnb.core.ui.EditTextDialog
 
@@ -68,15 +69,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         setupImagePickers()
         setupBioEdit()
         setupHostingButton()
+        setupSettingsSection()
         setupHikeNavigation()
         observeState()
     }
 
     // ── Top bar ──────────────────────────────────────────────────────────────
     private fun setupTopBar() {
-        binding.btnSettings.setOnClickListener {
-            findNavController().navigate(R.id.settingsFragment)
-        }
         binding.btnNotifications.setOnClickListener {
             findNavController().navigate(R.id.notificationsFragment)
         }
@@ -139,6 +138,33 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.btnSwitchToHosting.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_hostListingsFragment)
         }
+    }
+
+    private fun setupSettingsSection() {
+        binding.rowEditProfile.setOnClickListener {
+            findNavController().navigate(R.id.editProfileFragment)
+        }
+        binding.rowHostingAccess.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_hostListingsFragment)
+        }
+        binding.rowLogout.setOnClickListener {
+            AuthManager.signOut()
+            findNavController().navigate(R.id.auth_graph)
+        }
+        binding.rowAppInfo.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("About Airbnb MVP")
+                .setMessage("Version ${appVersionName()}\nBuilt for stays, hosting, and reservations.")
+                .setPositiveButton("OK", null)
+                .show()
+        }
+    }
+
+    private fun appVersionName(): String {
+        return runCatching {
+            val pkgInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+            pkgInfo.versionName ?: "unknown"
+        }.getOrDefault("unknown")
     }
 
     // ── Recent trips thumbnails ──────────────────────────────────────────────

@@ -34,7 +34,7 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/verdant_logo"
+            android:src="@drawable/ic_airbnb"
             android:contentDescription="Logo" />
 
         <!-- Title -->
@@ -55,7 +55,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="36dp"
-            android:text="Start your hiking journey today"
+            android:text="Start hosting and traveling today"
             android:textColor="#80FFFFFF"
             android:textSize="14sp"
             android:fontFamily="@font/poppins_regular" />
@@ -230,12 +230,12 @@
 
         </LinearLayout>
 
-        <!-- Become a Guide button -->
+        <!-- Become a Host button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGuide"
+            android:id="@+id/btnHost"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:text="Become a Guide"
+            android:text="Become a Host"
             android:textAllCaps="false"
             android:textColor="#02D083"
             android:textSize="14sp"

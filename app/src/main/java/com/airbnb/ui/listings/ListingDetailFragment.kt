@@ -59,7 +59,7 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_detail) {
                         bundle
                     )
                 } catch (e: IllegalArgumentException) {
-                    Toast.makeText(requireContext(), "Navigation not configured", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.toast_navigation_not_configured), Toast.LENGTH_SHORT).show()
                 }
             }
         }

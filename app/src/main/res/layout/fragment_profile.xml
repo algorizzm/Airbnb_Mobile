@@ -187,7 +187,8 @@
                             android:src="@drawable/ic_settings"
                             android:background="@drawable/bg_translucent_circle"
                             android:contentDescription="Settings"
-                            android:padding="8dp" />
+                            android:padding="8dp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -306,7 +307,7 @@
             </LinearLayout>
 
             <!-- Stats row - REMOVED for Airbnb MVP -->
-            <!-- Hiking statistics (Hikes, Distance, Summits) removed -->
+            <!-- Legacy profile statistics removed -->
             <!-- Future: Could add Trips, Reviews, Years Hosting stats -->
 
             <!-- About card -->
@@ -357,7 +358,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Passionate hiker and nature lover. Always chasing the next summit and the best sunrise views."
+                    android:text="Passionate traveler who loves discovering unique places and memorable stays."
                     android:textColor="#CCFFFFFF"
                     android:textSize="13sp"
                     android:lineSpacingMultiplier="1.4"
@@ -399,11 +400,161 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/bg_button_green"
-                    android:text="Manage Listings"
+                    android:text="Become a Host"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
                     android:fontFamily="@font/poppins_bold"
                     app:backgroundTint="@null" />
+
+            </LinearLayout>
+
+            <!-- Settings section merged into profile -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dark_card"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/rowEditProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_settings_row_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_account_info"
+                        android:tint="#02D083"
+                        android:contentDescription="Edit Profile" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="14dp"
+                        android:text="Edit Profile"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#2A2A2A"
+                    android:layout_marginStart="52dp" />
+
+                <LinearLayout
+                    android:id="@+id/rowHostingAccess"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_settings_row_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_home"
+                        android:tint="#02D083"
+                        android:contentDescription="Hosting Access" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="14dp"
+                        android:text="Become a Host"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#2A2A2A"
+                    android:layout_marginStart="52dp" />
+
+                <LinearLayout
+                    android:id="@+id/rowAppInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_settings_row_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_privacy"
+                        android:tint="#02D083"
+                        android:contentDescription="App Info" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="14dp"
+                        android:text="App Info"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#2A2A2A"
+                    android:layout_marginStart="52dp" />
+
+                <LinearLayout
+                    android:id="@+id/rowLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_settings_row_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_sign_out"
+                        android:tint="#FF4444"
+                        android:contentDescription="Logout" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="14dp"
+                        android:text="Logout"
+                        android:textColor="#FF4444"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+                </LinearLayout>
 
             </LinearLayout>
 

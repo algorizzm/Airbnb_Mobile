@@ -1,5 +1,6 @@
 package com.airbnb.ui.explore
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
 import com.airbnb.databinding.FragmentExploreBinding
 import com.airbnb.ui.explore.adapter.ListingAdapter
@@ -79,13 +81,9 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
         )
     }
 
-    // =====================================================
-    // RecyclerView
-    // =====================================================
     private fun setupRecycler() {
 
         binding.recyclerHikes.layoutManager =
-
             LinearLayoutManager(
                 requireContext(),
                 LinearLayoutManager.HORIZONTAL,
@@ -93,6 +91,22 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             )
 
         binding.recyclerHikes.adapter = adapter
+
+        // Space between cards
+        binding.recyclerHikes.addItemDecoration(
+            object : RecyclerView.ItemDecoration() {
+
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+
+                    outRect.right = 8
+                }
+            }
+        )
     }
 
     // =====================================================
@@ -193,51 +207,22 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
                     }
                 }
 
-                // Wishlist state
+                // Wishlist state — update in-place, no adapter recreation
                 launch {
-
                     viewModel.wishlistIds.collect { wishlistIds ->
+                        adapter.updateWishlistIds(wishlistIds)
+                    }
+                }
 
-                        adapter = ListingAdapter(
-
-                            onItemClick = { listing ->
-
-                                val bundle = Bundle().apply {
-                                    putString(ARG_LISTING_ID, listing.id)
-                                }
-
-                                try {
-
-                                    findNavController().navigate(
-                                        R.id.action_exploreFragment_to_listingDetailFragment,
-                                        bundle
-                                    )
-
-                                } catch (e: IllegalArgumentException) {
-
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Listing details coming soon",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            },
-
-                            onWishlistClick = { listing ->
-
-                                viewModel.toggleWishlist(
-                                    listing.id
-                                )
-                            },
-
-                            wishlistIds = wishlistIds
-                        )
-
-                        binding.recyclerHikes.adapter = adapter
-
-                        adapter.submitList(
-                            viewModel.displayListings.value
-                        )
+                // Dynamic Title based on search query
+                launch {
+                    viewModel.searchQuery.collect { query ->
+                        val trimmed = query.trim()
+                        binding.tvSectionTitle.text = if (trimmed.isNotEmpty()) {
+                            "Stays in \"$trimmed\""
+                        } else {
+                            "Explore stays"
+                        }
                     }
                 }
 
@@ -261,6 +246,8 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             }
         }
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

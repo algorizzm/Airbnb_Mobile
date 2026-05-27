@@ -41,7 +41,11 @@ class HostReservationAdapter(
         fun bind(reservation: Reservation) {
             binding.apply {
                 // Guest name
-                tvGuestName.text = reservation.guestName
+                tvGuestName.text = if (reservation.reservationCode.isNullOrBlank()) {
+                    reservation.guestName
+                } else {
+                    "${reservation.guestName} (${reservation.reservationCode})"
+                }
 
                 // Dates
                 val checkIn = reservation.checkInDate?.toDate()

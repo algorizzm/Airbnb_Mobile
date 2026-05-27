@@ -36,7 +36,11 @@ class HostListingAdapter(
         fun bind(listing: Listing) {
             binding.apply {
                 // Title
-                tvTitle.text = listing.title
+                tvTitle.text = if (listing.listingCode.isNullOrBlank()) {
+                    listing.title
+                } else {
+                    "${listing.title} (${listing.listingCode})"
+                }
 
                 // Location
                 tvLocation.text = listing.location

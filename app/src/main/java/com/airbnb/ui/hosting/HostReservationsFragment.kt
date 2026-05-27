@@ -31,7 +31,7 @@ class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
 
         listingId = arguments?.getString("listingId")
         if (listingId == null) {
-            Toast.makeText(requireContext(), "Invalid listing", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_invalid_listing), Toast.LENGTH_SHORT).show()
             findNavController().navigateUp()
             return
         }
@@ -70,34 +70,34 @@ class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
 
     private fun showApproveConfirmation(reservationId: String, guestName: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Approve Reservation")
-            .setMessage("Approve reservation for $guestName?")
-            .setPositiveButton("Approve") { _, _ ->
+            .setTitle(getString(R.string.dialog_approve_reservation_title))
+            .setMessage(getString(R.string.dialog_approve_reservation_message, guestName))
+            .setPositiveButton(getString(R.string.dialog_approve)) { _, _ ->
                 viewModel.approveReservation(reservationId)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.dialog_cancel), null)
             .show()
     }
 
     private fun showRejectConfirmation(reservationId: String, guestName: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Reject Reservation")
-            .setMessage("Reject reservation for $guestName? This cannot be undone.")
-            .setPositiveButton("Reject") { _, _ ->
+            .setTitle(getString(R.string.dialog_reject_reservation_title))
+            .setMessage(getString(R.string.dialog_reject_reservation_message, guestName))
+            .setPositiveButton(getString(R.string.dialog_decline)) { _, _ ->
                 viewModel.rejectReservation(reservationId)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.dialog_cancel), null)
             .show()
     }
 
     private fun showCancelConfirmation(reservationId: String, guestName: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Cancel Reservation")
-            .setMessage("Cancel reservation for $guestName?")
-            .setPositiveButton("Cancel Reservation") { _, _ ->
+            .setTitle(getString(R.string.dialog_cancel_reservation_title))
+            .setMessage(getString(R.string.dialog_cancel_reservation_for_guest_message, guestName))
+            .setPositiveButton(getString(R.string.dialog_cancel_reservation_confirm)) { _, _ ->
                 viewModel.cancelReservation(reservationId)
             }
-            .setNegativeButton("Keep", null)
+            .setNegativeButton(getString(R.string.dialog_keep_reservation), null)
             .show()
     }
 

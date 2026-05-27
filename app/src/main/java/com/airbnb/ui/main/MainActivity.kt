@@ -14,6 +14,8 @@ import com.airbnb.R
 import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.ui.AvatarHelper
 import com.airbnb.core.ui.GuestPromptDialog
+import com.airbnb.utils.BackfillUtility
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -228,6 +230,15 @@ class MainActivity : AppCompatActivity() {
                 R.id.profileFragment -> {
                     navLabelProfile.setTextColor(active)
                 }
+            }
+        }
+
+        // Trigger safe incremental backfill of missing public codes
+        lifecycleScope.launch {
+            try {
+                BackfillUtility.runBackfill(FirebaseFirestore.getInstance())
+            } catch (e: Exception) {
+                android.util.Log.e("MainActivity", "Public code backfill failed", e)
             }
         }
     }

@@ -51,8 +51,8 @@ class WishlistFragment : Fragment() {
         GuestPromptHelper.setupGuestPrompt(
             promptLayout = binding.layoutGuestPrompt.root,
             fragment = this,
-            title = "Sign in to view your wishlist",
-            message = "Save your favorite listings and access them anytime",
+            title = getString(R.string.guest_prompt_title_wishlist),
+            message = getString(R.string.guest_prompt_message_wishlist),
             iconRes = R.drawable.ic_heart
         )
         GuestPromptHelper.showGuestPrompt(

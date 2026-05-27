@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/onboarding3photo"
         android:scaleType="centerCrop"
-        android:contentDescription="Group of hikers on a snowy mountain" />
+        android:contentDescription="Guests enjoying a destination together" />
 
     <!-- Dark gradient overlay (transparent top → dark bottom) -->
     <View
@@ -33,7 +33,7 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.58" />
 
-        <!-- Title line 1: "Connect. Explore." -->
+        <!-- Title line 1 -->
         <TextView
             android:id="@+id/titleLine1"
             android:layout_width="0dp"
@@ -49,7 +49,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Title line 2: "Conquer with " + "Velo!" (green) -->
+        <!-- Title line 2 -->
         <LinearLayout
             android:id="@+id/titleLine2"
             android:layout_width="0dp"
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Conquer with "
+                android:text="Explore with "
                 android:textColor="@android:color/white"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Velo!"
+                android:text="Airbnb!"
                 android:textColor="#02D083"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="12dp"
-            android:text="Join a community of hikers and share your adventures."
+            android:text="Connect with hosts and guests, then plan your next stay."
             android:textColor="#B3FFFFFF"
             android:textSize="13sp"
             android:fontFamily="@font/poppins_regular"
@@ -104,7 +104,7 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_button_green"
-            android:text="Continue"
+            android:text="Explore Stays"
             android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="15sp"

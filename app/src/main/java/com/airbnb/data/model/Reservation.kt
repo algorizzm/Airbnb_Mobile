@@ -18,7 +18,8 @@ data class Reservation(
     val status: String = ReservationStatus.PENDING,
     val paymentStatus: String = "unpaid", // unpaid, paid, refunded
     val createdAt: Timestamp? = null,
-    val updatedAt: Timestamp? = null
+    val updatedAt: Timestamp? = null,
+    val reservationCode: String? = null
 ) {
     /** Returns true if the reservation is active (not cancelled or completed). */
     fun isActive(): Boolean = status.equals(ReservationStatus.PENDING, ignoreCase = true) || 

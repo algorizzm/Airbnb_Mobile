@@ -27,8 +27,8 @@ object GuestPromptHelper {
     fun setupGuestPrompt(
         promptLayout: View,
         fragment: Fragment,
-        title: String = "Sign in to continue",
-        message: String = "Create an account or log in to access this feature",
+        title: String = fragment.getString(R.string.guest_prompt_title_default),
+        message: String = fragment.getString(R.string.guest_prompt_message_default),
         @DrawableRes iconRes: Int = R.drawable.ic_profile
     ) {
         // Find views

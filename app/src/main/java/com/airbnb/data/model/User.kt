@@ -14,5 +14,6 @@ data class User(
     val totalTrips: Int = 0,
     val totalListings: Int = 0,
     val hostModeEnabled: Boolean = false,
-    val badges: List<String> = emptyList()
+    val badges: List<String> = emptyList(),
+    val userCode: String? = null
 )

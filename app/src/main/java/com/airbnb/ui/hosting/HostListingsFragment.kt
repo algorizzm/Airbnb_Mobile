@@ -78,12 +78,12 @@ class HostListingsFragment : Fragment(R.layout.fragment_host_listings) {
 
     private fun showDeleteConfirmation(listingId: String, title: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Delete Listing")
-            .setMessage("Are you sure you want to delete \"$title\"? This will also cancel all associated reservations.")
-            .setPositiveButton("Delete") { _, _ ->
+            .setTitle(getString(R.string.dialog_delete_listing_title))
+            .setMessage(getString(R.string.dialog_delete_listing_message, title))
+            .setPositiveButton(getString(R.string.dialog_delete)) { _, _ ->
                 viewModel.deleteListing(listingId)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.dialog_cancel), null)
             .show()
     }
 

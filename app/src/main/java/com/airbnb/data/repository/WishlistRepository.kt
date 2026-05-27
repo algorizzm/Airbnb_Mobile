@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.airbnb.data.model.Wishlist
+import com.airbnb.utils.PublicCodeGenerator
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -83,7 +84,8 @@ class WishlistRepository(
                     "userId" to userId,
                     "listingIds" to listOf(listingId),
                     "createdAt" to Timestamp.now(),
-                    "updatedAt" to Timestamp.now()
+                    "updatedAt" to Timestamp.now(),
+                    "wishlistCode" to PublicCodeGenerator.generateWishlistCode()
                 ),
                 SetOptions.merge()
             ).await()

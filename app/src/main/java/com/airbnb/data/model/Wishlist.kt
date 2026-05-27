@@ -6,7 +6,8 @@ data class Wishlist(
     val userId: String = "",
     val listingIds: List<String> = emptyList(),
     val createdAt: Timestamp? = null,
-    val updatedAt: Timestamp? = null
+    val updatedAt: Timestamp? = null,
+    val wishlistCode: String? = null
 ) {
     /** Returns true if the wishlist contains the specified listing. */
     fun containsListing(listingId: String): Boolean = listingIds.contains(listingId)

@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="849dp"
         android:layout_height="match_parent"
-        android:contentDescription="Hiker at sunrise"
+        android:contentDescription="Traveler at sunrise"
         android:scaleType="centerCrop"
         android:src="@drawable/onboarding1photo"
         android:translationX="-400dp" />
@@ -37,7 +37,7 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.58" />
 
-        <!-- Title line 1: "Start Your Hiking" -->
+        <!-- Title line 1 -->
         <TextView
             android:id="@+id/titleLine1"
             android:layout_width="0dp"
@@ -45,7 +45,7 @@
             android:layout_marginHorizontal="24dp"
             android:fontFamily="@font/poppins_bold"
             android:lineSpacingExtra="2dp"
-            android:text="Start Your Hiking"
+            android:text="Start Your Travel"
             android:textColor="@android:color/white"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -53,7 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/guideline" />
 
-        <!-- Title line 2: "Journey with " + "Velo!" (green) -->
+        <!-- Title line 2 -->
         <LinearLayout
             android:id="@+id/titleLine2"
             android:layout_width="0dp"
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Velo!"
+                android:text="Airbnb!"
                 android:textColor="#02D083"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -92,7 +92,7 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_regular"
-            android:text="Discover amazing trails and hidden gems."
+            android:text="Discover amazing stays and unforgettable destinations."
             android:textColor="#B3FFFFFF"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"

@@ -50,8 +50,8 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
         GuestPromptHelper.setupGuestPrompt(
             promptLayout = binding.layoutGuestPrompt.root,
             fragment = this,
-            title = "Sign in to view your trips",
-            message = "Book amazing places and manage your reservations",
+            title = getString(R.string.guest_prompt_title_trips),
+            message = getString(R.string.guest_prompt_message_trips),
             iconRes = R.drawable.ic_calendar
         )
         
@@ -78,7 +78,7 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
                         bundle
                     )
                 } catch (e: IllegalArgumentException) {
-                    Toast.makeText(requireContext(), "Listing details coming soon", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.toast_listing_details_coming_soon), Toast.LENGTH_SHORT).show()
                 }
             },
             onCancelClick = { tripItem ->
@@ -190,20 +190,20 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
 
         // Update empty message based on filter
         binding.tvEmpty.text = when (currentFilter) {
-            TripFilter.UPCOMING -> "No upcoming trips"
-            TripFilter.PAST -> "No past trips"
-            TripFilter.CANCELLED -> "No cancelled trips"
+            TripFilter.UPCOMING -> getString(R.string.trips_empty_upcoming)
+            TripFilter.PAST -> getString(R.string.trips_empty_past)
+            TripFilter.CANCELLED -> getString(R.string.trips_empty_cancelled)
         }
     }
 
     private fun showCancelConfirmationDialog(reservationId: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Cancel Reservation")
-            .setMessage("Are you sure you want to cancel this reservation?")
-            .setPositiveButton("Yes") { _, _ ->
+            .setTitle(getString(R.string.dialog_cancel_reservation_title))
+            .setMessage(getString(R.string.dialog_cancel_reservation_message))
+            .setPositiveButton(getString(R.string.dialog_yes)) { _, _ ->
                 viewModel.cancelReservation(reservationId)
             }
-            .setNegativeButton("No", null)
+            .setNegativeButton(getString(R.string.dialog_no), null)
             .show()
     }
 

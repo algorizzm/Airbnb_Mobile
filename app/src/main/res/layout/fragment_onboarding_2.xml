@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/onboarding2photo"
         android:scaleType="centerCrop"
-        android:contentDescription="Two hikers high-fiving on a mountain" />
+        android:contentDescription="Two travelers celebrating a trip" />
 
     <!-- Dark gradient overlay (transparent top → dark bottom) -->
     <View
@@ -33,7 +33,7 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.58" />
 
-        <!-- Title line 1: "Plan Smarter," -->
+        <!-- Title line 1 -->
         <TextView
             android:id="@+id/titleLine1"
             android:layout_width="0dp"
@@ -49,7 +49,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Title line 2: "Hike " + "Better." (green) -->
+        <!-- Title line 2 -->
         <LinearLayout
             android:id="@+id/titleLine2"
             android:layout_width="0dp"
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hike "
+                android:text="Stay "
                 android:textColor="@android:color/white"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="12dp"
-            android:text="Find trails, check conditions, and stay prepared."
+            android:text="Find stays, compare amenities, and book with confidence."
             android:textColor="#B3FFFFFF"
             android:textSize="13sp"
             android:fontFamily="@font/poppins_regular"

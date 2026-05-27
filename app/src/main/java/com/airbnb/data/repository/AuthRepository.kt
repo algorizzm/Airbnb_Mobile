@@ -3,6 +3,7 @@ package com.airbnb.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.airbnb.data.model.User
+import com.airbnb.utils.PublicCodeGenerator
 
 class AuthRepository {
 
@@ -48,7 +49,8 @@ class AuthRepository {
                     id = uid,
                     name = name,
                     email = email,
-                    role = role.lowercase()
+                    role = role.lowercase(),
+                    userCode = PublicCodeGenerator.generateUserCode()
                 )
 
                 FirebaseFirestore.getInstance()
