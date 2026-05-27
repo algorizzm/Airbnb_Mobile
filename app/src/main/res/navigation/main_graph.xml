@@ -8,13 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.airbnb.ui.home.HomeFragment"
-        android:label="Home">
-
-        <action
-            android:id="@+id/action_homeFragment_to_hikesFragment"
-            app:destination="@id/hikeFragment" />
-
-    </fragment>
+        android:label="Home" />
 
     <!-- Post Detail -->
     <fragment
@@ -27,10 +21,6 @@
         android:id="@+id/exploreFragment"
         android:name="com.airbnb.ui.explore.ExploreFragment"
         android:label="Explore">
-
-        <action
-            android:id="@+id/action_exploreFragment_to_hikeDetailFragment"
-            app:destination="@id/hikeDetailFragment" />
 
         <action
             android:id="@+id/action_exploreFragment_to_listingDetailFragment"
@@ -73,8 +63,8 @@
             app:destination="@id/auth_graph" />
 
         <action
-            android:id="@+id/action_profileFragment_to_hikeDetailFragment"
-            app:destination="@id/hikeDetailFragment" />
+            android:id="@+id/action_profileFragment_to_listingDetailFragment"
+            app:destination="@id/listingDetailFragment" />
 
         <action
             android:id="@+id/action_profileFragment_to_hostListingsFragment"
@@ -110,32 +100,6 @@
         android:name="com.airbnb.ui.hosting.HostReservationsFragment"
         android:label="Reservations" />
 
-    <!-- Hike -->
-    <fragment
-        android:id="@+id/hikeFragment"
-        android:name="com.airbnb.ui.hikes.HikesFragment"
-        android:label="Hike">
-
-        <action
-            android:id="@+id/action_hikeFragment_to_createEditHikeFragment"
-            app:destination="@id/createEditHikeFragment" />
-
-        <action
-            android:id="@+id/action_hikeFragment_to_hikeDetailFragment"
-            app:destination="@id/hikeDetailFragment" />
-
-        <action
-            android:id="@+id/action_hikeFragment_to_eventsFragment"
-            app:destination="@id/eventsFragment" />
-
-    </fragment>
-
-    <!-- Hike Details -->
-    <fragment
-        android:id="@+id/hikeDetailFragment"
-        android:name="com.airbnb.ui.explore.HikeDetailFragment"
-        android:label="Hike details" />
-
     <!-- Listing Details -->
     <fragment
         android:id="@+id/listingDetailFragment"
@@ -153,58 +117,6 @@
         android:id="@+id/createReservationFragment"
         android:name="com.airbnb.ui.reservations.CreateReservationFragment"
         android:label="Reserve" />
-
-    <!-- Create/Edit Hike (multi-step host) -->
-    <fragment
-        android:id="@+id/createEditHikeFragment"
-        android:name="com.airbnb.ui.hikes.create.CreateHikeHostFragment"
-        android:label="Create or edit hike" />
-
-    <!-- Events -->
-    <fragment
-        android:id="@+id/eventsFragment"
-        android:name="com.airbnb.ui.hikes.events.EventsFragment"
-        android:label="Your Hiking Events">
-
-        <action
-            android:id="@+id/action_eventsFragment_to_createEditHikeFragment"
-            app:destination="@id/createEditHikeFragment" />
-
-        <action
-            android:id="@+id/action_eventsFragment_to_hikeDetailFragment"
-            app:destination="@id/hikeDetailFragment" />
-
-    </fragment>
-
-    <!-- History -->
-    <fragment
-        android:id="@+id/hikeHistoryFragment"
-        android:name="com.airbnb.ui.hikes.history.HikeHistoryFragment"
-        android:label="Your Hiking History">
-
-        <action
-            android:id="@+id/action_hikeHistoryFragment_to_hikeDetailFragment"
-            app:destination="@id/hikeDetailFragment" />
-
-    </fragment>
-
-    <!-- Applicants -->
-    <fragment
-        android:id="@+id/applicantsFragment"
-        android:name="com.airbnb.ui.hikes.ApplicantsFragment"
-        android:label="Applicants" />
-
-    <!-- My Bookings -->
-    <fragment
-        android:id="@+id/myBookingsFragment"
-        android:name="com.airbnb.ui.hikes.history.HikeHistoryFragment"
-        android:label="My bookings">
-
-        <action
-            android:id="@+id/action_myBookingsFragment_to_hikeDetailFragment"
-            app:destination="@id/hikeDetailFragment" />
-
-    </fragment>
 
     <!-- Messages -->
     <fragment

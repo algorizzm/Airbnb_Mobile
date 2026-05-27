@@ -7,18 +7,23 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.auth.AuthState
 import com.airbnb.data.model.AppNotification
 import com.airbnb.data.model.User
+import com.airbnb.data.model.Reservation
 import com.airbnb.data.remote.StorageService
-import com.airbnb.data.repository.BookingRepository
-import com.airbnb.data.repository.HikeRepository
 import com.airbnb.data.repository.NotificationRepository
+import com.airbnb.data.repository.ReservationRepository
 import com.airbnb.data.repository.UserRepository
 import com.airbnb.data.session.UserSessionManager
-import com.airbnb.ui.hikes.history.UserBookingRow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+
+data class RecentTrip(
+    val reservation: Reservation,
+    val listingTitle: String,
+    val listingImageUrl: String,
+    val listingLocation: String
+)
 
 data class ProfileUiState(
     val user: User? = null,
@@ -27,7 +32,7 @@ data class ProfileUiState(
     val bannerUploading: Boolean = false,
     val notifications: List<AppNotification> = emptyList(),
     val unreadCount: Int = 0,
-    val recentHikes: List<UserBookingRow> = emptyList(),
+    val recentTrips: List<RecentTrip> = emptyList(),
     val message: String? = null
 )
 
@@ -35,8 +40,7 @@ class ProfileViewModel(
     private val userRepo: UserRepository = UserRepository(),
     private val storageService: StorageService = StorageService(),
     private val notifRepo: NotificationRepository = NotificationRepository(),
-    private val bookingRepo: BookingRepository = BookingRepository(),
-    private val hikeRepo: HikeRepository = HikeRepository()
+    private val reservationRepo: ReservationRepository = ReservationRepository()
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileUiState())
@@ -47,7 +51,7 @@ class ProfileViewModel(
 
     // Prevent duplicate collectors
     private var notificationsStarted = false
-    private var hikesStarted = false
+    private var tripsStarted = false
 
     init {
         observeSession()
@@ -77,10 +81,10 @@ class ProfileViewModel(
                         observeUnreadCount()
                     }
 
-                    if (!hikesStarted) {
-                        hikesStarted = true
+                    if (!tripsStarted) {
+                        tripsStarted = true
 
-                        observeRecentHikes()
+                        observeRecentTrips()
                     }
                 }
             }
@@ -91,56 +95,24 @@ class ProfileViewModel(
     // Recent trips (reservations)
     // ─────────────────────────────────────────────────────────────────────────
 
-    private fun observeRecentHikes() {
+    private fun observeRecentTrips() {
         val uid = currentUid() ?: return
         
         viewModelScope.launch {
-            UserSessionManager.currentUser.collect { user ->
-                if (user == null) return@collect
-                
-                // For Airbnb MVP: Show recent reservations as trips
-                // This is a simplified view - full trips are in TripsFragment
-                if (user.role == com.airbnb.utils.UserRole.GUIDE) {
-                    // Hosts see their listings (simplified for profile preview)
-                    hikeRepo.observeHikesForGuide(uid).collect { hikes ->
-                        val rows = hikes.filter { it.status == com.airbnb.utils.HikeStatus.COMPLETED }
-                            .take(3)
-                            .map { hike ->
-                                val syntheticBooking = com.airbnb.data.model.Booking(
-                                    id = hike.id, hikeId = hike.id, userId = uid, userName = user.name,
-                                    guideId = uid, status = com.airbnb.utils.BookingStatus.COMPLETED
-                                )
-                                UserBookingRow(
-                                    booking = syntheticBooking,
-                                    hikeTitle = hike.title,
-                                    hikeImageUrl = hike.coverImageUrl(),
-                                    hikeLocation = hike.summaryLocation().ifBlank { hike.location }
-                                )
-                            }
-                        _state.value = _state.value.copy(recentHikes = rows)
+            // Show recent completed reservations for guests
+            reservationRepo.observeReservationsForGuest(uid).collect { reservations ->
+                val recentTrips = reservations
+                    .filter { it.status == "completed" }
+                    .take(3)
+                    .map { reservation ->
+                        RecentTrip(
+                            reservation = reservation,
+                            listingTitle = reservation.listingTitle,
+                            listingImageUrl = reservation.listingImageUrl,
+                            listingLocation = "" // Location not stored in reservation, could be enhanced
+                        )
                     }
-                } else {
-                    // Guests see their recent reservations
-                    combine(
-                        bookingRepo.observeBookingsForUser(uid),
-                        hikeRepo.observeHikes()
-                    ) { bookings, hikes ->
-                        bookings
-                            .filter { it.status == com.airbnb.utils.BookingStatus.COMPLETED }
-                            .take(3)
-                            .map { booking ->
-                                val hike = hikes.firstOrNull { it.id == booking.hikeId }
-                                UserBookingRow(
-                                    booking = booking,
-                                    hikeTitle = hike?.title ?: "Property",
-                                    hikeImageUrl = hike?.coverImageUrl() ?: "",
-                                    hikeLocation = hike?.summaryLocation()?.ifBlank { hike?.location } ?: ""
-                                )
-                            }
-                    }.collect { rows ->
-                        _state.value = _state.value.copy(recentHikes = rows)
-                    }
-                }
+                _state.value = _state.value.copy(recentTrips = recentTrips)
             }
         }
     }

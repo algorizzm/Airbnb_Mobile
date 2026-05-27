@@ -21,7 +21,6 @@ import com.airbnb.R
 import com.airbnb.core.ui.AvatarHelper
 import com.airbnb.databinding.FragmentProfileBinding
 import com.airbnb.ui.explore.ExploreFragment
-import com.airbnb.ui.hikes.history.UserBookingRow
 import kotlinx.coroutines.launch
 import com.airbnb.core.ui.EditTextDialog
 
@@ -149,7 +148,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun bindRecentHikes(rows: List<UserBookingRow>) {
+    private fun bindRecentHikes(trips: List<RecentTrip>) {
         val slots = listOf(
             Triple(binding.cardRecentHike1, binding.imgRecentHike1, binding.tvRecentHike1),
             Triple(binding.cardRecentHike2, binding.imgRecentHike2, binding.tvRecentHike2),
@@ -157,12 +156,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         )
 
         slots.forEachIndexed { i, (card, img, title) ->
-            val row = rows.getOrNull(i)
-            if (row != null) {
-                title.text = row.hikeTitle
-                if (row.hikeImageUrl.isNotBlank()) {
+            val trip = trips.getOrNull(i)
+            if (trip != null) {
+                title.text = trip.listingTitle
+                if (trip.listingImageUrl.isNotBlank()) {
                     Glide.with(this)
-                        .load(row.hikeImageUrl)
+                        .load(trip.listingImageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.img_hike_placeholder)
                         .transition(DrawableTransitionOptions.withCrossFade())
@@ -172,10 +171,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
                 card.setOnClickListener {
                     val bundle = Bundle().apply {
-                        putString(ExploreFragment.ARG_HIKE_ID, row.booking.hikeId)
+                        putString("listingId", trip.reservation.listingId)
                     }
                     try {
-                        findNavController().navigate(R.id.action_profileFragment_to_hikeDetailFragment, bundle)
+                        findNavController().navigate(R.id.action_profileFragment_to_listingDetailFragment, bundle)
                     } catch (e: IllegalArgumentException) {
                         // ignore double click
                     }
@@ -186,9 +185,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        // Show section only when there is at least one real booking
+        // Show section only when there is at least one real trip
         binding.layoutRecentHikes.visibility =
-            if (rows.isNotEmpty()) View.VISIBLE else View.GONE
+            if (trips.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     // ── State observer ───────────────────────────────────────────────────────
@@ -258,8 +257,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         binding.tvNotifBadge.text = if (badge > 99) "99+" else badge.toString()
                     }
 
-                    // Recent hikes
-                    bindRecentHikes(state.recentHikes)
+                    // Recent trips
+                    bindRecentHikes(state.recentTrips)
 
                     // Toast
                     state.message?.let {
