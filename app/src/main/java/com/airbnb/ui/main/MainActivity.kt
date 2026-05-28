@@ -22,7 +22,7 @@ import com.airbnb.core.mode.AppMode
 import com.airbnb.core.mode.AppModeManager
 import com.airbnb.core.ui.AvatarHelper
 import com.airbnb.ui.auth.AuthViewModel
-import com.airbnb.ui.auth.GuestPromptDialog
+import androidx.core.view.WindowCompat
 import com.airbnb.utils.BackfillUtility
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -104,6 +104,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // =========================================
+        // SYSTEM BAR COLORS
+        // =========================================
+
+        window.statusBarColor =
+            ContextCompat.getColor(this, android.R.color.white)
+
+        window.navigationBarColor =
+            ContextCompat.getColor(this, android.R.color.white)
+
+        WindowCompat.getInsetsController(window, window.decorView)?.apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = true
+        }
 
         // Initialize AuthViewModel
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]

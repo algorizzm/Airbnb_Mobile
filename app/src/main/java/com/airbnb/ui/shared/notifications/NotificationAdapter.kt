@@ -9,9 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
 import com.airbnb.data.model.AppNotification
 import com.airbnb.databinding.ItemNotificationBinding
-import java.text.SimpleDateFormat
+import com.airbnb.utils.formatting.DateFormatter
 import java.util.Date
-import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class NotificationAdapter(
@@ -55,14 +54,8 @@ class NotificationAdapter(
         }
 
         private fun relativeTime(millis: Long): String {
-            val diff = System.currentTimeMillis() - millis
-            return when {
-                diff < TimeUnit.MINUTES.toMillis(1)  -> "Just now"
-                diff < TimeUnit.HOURS.toMillis(1)    -> "${TimeUnit.MILLISECONDS.toMinutes(diff)}m ago"
-                diff < TimeUnit.DAYS.toMillis(1)     -> "${TimeUnit.MILLISECONDS.toHours(diff)}h ago"
-                diff < TimeUnit.DAYS.toMillis(7)     -> "${TimeUnit.MILLISECONDS.toDays(diff)}d ago"
-                else -> SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(millis))
-            }
+            // Use centralized date formatter for relative time
+            return DateFormatter.formatRelativeDate(Date(millis))
         }
     }
 

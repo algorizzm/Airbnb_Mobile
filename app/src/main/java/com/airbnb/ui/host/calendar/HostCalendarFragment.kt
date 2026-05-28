@@ -13,8 +13,8 @@ import com.airbnb.R
 import com.airbnb.core.ui.EditTextDialog
 import com.airbnb.databinding.FragmentHostCalendarBinding
 import com.airbnb.utils.DateNormalizationUtil
+import com.airbnb.utils.formatting.DateFormatter
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.Lifecycle
@@ -36,8 +36,6 @@ class HostCalendarFragment : Fragment(R.layout.fragment_host_calendar) {
     
     private lateinit var reservationsAdapter: CalendarReservationsAdapter
     private lateinit var blockedDatesAdapter: BlockedDatesAdapter
-    
-    private val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     
     private var selectedStartDate: Date? = null
     private var selectedEndDate: Date? = null

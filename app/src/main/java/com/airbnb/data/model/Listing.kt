@@ -1,5 +1,6 @@
 package com.airbnb.data.model
 
+import com.airbnb.utils.formatting.CurrencyFormatter
 import com.google.firebase.Timestamp
 
 data class Listing(
@@ -26,8 +27,8 @@ data class Listing(
     /** Returns the cover image URL for the listing. */
     fun coverImageUrl(): String = imageUrl.trim()
 
-    /** Returns a formatted price string. */
-    fun formattedPrice(): String = "₱${pricePerNight.toInt()}/night"
+    /** Returns a formatted price string using centralized formatter. */
+    fun formattedPrice(): String = CurrencyFormatter.formatNightlyPrice(pricePerNight)
 
     /** Returns a summary of guest capacity. */
     fun guestSummary(): String = when {

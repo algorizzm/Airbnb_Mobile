@@ -10,9 +10,8 @@ import com.airbnb.R
 import com.airbnb.data.model.ReservationStatus
 import com.airbnb.data.model.TripItem
 import com.airbnb.databinding.ItemTripBinding
+import com.airbnb.utils.formatting.DateFormatter
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class TripAdapter(
     private val onItemClick: (TripItem) -> Unit,
@@ -76,16 +75,16 @@ class TripAdapter(
                 binding.imgHostAvatar.setImageResource(R.drawable.ic_profile)
             }
 
-            // Format dates with nights
-            val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-            val checkIn = reservation.checkInDate?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
-            val checkOut = reservation.checkOutDate?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
-            val nightsSummary = tripItem.nightsSummary()
-            binding.tvDates.text = if (nightsSummary.isNotBlank()) {
-                "$checkIn - $checkOut • $nightsSummary"
-            } else {
-                "$checkIn - $checkOut"
-            }
+            // Format dates with nights using centralized formatter
+            val dateRange = DateFormatter.formatReservationRange(
+                reservation.checkInDate,
+                reservation.checkOutDate
+            )
+            val nightsSummary = DateFormatter.formatNights(
+                reservation.checkInDate,
+                reservation.checkOutDate
+            )
+            binding.tvDates.text = "$dateRange • $nightsSummary"
 
             // Set countdown message
             val countdown = tripItem.countdownMessage()

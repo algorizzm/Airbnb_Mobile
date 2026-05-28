@@ -157,8 +157,8 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
                                 binding.tvAmenities.text = "No amenities listed"
                             }
 
-                            // Price
-                            binding.tvPrice.text = "₱${listing.pricePerNight.toInt()}"
+                            // Price using centralized formatter
+                            binding.tvPrice.text = listing.formattedPrice()
 
                             // TODO: Load image from listing.imageUrl using Glide/Coil in future
                         }

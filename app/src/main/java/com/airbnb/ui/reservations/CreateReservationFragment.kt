@@ -11,6 +11,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
 import com.airbnb.databinding.FragmentCreateReservationBinding
+import com.airbnb.utils.formatting.CurrencyFormatter
+import com.airbnb.utils.formatting.DateFormatter
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -200,7 +202,7 @@ class CreateReservationFragment : Fragment(R.layout.fragment_create_reservation)
                     }
                 }
 
-                // Observe number of nights
+                // Observe number of nights using centralized formatter
                 launch {
                     viewModel.numberOfNights.collect { nights ->
                         binding.tvNightsLabel.text = when (nights) {
@@ -212,11 +214,11 @@ class CreateReservationFragment : Fragment(R.layout.fragment_create_reservation)
                     }
                 }
 
-                // Observe total price
+                // Observe total price using centralized formatter
                 launch {
                     viewModel.totalPrice.collect { price ->
-                        binding.tvSubtotal.text = "₱${price.toInt()}"
-                        binding.tvTotalPrice.text = "₱${price.toInt()}"
+                        binding.tvSubtotal.text = CurrencyFormatter.formatPrice(price)
+                        binding.tvTotalPrice.text = CurrencyFormatter.formatPrice(price)
                     }
                 }
 

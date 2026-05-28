@@ -1,5 +1,6 @@
 package com.airbnb.data.model
 
+import com.airbnb.utils.formatting.DateFormatter
 import com.google.firebase.Timestamp
 
 /**
@@ -37,13 +38,9 @@ data class BlockedDate(
     /**
      * Returns a user-friendly summary of the blocked period.
      */
+    /** Returns a formatted date range summary using centralized formatter. */
     fun summary(): String {
         if (startDate == null || endDate == null) return "Invalid date range"
-        
-        val start = startDate.toDate()
-        val end = endDate.toDate()
-        
-        val formatter = java.text.SimpleDateFormat("MMM dd, yyyy", java.util.Locale.getDefault())
-        return "${formatter.format(start)} - ${formatter.format(end)}"
+        return DateFormatter.formatReservationRange(startDate, endDate)
     }
 }

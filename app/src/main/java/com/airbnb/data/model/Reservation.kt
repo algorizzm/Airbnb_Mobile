@@ -1,5 +1,6 @@
 package com.airbnb.data.model
 
+import com.airbnb.utils.formatting.CurrencyFormatter
 import com.google.firebase.Timestamp
 
 data class Reservation(
@@ -37,8 +38,8 @@ data class Reservation(
                                     status.equals(ReservationStatus.CONFIRMED, ignoreCase = true) ||
                                     status.equals(ReservationStatus.UPCOMING, ignoreCase = true)
 
-    /** Returns a formatted total price string. */
-    fun formattedTotalPrice(): String = "₱${totalPrice.toInt()}"
+    /** Returns a formatted total price string using centralized formatter. */
+    fun formattedTotalPrice(): String = CurrencyFormatter.formatPrice(totalPrice)
 
     /** Returns a summary of the number of guests. */
     fun guestSummary(): String = when {

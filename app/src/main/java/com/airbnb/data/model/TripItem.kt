@@ -1,6 +1,7 @@
 package com.airbnb.data.model
 
 import com.airbnb.utils.ReservationLifecycleManager
+import com.airbnb.utils.formatting.DateFormatter
 
 /**
  * UI model that combines a Reservation with its associated Listing.
@@ -48,26 +49,20 @@ data class TripItem(
     /** Returns a countdown or status message for the trip. */
     fun countdownMessage(): String = ReservationLifecycleManager.getReservationCountdown(reservation)
 
-    /** Returns the number of nights for this trip. */
+    /** Returns the number of nights for this trip using centralized formatter. */
     fun numberOfNights(): Int {
         val checkIn = reservation.checkInDate?.toDate()
         val checkOut = reservation.checkOutDate?.toDate()
         
         if (checkIn != null && checkOut != null) {
-            val diff = checkOut.time - checkIn.time
-            return (diff / (1000 * 60 * 60 * 24)).toInt()
+            return DateFormatter.calculateNights(checkIn, checkOut)
         }
         
         return 0
     }
 
-    /** Returns a formatted night summary. */
+    /** Returns a formatted night summary using centralized formatter. */
     fun nightsSummary(): String {
-        val nights = numberOfNights()
-        return when {
-            nights == 1 -> "1 night"
-            nights > 1 -> "$nights nights"
-            else -> ""
-        }
+        return DateFormatter.formatNights(reservation.checkInDate, reservation.checkOutDate)
     }
 }

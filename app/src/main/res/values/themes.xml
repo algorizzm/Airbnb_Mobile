@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- ========================================= -->
-    <!-- BASE APP THEME -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- BASE THEME -->
+    <!-- ========================================================= -->
 
     <style
         name="Base.Theme.Airbnb"
         parent="Theme.Material3.DayNight.NoActionBar">
 
-        <!-- ========================================= -->
+        <!-- ========================= -->
         <!-- PRIMARY COLORS -->
-        <!-- ========================================= -->
+        <!-- ========================= -->
 
         <item name="colorPrimary">@color/airbnb_red</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -19,53 +19,56 @@
         <item name="colorPrimaryContainer">@color/airbnb_red</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
 
-        <!-- ========================================= -->
+        <!-- ========================= -->
         <!-- SECONDARY COLORS -->
-        <!-- ========================================= -->
+        <!-- ========================= -->
 
         <item name="colorSecondary">@color/airbnb_red_dark</item>
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="colorSecondaryContainer">@color/airbnb_red_dark</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
 
-        <!-- ========================================= -->
+        <!-- ========================= -->
         <!-- TERTIARY COLORS -->
-        <!-- ========================================= -->
+        <!-- ========================= -->
 
         <item name="colorTertiary">@color/airbnb_red_light</item>
 
-        <!-- ========================================= -->
-        <!-- SURFACES / BACKGROUNDS -->
-        <!-- ========================================= -->
+        <!-- ========================= -->
+        <!-- BACKGROUND / SURFACES -->
+        <!-- ========================= -->
 
         <item name="android:colorBackground">@color/colorBackground</item>
 
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorSurfaceVariant">@color/colorSurface2</item>
 
-        <!-- ========================================= -->
-        <!-- MATERIAL CONTROL COLORS -->
-        <!-- ========================================= -->
+        <!-- ========================= -->
+        <!-- MATERIAL CONTROLS -->
+        <!-- ========================= -->
 
-        <!-- Fixes purple switches, checkboxes, sliders, etc -->
+        <!-- Controls: switch, checkbox, slider, radio -->
         <item name="colorControlActivated">@color/airbnb_red</item>
 
-        <!-- Ripple / pressed states -->
+        <!-- Ripple color -->
         <item name="colorControlHighlight">@color/airbnb_red_light</item>
 
-        <!-- ========================================= -->
-        <!-- STATUS / NAVIGATION BARS -->
-        <!-- ========================================= -->
+        <!-- ========================= -->
+        <!-- SYSTEM BARS -->
+        <!-- ========================= -->
 
-        <item name="android:statusBarColor">@color/airbnb_red</item>
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
 
-        <item name="android:navigationBarColor">
-            @color/airbnb_red
-        </item>
+        <!-- Navigation bar -->
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
 
-        <!-- ========================================= -->
-        <!-- MATERIAL COMPONENT DEFAULTS -->
-        <!-- ========================================= -->
+        <!-- ========================= -->
+        <!-- MATERIAL COMPONENTS -->
+        <!-- ========================= -->
 
         <item name="materialButtonStyle">
             @style/AirbnbMaterialButton
@@ -73,9 +76,9 @@
 
     </style>
 
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
     <!-- MAIN APP THEME -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
 
     <style
         name="Theme.Airbnb"
@@ -93,23 +96,22 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- MATERIAL BUTTON STYLE -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- BUTTON STYLES -->
+    <!-- ========================================================= -->
 
     <style
         name="AirbnbMaterialButton"
         parent="Widget.Material3.Button">
 
         <item name="backgroundTint">@color/airbnb_red</item>
-
         <item name="android:textColor">@color/white</item>
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- AIRBNB TAG -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- TAG STYLE -->
+    <!-- ========================================================= -->
 
     <style name="AirbnbTag">
 
@@ -131,9 +133,9 @@
 
     </style>
 
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
     <!-- DIVIDER -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
 
     <style name="AirbnbDivider">
 
@@ -147,9 +149,9 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- SECTION LABEL -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- TEXT STYLES -->
+    <!-- ========================================================= -->
 
     <style name="AirbnbSectionLabel">
 
@@ -162,10 +164,6 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- FIELD LABEL -->
-    <!-- ========================================= -->
-
     <style name="AirbnbFieldLabel">
 
         <item name="android:layout_width">wrap_content</item>
@@ -177,9 +175,9 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- EDIT TEXT -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- INPUT FIELDS -->
+    <!-- ========================================================= -->
 
     <style
         name="AirbnbEditText"
@@ -197,9 +195,9 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- LEVEL BUTTON -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- LEVEL BUTTONS -->
+    <!-- ========================================================= -->
 
     <style name="AirbnbLevelButton">
 
@@ -218,10 +216,6 @@
         <item name="android:textSize">12sp</item>
 
     </style>
-
-    <!-- ========================================= -->
-    <!-- ACTIVE LEVEL BUTTON -->
-    <!-- ========================================= -->
 
     <style name="AirbnbLevelButtonActive">
 
@@ -242,9 +236,9 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- CIRCLE IMAGE -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- IMAGE STYLES -->
+    <!-- ========================================================= -->
 
     <style name="AirbnbCircleImageView">
 
@@ -253,9 +247,9 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- CALENDAR THEME -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- MATERIAL DATE PICKER -->
+    <!-- ========================================================= -->
 
     <style
         name="AirbnbCalendarTheme"
@@ -268,9 +262,9 @@
 
     </style>
 
-    <!-- ========================================= -->
-    <!-- TIME PICKER THEME -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
+    <!-- MATERIAL TIME PICKER -->
+    <!-- ========================================================= -->
 
     <style
         name="AirbnbTimePickerTheme"
@@ -281,9 +275,9 @@
 
     </style>
 
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
     <!-- BOTTOM SHEET -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
 
     <style
         name="RoundedBottomSheetDialog"

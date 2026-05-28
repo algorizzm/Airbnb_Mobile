@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
 import com.airbnb.data.model.Reservation
 import com.airbnb.databinding.ItemHostReservationBinding
-import java.text.SimpleDateFormat
+import com.airbnb.utils.formatting.DateFormatter
 import java.util.Locale
 
 class HostReservationAdapter(
@@ -36,8 +36,6 @@ class HostReservationAdapter(
         private val binding: ItemHostReservationBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-
         fun bind(reservation: Reservation) {
             binding.apply {
                 // Guest name
@@ -47,15 +45,11 @@ class HostReservationAdapter(
                     "${reservation.guestName} (${reservation.reservationCode})"
                 }
 
-                // Dates
-                val checkIn = reservation.checkInDate?.toDate()
-                val checkOut = reservation.checkOutDate?.toDate()
-                
-                if (checkIn != null && checkOut != null) {
-                    tvDates.text = "${dateFormat.format(checkIn)} - ${dateFormat.format(checkOut)}"
-                } else {
-                    tvDates.text = "Dates unavailable"
-                }
+                // Dates using centralized formatter
+                tvDates.text = DateFormatter.formatReservationRange(
+                    reservation.checkInDate,
+                    reservation.checkOutDate
+                )
 
                 // Guests
                 tvGuests.text = "${reservation.numberOfGuests} guest${if (reservation.numberOfGuests > 1) "s" else ""}"

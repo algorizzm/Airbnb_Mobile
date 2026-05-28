@@ -12,10 +12,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
 import com.airbnb.databinding.FragmentTripDetailsBinding
+import com.airbnb.utils.formatting.DateFormatter
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
 
@@ -107,7 +106,6 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
 
     private fun bindTripDetails(tripItem: com.airbnb.data.model.TripItem) {
         val reservation = tripItem.reservation
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
 
         // Load listing image
         if (tripItem.imageUrl().isNotBlank()) {
@@ -126,9 +124,9 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         binding.tvListingTitle.text = tripItem.title()
         binding.tvLocation.text = tripItem.location()
 
-        // Set reservation summary
-        binding.tvCheckIn.text = reservation.checkInDate?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
-        binding.tvCheckOut.text = reservation.checkOutDate?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
+        // Set reservation summary using centralized formatter
+        binding.tvCheckIn.text = DateFormatter.formatFullDate(reservation.checkInDate)
+        binding.tvCheckOut.text = DateFormatter.formatFullDate(reservation.checkOutDate)
         binding.tvGuests.text = reservation.guestSummary()
         binding.tvReservationCode.text = tripItem.reservationCode()
 
@@ -157,7 +155,7 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         }
 
         // Set booking timeline
-        binding.tvBookedDate.text = reservation.createdAt?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
+        binding.tvBookedDate.text = DateFormatter.formatFullDate(reservation.createdAt)
 
         // Show/hide action buttons based on reservation state
         val canCheckIn = reservation.canCheckIn()

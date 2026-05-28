@@ -43,11 +43,12 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Check authentication status
         if (!isUserAuthenticated()) {
             showGuestState()
             return
         }
+
+        binding.fabCreateCollection?.visibility = View.VISIBLE
 
         setupRecyclerView()
         setupCreateCollectionButton()
@@ -61,9 +62,9 @@ class WishlistFragment : Fragment() {
         binding.emptyStateLayout.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
         binding.headerDivider.visibility = View.GONE
+        binding.fabCreateCollection?.visibility = View.GONE
 
         binding.btnLogin.setOnClickListener {
-
             GuestPromptDialog().show(parentFragmentManager, "GuestPromptDialog")
         }
     }

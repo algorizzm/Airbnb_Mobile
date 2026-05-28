@@ -11,6 +11,7 @@ import com.airbnb.R
 import com.airbnb.core.auth.AuthState
 import com.airbnb.data.session.UserSessionManager
 import com.airbnb.databinding.FragmentAccountInformationBinding
+import com.airbnb.utils.formatting.DateFormatter
 
 class AccountInformationFragment :
     Fragment(R.layout.fragment_account_information) {
@@ -94,12 +95,7 @@ class AccountInformationFragment :
 
             binding.tvMemberSince.text =
                 firebaseUser?.metadata?.creationTimestamp?.let {
-
-                    java.text.SimpleDateFormat(
-                        "MMMM yyyy",
-                        java.util.Locale.getDefault()
-                    ).format(java.util.Date(it))
-
+                    DateFormatter.formatMonthYear(it)
                 } ?: "—"
         }
     }

@@ -7,15 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.data.model.Reservation
 import com.airbnb.databinding.ItemCalendarReservationBinding
-import java.text.SimpleDateFormat
+import com.airbnb.utils.formatting.DateFormatter
 import java.util.*
 
 /**
  * Adapter for displaying reservations in the host calendar.
  */
 class CalendarReservationsAdapter : ListAdapter<Reservation, CalendarReservationsAdapter.ViewHolder>(DiffCallback) {
-    
-    private val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCalendarReservationBinding.inflate(
@@ -40,14 +38,11 @@ class CalendarReservationsAdapter : ListAdapter<Reservation, CalendarReservation
                 tvReservationCode.text = reservation.reservationCode ?: reservation.id.take(8)
                 tvStatus.text = reservation.statusLabel()
                 
-                val checkIn = reservation.checkInDate?.toDate()
-                val checkOut = reservation.checkOutDate?.toDate()
-                
-                if (checkIn != null && checkOut != null) {
-                    tvDates.text = "${dateFormatter.format(checkIn)} - ${dateFormatter.format(checkOut)}"
-                } else {
-                    tvDates.text = "Invalid dates"
-                }
+                // Use centralized date formatter
+                tvDates.text = DateFormatter.formatReservationRange(
+                    reservation.checkInDate,
+                    reservation.checkOutDate
+                )
                 
                 tvGuests.text = reservation.guestSummary()
                 tvPrice.text = reservation.formattedTotalPrice()
