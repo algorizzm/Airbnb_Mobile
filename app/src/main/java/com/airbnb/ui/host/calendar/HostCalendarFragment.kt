@@ -1,4 +1,4 @@
-package com.airbnb.ui.hosting
+package com.airbnb.ui.host.calendar
 
 import android.os.Bundle
 import android.view.View

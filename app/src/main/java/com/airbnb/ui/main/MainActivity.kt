@@ -7,7 +7,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.airbnb.R
@@ -15,7 +17,7 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.mode.AppMode
 import com.airbnb.core.mode.AppModeManager
 import com.airbnb.core.ui.AvatarHelper
-import com.airbnb.core.ui.GuestPromptDialog
+import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.utils.BackfillUtility
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -99,6 +101,18 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
                 ?: return
         val navController = navHostFragment.navController
+
+        val graph = navController.navInflater.inflate(R.navigation.main_graph)
+
+        graph.setStartDestination(
+            if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
+                R.id.hostTodayFragment
+            } else {
+                R.id.exploreFragment
+            }
+        )
+
+        navController.graph = graph
 
         // ----- TRAVELER VIEWS -----
         navBarTraveler = findViewById(R.id.navBarBg)
@@ -212,7 +226,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.splashFragment,
                 R.id.loginFragment,
                 R.id.signupFragment,
-                R.id.onboardingFragment
             )
 
             val isHidden = destination.id in hiddenScreens
@@ -246,43 +259,30 @@ class MainActivity : AppCompatActivity() {
         // REACT TO MODE CHANGES
         // =========================================================
 
+        // repeatOnLifecycle(STARTED) ensures this collector is cancelled while
+        // the Activity is in the background — preventing navigation calls from
+        // firing when the NavController's state may be inconsistent.
         lifecycleScope.launch {
-            AppModeManager.currentMode.collect { mode ->
-                val currentDest = navController.currentDestination?.id
-                val isHidden = currentDest in setOf(
-                    R.id.splashFragment,
-                    R.id.loginFragment,
-                    R.id.signupFragment,
-                    R.id.onboardingFragment
-                )
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                AppModeManager.currentMode.collect { mode ->
+                    val currentDest = navController.currentDestination?.id
+                    val isHidden = currentDest in setOf(
+                        R.id.splashFragment,
+                        R.id.loginFragment,
+                        R.id.signupFragment,
+                    )
 
-                if (!isHidden) {
-                    when (mode) {
-                        AppMode.TRAVELER -> {
-                            navBarTraveler.visibility = View.VISIBLE
-                            navBarHost.visibility = View.GONE
-                            // Navigate to traveler start destination
-                            navController.navigate(
-                                R.id.exploreFragment,
-                                null,
-                                NavOptions.Builder()
-                                    .setLaunchSingleTop(true)
-                                    .setPopUpTo(navController.graph.startDestinationId, false, true)
-                                    .build()
-                            )
-                        }
-                        AppMode.HOST -> {
-                            navBarTraveler.visibility = View.GONE
-                            navBarHost.visibility = View.VISIBLE
-                            // Navigate to host start destination
-                            navController.navigate(
-                                R.id.hostTodayFragment,
-                                null,
-                                NavOptions.Builder()
-                                    .setLaunchSingleTop(true)
-                                    .setPopUpTo(navController.graph.startDestinationId, false, true)
-                                    .build()
-                            )
+                    if (!isHidden) {
+                        when (mode) {
+                            AppMode.TRAVELER -> {
+                                navBarTraveler.visibility = View.VISIBLE
+                                navBarHost.visibility = View.GONE
+                            }
+
+                            AppMode.HOST -> {
+                                navBarTraveler.visibility = View.GONE
+                                navBarHost.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }
@@ -421,8 +421,6 @@ class MainActivity : AppCompatActivity() {
                     navIconHostProfile.setImageResource(R.drawable.ic_profile)
                     navHostProfileInit.visibility = View.GONE
 
-                    // Ensure we reset to traveler mode on sign-out
-                    AppModeManager.resetToTraveler()
                 }
             }
         }

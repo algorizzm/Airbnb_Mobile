@@ -3,6 +3,7 @@ package com.airbnb.core.auth
 import com.google.firebase.auth.FirebaseAuth
 import com.airbnb.data.session.UserSessionManager
 import kotlinx.coroutines.flow.StateFlow
+import com.airbnb.core.mode.AppModeManager
 
 object AuthManager {
 
@@ -20,6 +21,7 @@ object AuthManager {
         UserSessionManager.authState.value
 
     fun signOut() {
+        AppModeManager.resetToTraveler()
         auth.signOut()
     }
 

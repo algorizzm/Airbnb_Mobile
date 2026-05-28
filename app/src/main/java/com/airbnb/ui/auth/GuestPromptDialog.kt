@@ -1,4 +1,4 @@
-package com.airbnb.core.ui
+package com.airbnb.ui.auth
 
 import android.app.Dialog
 import android.os.Bundle
@@ -39,7 +39,7 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
                 val screenHeight = resources.displayMetrics.heightPixels
 
                 // 80% of screen
-                val desiredHeight = (screenHeight * 0.85f).toInt()
+                val desiredHeight = (screenHeight * 0.90f).toInt()
 
                 // Apply height properly
                 sheet.layoutParams = sheet.layoutParams.apply {

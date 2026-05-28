@@ -1,4 +1,4 @@
-package com.airbnb.ui.hosting
+package com.airbnb.ui.host.listings
 
 import android.os.Bundle
 import android.view.View
@@ -15,6 +15,7 @@ import com.airbnb.R
 import com.airbnb.core.mode.AppMode
 import com.airbnb.core.mode.AppModeManager
 import com.airbnb.databinding.FragmentHostListingsBinding
+import com.airbnb.ui.host.listings.adapter.HostListingAdapter
 import kotlinx.coroutines.launch
 
 class HostListingsFragment : Fragment(R.layout.fragment_host_listings) {

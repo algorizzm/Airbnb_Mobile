@@ -75,7 +75,7 @@
     <!-- Host Listings -->
     <fragment
         android:id="@+id/hostListingsFragment"
-        android:name="com.airbnb.ui.hosting.HostListingsFragment"
+        android:name="com.airbnb.ui.host.listings.HostListingsFragment"
         android:label="My Listings">
 
         <action
@@ -91,25 +91,25 @@
     <!-- Create/Edit Listing -->
     <fragment
         android:id="@+id/createListingFragment"
-        android:name="com.airbnb.ui.hosting.CreateListingFragment"
+        android:name="com.airbnb.ui.host.listings.create.CreateListingFragment"
         android:label="Create Listing" />
 
     <!-- Host Reservations -->
     <fragment
         android:id="@+id/hostReservationsFragment"
-        android:name="com.airbnb.ui.hosting.HostReservationsFragment"
+        android:name="com.airbnb.ui.host.reservation.HostReservationsFragment"
         android:label="Reservations" />
 
     <!-- Host Today (cross-listing reservation inbox — host mode root tab) -->
     <fragment
         android:id="@+id/hostTodayFragment"
-        android:name="com.airbnb.ui.hosting.HostTodayFragment"
+        android:name="com.airbnb.ui.host.today.HostTodayFragment"
         android:label="Today" />
 
     <!-- Host Calendar (placeholder — host mode root tab) -->
     <fragment
         android:id="@+id/hostCalendarFragment"
-        android:name="com.airbnb.ui.hosting.HostCalendarFragment"
+        android:name="com.airbnb.ui.host.calendar.HostCalendarFragment"
         android:label="Calendar" />
 
     <!-- Listing Details -->

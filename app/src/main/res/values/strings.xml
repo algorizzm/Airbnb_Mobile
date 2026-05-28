@@ -105,4 +105,8 @@
     <string name="messages_empty_support_title">No support messages</string>
     <string name="messages_empty_support_subtitle">Support conversations will appear here.</string>
 
+    <!-- Profile: mode-switch floating card labels -->
+    <string name="switch_to_hosting">Switch to hosting</string>
+    <string name="switch_to_traveling">Switch to traveling</string>
+
 </resources>

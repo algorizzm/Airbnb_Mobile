@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.auth.AuthState
+import com.airbnb.core.mode.AppMode
+import com.airbnb.core.mode.AppModeManager
 import com.airbnb.data.model.AppNotification
 import com.airbnb.data.model.User
 import com.airbnb.data.model.Reservation
@@ -28,6 +30,9 @@ data class RecentTrip(
 data class ProfileUiState(
     val user: User? = null,
     val isGuest: Boolean = false,
+    // currentMode is part of the single state object so that isGuest and mode
+    // are always read together — eliminating stale-snapshot races in the Fragment.
+    val currentMode: AppMode = AppMode.TRAVELER,
     val avatarUploading: Boolean = false,
     val bannerUploading: Boolean = false,
     val notifications: List<AppNotification> = emptyList(),
@@ -55,6 +60,29 @@ class ProfileViewModel(
 
     init {
         observeSession()
+        observeMode()
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Mode
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Mirrors AppModeManager.currentMode into ProfileUiState.
+     *
+     * Keeping mode inside the ViewModel means:
+     *  - The Fragment has ONE StateFlow to observe (no split collectors).
+     *  - A re-created Fragment immediately receives the correct combined state
+     *    on first emission without a startup race between two collectors.
+     *  - viewModelScope outlives the Fragment view, so the subscription persists
+     *    across Fragment recreations without duplicating collectors.
+     */
+    private fun observeMode() {
+        viewModelScope.launch {
+            AppModeManager.currentMode.collect { mode ->
+                _state.value = _state.value.copy(currentMode = mode)
+            }
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -69,7 +97,7 @@ class ProfileViewModel(
 
                 _state.value = _state.value.copy(
                     user = user,
-                    isGuest = user == null
+                    isGuest = !AuthManager.isAuthenticated()
                 )
 
                 if (user != null) {

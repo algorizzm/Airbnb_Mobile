@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -22,10 +23,11 @@ import com.airbnb.core.mode.AppMode
 import com.airbnb.core.mode.AppModeManager
 import com.airbnb.core.ui.AvatarHelper
 import com.airbnb.core.ui.EditTextDialog
-import com.airbnb.core.ui.GuestPromptDialog
 import com.airbnb.databinding.FragmentProfileBinding
+import com.airbnb.ui.auth.GuestPromptDialog
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
+import androidx.navigation.NavOptions
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -43,7 +45,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: ProfileViewModel by viewModels()
 
     // =========================================================
-    // IMAGE PICKER
+    // ACTIVITY RESULT LAUNCHERS
     // =========================================================
 
     private val imagePickerLauncher =
@@ -58,10 +60,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             viewModel.uploadAvatar(uri)
         }
 
-    // =========================================================
-    // PERMISSION
-    // =========================================================
-
     private val permissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -70,7 +68,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             if (granted) {
                 openGallery()
             } else {
-
                 toast("Gallery permission denied")
             }
         }
@@ -90,10 +87,136 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         setupClicks()
 
         observeState()
+
+        adjustFloatingCardForBottomNav()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     // =========================================================
-    // ALL CLICKS
+    // OBSERVE STATE
+    // =========================================================
+
+    private fun observeState() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewLifecycleOwner.repeatOnLifecycle(
+                Lifecycle.State.STARTED
+            ) {
+
+                viewModel.state.collect { state ->
+
+                    renderAll(state)
+                }
+            }
+        }
+    }
+
+    // =========================================================
+    // RENDER
+    // =========================================================
+
+    private fun renderAll(state: ProfileUiState) {
+
+        renderGuestLayout(state.isGuest)
+
+        renderProfileLayout(state)
+
+        renderSwitchCard(
+            isGuest = state.isGuest,
+            mode = state.currentMode
+        )
+
+        renderLoading(state.avatarUploading)
+
+        renderMessage(state.message)
+    }
+
+    private fun renderGuestLayout(isGuest: Boolean) {
+
+        binding.layoutGuest.visibility =
+            if (isGuest) View.VISIBLE else View.GONE
+
+        binding.layoutProfile.visibility =
+            if (isGuest) View.GONE else View.VISIBLE
+    }
+
+    private fun renderProfileLayout(state: ProfileUiState) {
+
+        val user = state.user ?: return
+
+        binding.tvFullName.text =
+            user.name.ifBlank { "Guest User" }
+
+        binding.tvUsername.text =
+            if (user.email.isBlank()) {
+                "@guest"
+            } else {
+                "@${user.email.substringBefore("@")}"
+            }
+
+        binding.tvLocation.text =
+            user.location.ifBlank {
+                "Philippines"
+            }
+
+        binding.tvBio.text =
+            user.bio?.takeIf {
+                it.isNotBlank()
+            } ?: "Tell guests about yourself."
+
+        AvatarHelper.bind(
+            imgView = binding.imgAvatar,
+            tvInitial = binding.tvAvatarInitial,
+            name = user.name,
+            imageUrl = user.profileImage
+        )
+    }
+
+    private fun renderSwitchCard(
+        isGuest: Boolean,
+        mode: AppMode
+    ) {
+
+        if (isGuest) {
+
+            binding.floatingHostingCard.visibility = View.GONE
+            return
+        }
+
+        binding.floatingHostingCard.visibility = View.VISIBLE
+
+        binding.tvFloatingHostingTitle.text = when (mode) {
+
+            AppMode.TRAVELER ->
+                getString(R.string.switch_to_hosting)
+
+            AppMode.HOST ->
+                getString(R.string.switch_to_traveling)
+        }
+    }
+
+    private fun renderLoading(loading: Boolean) {
+
+        binding.progressAvatar.visibility =
+            if (loading) View.VISIBLE else View.GONE
+    }
+
+    private fun renderMessage(message: String?) {
+
+        message ?: return
+
+        toast(message)
+
+        viewModel.consumeMessage()
+    }
+
+    // =========================================================
+    // SETUP
     // =========================================================
 
     private fun setupClicks() {
@@ -170,16 +293,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             openHosting()
         }
 
-        binding.btnSwitchHosting.setOnClickListener {
-
-            onSwitchModeClicked()
-        }
-
-        // =====================================================
-        // MODE SWITCH
-        // =====================================================
-
-        binding.rowSwitchMode.setOnClickListener {
+        binding.floatingHostingCard.setOnClickListener {
 
             onSwitchModeClicked()
         }
@@ -214,8 +328,85 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
+    private fun adjustFloatingCardForBottomNav() {
+
+        val params =
+            binding.floatingHostingCard.layoutParams
+                    as FrameLayout.LayoutParams
+
+        params.bottomMargin =
+            if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
+                92.dp()
+            } else {
+                0
+            }
+
+        binding.floatingHostingCard.layoutParams =
+            params
+    }
+
     // =========================================================
-    // HOSTING
+    // MODE SWITCH
+    // =========================================================
+
+    private fun onSwitchModeClicked() {
+
+        if (!AuthManager.isAuthenticated()) {
+
+            GuestPromptDialog.show(childFragmentManager)
+
+            return
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Switch mode")
+            .setMessage("Do you want to switch app mode?")
+            .setPositiveButton("Switch") { _, _ ->
+
+                val navController = findNavController()
+
+                val navOptions = NavOptions.Builder()
+                    .setLaunchSingleTop(true)
+                    .setRestoreState(true)
+                    .setPopUpTo(
+                        navController.graph.startDestinationId,
+                        false
+                    )
+                    .build()
+
+                when (AppModeManager.toggleMode()) {
+
+                    AppMode.HOST -> {
+
+                        navController.navigate(
+                            R.id.hostTodayFragment,
+                            null,
+                            navOptions
+                        )
+                    }
+
+                    AppMode.TRAVELER -> {
+
+                        navController.navigate(
+                            R.id.exploreFragment,
+                            null,
+                            navOptions
+                        )
+                    }
+
+                    null -> {
+                        // guest blocked from host mode
+                    }
+                }
+
+                adjustFloatingCardForBottomNav()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    // =========================================================
+    // NAVIGATION
     // =========================================================
 
     private fun openHosting() {
@@ -226,32 +417,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     // =========================================================
-    // MODE SWITCH
-    // =========================================================
-
-    private fun onSwitchModeClicked() {
-
-        if (!AuthManager.isAuthenticated()) {
-            GuestPromptDialog.show(childFragmentManager)
-            return
-        }
-
-        val currentMode = AppModeManager.currentModeSnapshot()
-        val targetMode = if (currentMode == AppMode.TRAVELER) AppMode.HOST else AppMode.TRAVELER
-        val label = if (targetMode == AppMode.HOST) "hosting" else "traveling"
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("Switch mode")
-            .setMessage("Switch to $label mode?")
-            .setPositiveButton("Switch") { _, _ ->
-                AppModeManager.setMode(targetMode)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    // =========================================================
-    // BIO DIALOG
+    // DIALOGS
     // =========================================================
 
     private fun showEditBioDialog() {
@@ -269,10 +435,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    // =========================================================
-    // APP INFO
-    // =========================================================
-
     private fun showAppInfoDialog() {
 
         AlertDialog.Builder(requireContext())
@@ -284,10 +446,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             .show()
     }
 
-    // =========================================================
-    // LOGOUT
-    // =========================================================
-
     private fun showLogoutDialog() {
 
         AlertDialog.Builder(requireContext())
@@ -295,7 +453,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             .setMessage("Are you sure you want to log out?")
             .setPositiveButton("Log out") { _, _ ->
 
-                // Reset mode to traveler before signing out
                 AppModeManager.resetToTraveler()
 
                 AuthManager.signOut()
@@ -309,18 +466,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     // =========================================================
-    // PERMISSION
+    // PERMISSIONS
     // =========================================================
 
     private fun requestGalleryPermission() {
 
-        val permission = if (
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-        ) {
-            Manifest.permission.READ_MEDIA_IMAGES
-        } else {
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        }
+        val permission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
 
         when {
 
@@ -348,10 +504,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         imagePickerLauncher.launch("image/*")
     }
 
-    // =========================================================
-    // SHOW AVATAR
-    // =========================================================
-
     private fun showSelectedAvatar(uri: Uri) {
 
         binding.tvAvatarInitial.visibility = View.GONE
@@ -363,140 +515,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     // =========================================================
-    // OBSERVE
-    // =========================================================
-
-    private fun observeState() {
-
-        viewLifecycleOwner.lifecycleScope.launch {
-
-            viewLifecycleOwner.repeatOnLifecycle(
-                Lifecycle.State.STARTED
-            ) {
-
-                viewModel.state.collect { state ->
-
-                    renderGuestState(state.isGuest)
-
-                    renderUser(state)
-
-                    renderLoading(state.avatarUploading)
-
-                    renderMessage(state.message)
-                }
-            }
-        }
-    }
-
-    // =========================================================
-    // GUEST STATE
-    // =========================================================
-
-    private fun renderGuestState(isGuest: Boolean) {
-
-        binding.layoutGuest.visibility =
-            if (isGuest) View.VISIBLE else View.GONE
-
-        binding.layoutProfile.visibility =
-            if (isGuest) View.GONE else View.VISIBLE
-
-        binding.btnSwitchHosting.visibility =
-            if (isGuest) View.GONE else View.VISIBLE
-
-        // Show mode switch row only to authenticated users
-        binding.rowSwitchMode.visibility =
-            if (isGuest) View.GONE else View.VISIBLE
-
-        // Update mode switch label based on current mode
-        if (!isGuest) {
-            renderModeSwitchLabel(AppModeManager.currentModeSnapshot())
-        }
-    }
-
-    // =========================================================
-    // MODE SWITCH LABEL
-    // =========================================================
-
-    private fun renderModeSwitchLabel(mode: AppMode) {
-        val label = when (mode) {
-            AppMode.TRAVELER -> "Switch to hosting"
-            AppMode.HOST -> "Switch to traveling"
-        }
-        binding.tvSwitchModeLabel.text = label
-        binding.btnSwitchHosting.text = label
-    }
-
-    // =========================================================
-    // USER
-    // =========================================================
-
-    private fun renderUser(
-        state: ProfileUiState
-    ) {
-
-        val user = state.user ?: return
-
-        binding.tvFullName.text =
-            user.name.ifBlank { "Guest User" }
-
-        binding.tvUsername.text =
-            if (user.name.isBlank()) {
-                "@guest"
-            } else {
-                "@${user.name.lowercase().replace(" ", "")}"
-            }
-
-        binding.tvLocation.text =
-            user.location.ifBlank {
-                "Philippines"
-            }
-
-        binding.tvBio.text =
-            user.bio?.takeIf {
-                it.isNotBlank()
-            } ?: "Tell guests about yourself."
-
-        AvatarHelper.bind(
-            imgView = binding.imgAvatar,
-            tvInitial = binding.tvAvatarInitial,
-            name = user.name,
-            imageUrl = user.profileImage
-        )
-    }
-
-    // =========================================================
-    // LOADING
-    // =========================================================
-
-    private fun renderLoading(
-        loading: Boolean
-    ) {
-
-        binding.progressAvatar.visibility =
-            if (loading) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-    }
-
-    // =========================================================
-    // MESSAGE
-    // =========================================================
-
-    private fun renderMessage(
-        message: String?
-    ) {
-
-        message ?: return
-
-        toast(message)
-
-        viewModel.consumeMessage()
-    }
-
-    // =========================================================
-    // VERSION
+    // APP INFO
     // =========================================================
 
     private fun appVersionName(): String {
@@ -517,7 +536,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     // =========================================================
-    // TOAST
+    // EXTENSIONS
+    // =========================================================
+
+    private fun Int.dp(): Int {
+
+        return (
+                this *
+                        requireContext()
+                            .resources
+                            .displayMetrics
+                            .density
+                ).toInt()
+    }
+
+    // =========================================================
+    // UTIL
     // =========================================================
 
     private fun toast(message: String) {
@@ -527,15 +561,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             message,
             Toast.LENGTH_SHORT
         ).show()
-    }
-
-    // =========================================================
-    // DESTROY
-    // =========================================================
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _binding = null
     }
 }

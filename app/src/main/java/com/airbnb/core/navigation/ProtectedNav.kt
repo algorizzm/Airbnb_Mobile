@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.airbnb.R
 import com.airbnb.core.auth.AuthManager
-import com.airbnb.core.ui.GuestPromptDialog
+import com.airbnb.ui.auth.GuestPromptDialog
 
 object ProtectedNav {
     /**

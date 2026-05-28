@@ -53,6 +53,20 @@ object AppModeManager {
         _currentMode.value = runCatching { AppMode.valueOf(saved) }.getOrDefault(AppMode.TRAVELER)
     }
 
+    fun restoreSavedMode() {
+
+        val saved =
+            prefs.getString(
+                KEY_MODE,
+                AppMode.TRAVELER.name
+            ) ?: AppMode.TRAVELER.name
+
+        _currentMode.value =
+            runCatching {
+                AppMode.valueOf(saved)
+            }.getOrDefault(AppMode.TRAVELER)
+    }
+
     // =========================================================
     // CURRENT MODE (SNAPSHOT)
     // =========================================================

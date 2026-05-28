@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.airbnb.core.auth.AuthState
 import com.airbnb.data.model.User
+import com.airbnb.core.mode.AppModeManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -83,6 +84,9 @@ object UserSessionManager {
             _authState.value = AuthState.Loading(uid)
         }
 
+        AppModeManager.init(auth.app.applicationContext)
+        AppModeManager.restoreSavedMode()
+
         userDocListener = db.collection("users").document(uid)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
@@ -90,8 +94,18 @@ object UserSessionManager {
                     _authState.value = AuthState.Authenticated(uid = uid, user = null)
                     return@addSnapshotListener
                 }
-                val user = snapshot?.toObject(User::class.java)?.copy(id = uid)
-                _authState.value = AuthState.Authenticated(uid = uid, user = user)
+                val user =
+                    snapshot
+                        ?.toObject(User::class.java)
+                        ?.copy(id = uid)
+
+                _authState.value =
+                    AuthState.Authenticated(
+                        uid = uid,
+                        user = user
+                    )
+
+                AppModeManager.restoreSavedMode()
             }
     }
 

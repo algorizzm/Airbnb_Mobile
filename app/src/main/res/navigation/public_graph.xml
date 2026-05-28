@@ -7,26 +7,6 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.airbnb.ui.main.SplashFragment"
-        android:label="Launcher">
-
-        <action
-            android:id="@+id/action_splashFragment_to_onboardingFragment"
-            app:destination="@id/onboardingFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/onboardingFragment"
-        android:name="com.airbnb.ui.main.OnboardingFragment"
-        android:label="Onboarding">
-
-        <argument
-            android:name="layoutId"
-            app:argType="reference"
-            android:defaultValue="@layout/fragment_onboarding" />
-
-        <action
-            android:id="@+id/action_onboardingFragment_to_homeFragment"
-            app:destination="@id/main_graph" />
-    </fragment>
+        android:label="Launcher" />
 
 </navigation>

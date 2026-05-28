@@ -1,4 +1,4 @@
-package com.airbnb.ui.hosting
+package com.airbnb.ui.host.today
 
 import android.os.Bundle
 import android.view.View
@@ -9,45 +9,61 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
-import com.airbnb.databinding.FragmentHostReservationsBinding
+import com.airbnb.databinding.FragmentHostTodayBinding
+import com.airbnb.ui.host.reservation.adapter.HostReservationAdapter
+import com.airbnb.ui.host.reservation.HostReservationsViewModel
 import kotlinx.coroutines.launch
 
-class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
+/**
+ * Host Today tab — shows all reservations across all of the host's listings.
+ *
+ * This is the root destination for the host mode Today tab.
+ * It reuses HostReservationsViewModel and HostReservationAdapter, calling
+ * loadAllReservationsForHost() instead of the per-listing variant.
+ *
+ * No toolbar back button — this is a root tab, not a drill-down screen.
+ */
+class HostTodayFragment : Fragment(R.layout.fragment_host_today) {
 
-    private var _binding: FragmentHostReservationsBinding? = null
+    // =========================================================
+    // VIEW BINDING
+    // =========================================================
+
+    private var _binding: FragmentHostTodayBinding? = null
     private val binding get() = _binding!!
 
+    // =========================================================
+    // VIEWMODEL
+    // =========================================================
+
     private val viewModel: HostReservationsViewModel by viewModels()
+
+    // =========================================================
+    // ADAPTER
+    // =========================================================
+
     private lateinit var adapter: HostReservationAdapter
 
-    private var listingId: String? = null
+    // =========================================================
+    // LIFECYCLE
+    // =========================================================
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentHostReservationsBinding.bind(view)
+        _binding = FragmentHostTodayBinding.bind(view)
 
-        listingId = arguments?.getString("listingId")
-        if (listingId == null) {
-            Toast.makeText(requireContext(), getString(R.string.toast_invalid_listing), Toast.LENGTH_SHORT).show()
-            findNavController().navigateUp()
-            return
-        }
-
-        setupToolbar()
         setupRecyclerView()
         observeState()
 
-        viewModel.loadReservationsForListing(listingId!!)
+        // Load all reservations for this host (cross-listing)
+        viewModel.loadAllReservationsForHost()
     }
 
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-    }
+    // =========================================================
+    // RECYCLER VIEW
+    // =========================================================
 
     private fun setupRecyclerView() {
         adapter = HostReservationAdapter(
@@ -64,9 +80,13 @@ class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@HostReservationsFragment.adapter
+            adapter = this@HostTodayFragment.adapter
         }
     }
+
+    // =========================================================
+    // CONFIRMATIONS
+    // =========================================================
 
     private fun showApproveConfirmation(reservationId: String, guestName: String) {
         AlertDialog.Builder(requireContext())
@@ -101,12 +121,18 @@ class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
             .show()
     }
 
+    // =========================================================
+    // OBSERVE
+    // =========================================================
+
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
+
                     // Loading
-                    binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+                    binding.progressBar.visibility =
+                        if (state.isLoading) View.VISIBLE else View.GONE
 
                     // Reservations
                     adapter.submitList(state.reservations)
@@ -135,6 +161,10 @@ class HostReservationsFragment : Fragment(R.layout.fragment_host_reservations) {
             }
         }
     }
+
+    // =========================================================
+    // DESTROY
+    // =========================================================
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="120dp">
+            android:paddingBottom="80dp">
 
             <!-- ========================================================= -->
             <!-- GUEST -->
@@ -172,7 +172,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="J"
-                                android:textColor="#A020F0"
+                                android:textColor="#121212"
                                 android:textSize="36sp"
                                 android:fontFamily="@font/poppins_bold"/>
 
@@ -208,7 +208,7 @@
                             android:id="@+id/tvUsername"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@julianmiguel"
+                            android:text="\@julianmiguel"
                             android:textColor="#717171"
                             android:textSize="14sp"/>
 
@@ -364,26 +364,6 @@
 
                     </LinearLayout>
 
-                    <!-- Mode Switch Row — text set dynamically by ProfileFragment -->
-                    <LinearLayout
-                        android:id="@+id/rowSwitchMode"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="20dp"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/tvSwitchModeLabel"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Switch to hosting"
-                            android:textSize="15sp"
-                            android:textColor="#FF385C"/>
-
-                    </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/rowAppInfo"
                         android:layout_width="match_parent"
@@ -432,22 +412,40 @@
     </ScrollView>
 
     <!-- ========================================================= -->
-    <!-- ONLY THE BUTTON IS STICKY -->
+    <!-- STICKY SWITCH MODE CARD -->
     <!-- ========================================================= -->
 
-    <Button
-        android:id="@+id/btnSwitchHosting"
+    <LinearLayout
+        android:id="@+id/floatingHostingCard"
+        android:saveEnabled="false"
         android:layout_width="220dp"
         android:layout_height="52dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
         android:background="@drawable/bg_airbnb_dark_button"
         android:elevation="10dp"
-        android:text="Switch to hosting"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:fontFamily="@font/poppins_medium"
-        app:backgroundTint="@null"/>
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_switch" />
+
+        <TextView
+            android:id="@+id/tvFloatingHostingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="Switch to hosting"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppins_medium"
+            android:maxLines="1" />
+
+    </LinearLayout>
 
 </FrameLayout>

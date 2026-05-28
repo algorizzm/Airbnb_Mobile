@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.databinding.FragmentWishlistBinding
 import com.airbnb.ui.traveler.wishlist.adapter.WishlistAdapter
-import com.airbnb.core.ui.GuestPromptHelper
-import com.airbnb.core.ui.isUserAuthenticated
+import com.airbnb.ui.auth.GuestPromptHelper
+import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
 
 class WishlistFragment : Fragment() {

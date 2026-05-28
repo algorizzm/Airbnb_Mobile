@@ -1,4 +1,4 @@
-package com.airbnb.ui.hosting
+package com.airbnb.ui.host.listings.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

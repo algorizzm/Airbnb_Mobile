@@ -1,4 +1,4 @@
-package com.airbnb.ui.hosting
+package com.airbnb.ui.host.reservation.adapter
 
 import android.view.LayoutInflater
 import android.view.View

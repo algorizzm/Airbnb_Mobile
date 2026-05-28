@@ -1,4 +1,4 @@
-package com.airbnb.ui.hosting
+package com.airbnb.ui.host.reservation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

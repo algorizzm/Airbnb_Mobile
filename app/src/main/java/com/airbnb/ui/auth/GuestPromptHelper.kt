@@ -1,4 +1,4 @@
-package com.airbnb.core.ui
+package com.airbnb.ui.auth
 
 import android.view.View
 import android.widget.ImageView

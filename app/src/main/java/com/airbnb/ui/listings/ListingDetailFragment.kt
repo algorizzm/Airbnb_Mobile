@@ -11,8 +11,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
 import com.airbnb.databinding.FragmentListingDetailBinding
-import com.airbnb.core.ui.GuestPromptDialog
-import com.airbnb.core.ui.isUserAuthenticated
+import com.airbnb.ui.auth.GuestPromptDialog
+import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
 
 class ListingDetailFragment : Fragment(R.layout.fragment_listing_detail) {
