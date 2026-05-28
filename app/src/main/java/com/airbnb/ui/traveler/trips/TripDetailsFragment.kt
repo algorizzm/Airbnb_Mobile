@@ -66,6 +66,10 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         binding.btnEarlyCheckOut.setOnClickListener {
             showEarlyCheckOutConfirmationDialog()
         }
+
+        binding.btnLeaveReview.setOnClickListener {
+            navigateToReviewSubmission()
+        }
     }
 
     private fun observeUi() {
@@ -162,6 +166,7 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         val canCheckOut = reservation.canCheckOut()
         val canEarlyCheckOut = reservation.canEarlyCheckOut()
         val isCancellable = reservation.isCancellable()
+        val canReview = reservation.canSubmitReview()
         
         // Debug logging
         android.util.Log.d("TripDetails", "Reservation status: ${reservation.status}")
@@ -170,11 +175,25 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         android.util.Log.d("TripDetails", "canCheckOut: $canCheckOut")
         android.util.Log.d("TripDetails", "canEarlyCheckOut: $canEarlyCheckOut")
         android.util.Log.d("TripDetails", "isCancellable: $isCancellable")
+        android.util.Log.d("TripDetails", "canReview: $canReview")
         
         binding.btnCancel.visibility = if (isCancellable) View.VISIBLE else View.GONE
         binding.btnCheckIn.visibility = if (canCheckIn) View.VISIBLE else View.GONE
         binding.btnCheckOut.visibility = if (canCheckOut && !canEarlyCheckOut) View.VISIBLE else View.GONE
         binding.btnEarlyCheckOut.visibility = if (canEarlyCheckOut) View.VISIBLE else View.GONE
+        binding.btnLeaveReview.visibility = if (canReview) View.VISIBLE else View.GONE
+    }
+    
+    private fun navigateToReviewSubmission() {
+        reservationId?.let { id ->
+            val bundle = Bundle().apply {
+                putString("reservationId", id)
+            }
+            findNavController().navigate(
+                R.id.action_tripDetails_to_reviewSubmission,
+                bundle
+            )
+        }
     }
 
     private fun showCancelConfirmationDialog() {

@@ -90,6 +90,22 @@
             app:argType="string"
             app:nullable="true" />
 
+        <action
+            android:id="@+id/action_tripDetails_to_reviewSubmission"
+            app:destination="@id/reviewSubmissionFragment" />
+
+    </fragment>
+
+    <!-- Review Submission -->
+    <fragment
+        android:id="@+id/reviewSubmissionFragment"
+        android:name="com.airbnb.ui.traveler.review.ReviewSubmissionFragment"
+        android:label="Leave Review">
+
+        <argument
+            android:name="reservationId"
+            app:argType="string" />
+
     </fragment>
 
     <!-- Profile -->

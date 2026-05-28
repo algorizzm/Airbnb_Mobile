@@ -149,4 +149,14 @@ data class Reservation(
         // Can early check out if current date is before scheduled check-out (comparing dates only)
         return nowCal.time.before(checkOutCal.time)
     }
+    
+    /** Returns true if the traveler can submit a review for this reservation. */
+    fun canSubmitReview(): Boolean {
+        return status == ReservationStatus.COMPLETED &&
+                checkedOut &&
+                !reviewSubmitted
+    }
+    
+    /** Returns true if the traveler has already reviewed this reservation. */
+    fun hasReviewed(): Boolean = reviewSubmitted
 }

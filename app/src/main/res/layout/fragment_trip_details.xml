@@ -467,6 +467,21 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
+            <!-- LEAVE REVIEW BUTTON -->
+            <Button
+                android:id="@+id/btnLeaveReview"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_button_primary"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Leave Review"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
             <!-- PROGRESS BAR -->
             <ProgressBar
                 android:id="@+id/progressBar"

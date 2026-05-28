@@ -4,21 +4,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="0dp">
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="14dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:strokeWidth="0dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <!-- Image Grid Container -->
+        <!-- ================================= -->
+        <!-- IMAGE GRID -->
+        <!-- ================================= -->
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/imageContainer"
             android:layout_width="match_parent"
-            android:layout_height="180dp">
+            android:layout_height="190dp">
 
             <!-- Top Left -->
             <ImageView
@@ -76,29 +84,38 @@
                 app:layout_constraintWidth_percent="0.5"
                 app:layout_constraintHeight_percent="0.5"/>
 
+            <!-- Subtle image spacing overlay -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_wishlist_grid_spacing"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Wishlist Name -->
+        <!-- ================================= -->
+        <!-- TEXT CONTENT -->
+        <!-- ================================= -->
+
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="14dp"
             android:text="Recently viewed"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textColor="#111111"
+            android:textSize="17sp"
+            android:fontFamily="@font/poppins_medium"/>
 
-        <!-- Subtitle -->
         <TextView
             android:id="@+id/tvSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
             android:text="0 saved"
             android:textColor="#717171"
-            android:textSize="13sp" />
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_regular"/>
 
     </LinearLayout>
 

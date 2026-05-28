@@ -337,6 +337,54 @@
                     android:fontFamily="@font/poppins_regular"
                     tools:text="WiFi, Kitchen, Air Conditioning, Free Parking"/>
 
+                <!-- DIVIDER -->
+                <View
+                    android:id="@+id/reviewsDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#EEEEEE"
+                    android:visibility="gone"/>
+
+                <!-- REVIEWS SECTION -->
+                <LinearLayout
+                    android:id="@+id/reviewsSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tvReviewsHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Reviews"
+                        android:textColor="#111111"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_medium"/>
+
+                    <TextView
+                        android:id="@+id/tvRatingSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="#666666"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_regular"
+                        tools:text="★ 4.91 · 23 reviews"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/reviewsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_review"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

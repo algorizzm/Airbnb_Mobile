@@ -9,8 +9,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.databinding.FragmentListingDetailsBinding
+import com.airbnb.ui.adapter.ReviewsAdapter
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
@@ -20,6 +22,8 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
 
     private var _binding: FragmentListingDetailsBinding? = null
     private val binding get() = _binding!!
+
+    private val reviewsAdapter = ReviewsAdapter()
 
     private val listingId: String by lazy {
         arguments?.getString(ARG_LISTING_ID).orEmpty()
@@ -34,7 +38,15 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
         _binding = FragmentListingDetailsBinding.bind(view)
 
         setupUI()
+        setupReviewsRecyclerView()
         observeViewModel()
+    }
+
+    private fun setupReviewsRecyclerView() {
+        binding.reviewsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = reviewsAdapter
+        }
     }
 
     private fun setupUI() {
@@ -160,7 +172,24 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
                             // Price using centralized formatter
                             binding.tvPrice.text = listing.formattedPrice()
 
+                            // Rating summary
+                            binding.tvRatingSummary.text = listing.formattedRating()
+
                             // TODO: Load image from listing.imageUrl using Glide/Coil in future
+                        }
+                    }
+                }
+
+                // Observe reviews
+                launch {
+                    viewModel.reviews.collect { reviews ->
+                        if (reviews.isNotEmpty()) {
+                            binding.reviewsSection.visibility = View.VISIBLE
+                            binding.reviewsDivider.visibility = View.VISIBLE
+                            reviewsAdapter.submitList(reviews.take(5)) // Show max 5 reviews
+                        } else {
+                            binding.reviewsSection.visibility = View.GONE
+                            binding.reviewsDivider.visibility = View.GONE
                         }
                     }
                 }

@@ -20,6 +20,8 @@ data class Listing(
     val bathrooms: Int = 1,
     val propertyType: String = "", // e.g., "Apartment", "House", "Villa"
     val rating: Double = 0.0,
+    val averageRating: Double = 0.0, // Average rating from reviews
+    val reviewCount: Int = 0, // Total number of reviews
     val createdAt: Timestamp? = null,
     val updatedAt: Timestamp? = null,
     val listingCode: String? = null
@@ -46,4 +48,16 @@ data class Listing(
             append(if (bathrooms == 1) "1 bathroom" else "$bathrooms bathrooms")
         }
     }
+    
+    /** Returns a formatted rating string with review count. */
+    fun formattedRating(): String {
+        return if (reviewCount > 0) {
+            "★ ${String.format("%.2f", averageRating)} · $reviewCount ${if (reviewCount == 1) "review" else "reviews"}"
+        } else {
+            "No reviews yet"
+        }
+    }
+    
+    /** Returns true if the listing has reviews. */
+    fun hasReviews(): Boolean = reviewCount > 0
 }
