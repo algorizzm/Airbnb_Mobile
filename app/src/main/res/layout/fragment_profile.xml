@@ -43,7 +43,7 @@
                     android:layout_height="90dp"
                     android:src="@drawable/blank_profile"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/bg_airbnb_avatar"
+                    android:background="@drawable/ic_user"
                     android:padding="2dp"/>
 
                 <TextView
@@ -383,25 +383,53 @@
 
                 </LinearLayout>
 
-                <!-- LOGOUT -->
+                <!-- ACCOUNT ACTIONS -->
 
                 <LinearLayout
-                    android:id="@+id/rowLogout"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="40dp"
                     android:background="@drawable/bg_airbnb_card"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Log out"
-                        android:textColor="#FF385C"
-                        android:textSize="15sp"/>
+                    <!-- SWITCH ACCOUNT -->
+
+                    <LinearLayout
+                        android:id="@+id/rowSwitchAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="20dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Switch account"
+                            android:textColor="#111111"
+                            android:textSize="15sp"/>
+
+                    </LinearLayout>
+
+                    <!-- LOG OUT -->
+
+                    <LinearLayout
+                        android:id="@+id/rowLogout"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Log out"
+                            android:textColor="#FF385C"
+                            android:textSize="15sp"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

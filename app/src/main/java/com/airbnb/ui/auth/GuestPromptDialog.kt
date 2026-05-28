@@ -135,6 +135,11 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
             showError("Apple Sign-In coming soon")
         }
 
+        // Use Another Account - clears Google credential cache and reopens chooser
+        binding.tvUseAnotherAccount.setOnClickListener {
+            clearGoogleCredentialsAndRelaunch()
+        }
+
         binding.btnGuestDismiss.setOnClickListener {
             dismiss()
         }
@@ -202,6 +207,18 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
 
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    /**
+     * Clears Google Sign-In cached credential state and immediately reopens the account chooser.
+     * This allows users to select a different Google account or create a new Firebase user.
+     */
+    private fun clearGoogleCredentialsAndRelaunch() {
+        googleSignInClient.signOut().addOnCompleteListener {
+            // After clearing cached credentials, immediately relaunch Google account chooser
+            val signInIntent = googleSignInClient.signInIntent
+            googleSignInLauncher.launch(signInIntent)
+        }
     }
 
     override fun onDestroyView() {

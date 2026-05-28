@@ -16,6 +16,9 @@ import com.airbnb.utils.DateNormalizationUtil
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.Lifecycle
+import android.widget.AdapterView
 
 /**
  * Host Calendar screen - allows hosts to:
@@ -68,44 +71,52 @@ class HostCalendarFragment : Fragment(R.layout.fragment_host_calendar) {
             adapter = blockedDatesAdapter
         }
     }
-    
+
     private fun setupListingSpinner() {
-        lifecycleScope.launch {
-            viewModel.hostListings.collect { listings ->
-                if (listings.isEmpty()) {
-                    binding.spinnerListings.visibility = View.GONE
-                    binding.tvNoListings.visibility = View.VISIBLE
-                    binding.layoutCalendarContent.visibility = View.GONE
-                    return@collect
-                }
-                
-                binding.spinnerListings.visibility = View.VISIBLE
-                binding.tvNoListings.visibility = View.GONE
-                binding.layoutCalendarContent.visibility = View.VISIBLE
-                
-                val listingTitles = listings.map { it.title }
-                val adapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_item,
-                    listingTitles
-                )
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerListings.adapter = adapter
-                
-                binding.spinnerListings.setOnItemSelectedListener(
-                    object : android.widget.AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: android.widget.AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            viewModel.selectListing(listings[position])
-                        }
-                        
-                        override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.hostListings.collect { listings ->
+
+                    if (listings.isEmpty()) {
+                        binding.spinnerListings.visibility = View.GONE
+                        binding.tvNoListings.visibility = View.VISIBLE
+                        binding.layoutCalendarContent.visibility = View.GONE
+                        return@collect
                     }
-                )
+
+                    binding.spinnerListings.visibility = View.VISIBLE
+                    binding.tvNoListings.visibility = View.GONE
+                    binding.layoutCalendarContent.visibility = View.VISIBLE
+
+                    val listingTitles = listings.map { it.title }
+
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        listingTitles
+                    )
+
+                    adapter.setDropDownViewResource(
+                        android.R.layout.simple_spinner_dropdown_item
+                    )
+
+                    binding.spinnerListings.adapter = adapter
+
+                    binding.spinnerListings.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                viewModel.selectListing(listings[position])
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                        }
+                }
             }
         }
     }
@@ -182,48 +193,65 @@ class HostCalendarFragment : Fragment(R.layout.fragment_host_calendar) {
             }
         )
     }
-    
+
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            // Observe reservations
-            launch {
-                viewModel.reservations.collect { reservations ->
-                    reservationsAdapter.submitList(reservations)
-                    binding.tvNoReservations.visibility = if (reservations.isEmpty()) View.VISIBLE else View.GONE
-                }
-            }
-            
-            // Observe blocked dates
-            launch {
-                viewModel.blockedDates.collect { blockedDates ->
-                    blockedDatesAdapter.submitList(blockedDates)
-                    binding.tvNoBlockedDates.visibility = if (blockedDates.isEmpty()) View.VISIBLE else View.GONE
-                }
-            }
-            
-            // Observe loading state
-            launch {
-                viewModel.isLoading.collect { isLoading ->
-                    binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-                }
-            }
-            
-            // Observe error messages
-            launch {
-                viewModel.errorMessage.collect { error ->
-                    error?.let {
-                        Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-                        viewModel.clearError()
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                launch {
+                    viewModel.reservations.collect { reservations ->
+                        reservationsAdapter.submitList(reservations)
+
+                        binding.tvNoReservations.visibility =
+                            if (reservations.isEmpty()) View.VISIBLE
+                            else View.GONE
                     }
                 }
-            }
-            
-            // Observe success messages
-            launch {
-                viewModel.successMessage.collect { message ->
-                    message?.let {
-                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                        viewModel.clearSuccess()
+
+                launch {
+                    viewModel.blockedDates.collect { blockedDates ->
+                        blockedDatesAdapter.submitList(blockedDates)
+
+                        binding.tvNoBlockedDates.visibility =
+                            if (blockedDates.isEmpty()) View.VISIBLE
+                            else View.GONE
+                    }
+                }
+
+                launch {
+                    viewModel.isLoading.collect { isLoading ->
+                        binding.progressBar.visibility =
+                            if (isLoading) View.VISIBLE
+                            else View.GONE
+                    }
+                }
+
+                launch {
+                    viewModel.errorMessage.collect { error ->
+                        error?.let {
+                            Toast.makeText(
+                                requireContext(),
+                                it,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            viewModel.clearError()
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.successMessage.collect { message ->
+                        message?.let {
+                            Toast.makeText(
+                                requireContext(),
+                                it,
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            viewModel.clearSuccess()
+                        }
                     }
                 }
             }

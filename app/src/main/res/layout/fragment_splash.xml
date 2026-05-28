@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.42">
+        app:layout_constraintVertical_bias="0.5">
 
         <!-- Fixed ID: splashLogo -->
         <ImageView
@@ -25,22 +25,9 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:src="@drawable/ic_airbnb"
+            app:tint="@color/airbnb_gray"
             android:contentDescription="@string/splash_logo_content_description"
             android:scaleType="fitCenter" />
-
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="32dp" />
-
-        <TextView
-            android:id="@+id/splashAppName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name_display"
-            android:textColor="#000000"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/poppins_bold" />
 
     </LinearLayout>
 

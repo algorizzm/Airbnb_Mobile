@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <!-- BOTTOM NAV ANCHOR GUIDELINE -->
+    <!-- This guideline marks where the bottom navigation starts.
+         Both nav bars are positioned here, ensuring the fragment container
+         has a stable constraint regardless of which nav bar is visible. -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="72dp" />
+
     <!-- NAV HOST -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -15,7 +26,7 @@
         app:navGraph="@navigation/nav_graph"
         app:defaultNavHost="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/navBarBg"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottomNav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -25,7 +36,7 @@
     <LinearLayout
         android:id="@+id/navBarBg"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:minHeight="72dp"
         android:orientation="horizontal"
         android:gravity="center"
@@ -34,6 +45,7 @@
         android:background="@drawable/bg_bottom_nav"
         android:elevation="8dp"
         android:weightSum="5"
+        app:layout_constraintTop_toBottomOf="@id/guidelineBottomNav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -211,7 +223,7 @@
     <LinearLayout
         android:id="@+id/navBarHost"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:minHeight="72dp"
         android:orientation="horizontal"
         android:gravity="center"
@@ -221,6 +233,7 @@
         android:elevation="8dp"
         android:weightSum="5"
         android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/guidelineBottomNav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -241,7 +254,7 @@
                 android:id="@+id/navIconToday"
                 android:layout_width="48dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_airbnb"
+                android:src="@drawable/ic_today"
                 app:tint="#FF385C"
                 android:contentDescription="Today"/>
 
@@ -392,4 +405,4 @@
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

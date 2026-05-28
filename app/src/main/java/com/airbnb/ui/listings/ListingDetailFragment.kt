@@ -10,14 +10,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
-import com.airbnb.databinding.FragmentListingDetailBinding
+import com.airbnb.databinding.FragmentListingDetailsBinding
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
+import com.airbnb.core.ui.AvatarHelper
 
-class ListingDetailFragment : Fragment(R.layout.fragment_listing_detail) {
+class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
 
-    private var _binding: FragmentListingDetailBinding? = null
+    private var _binding: FragmentListingDetailsBinding? = null
     private val binding get() = _binding!!
 
     private val listingId: String by lazy {
@@ -30,7 +31,7 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentListingDetailBinding.bind(view)
+        _binding = FragmentListingDetailsBinding.bind(view)
 
         setupUI()
         observeViewModel()
@@ -127,7 +128,24 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_detail) {
                             }
 
                             // Host info
-                            binding.tvHostName.text = listing.hostName.ifBlank { "Host" }
+                            binding.tvHostName.text =
+                                listing.hostName.ifBlank { "Host" }
+
+                            try {
+
+                                AvatarHelper.bind(
+                                    imgView = binding.imgHostAvatar,
+                                    tvInitial = null,
+                                    name = listing.hostName,
+                                    imageUrl = listing.hostProfileImage
+                                )
+
+                            } catch (e: Exception) {
+
+                                binding.imgHostAvatar.setImageResource(
+                                    R.drawable.ic_profile
+                                )
+                            }
 
                             // Description
                             binding.tvDescription.text = listing.description.ifBlank { "No description available" }

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
+
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,7 +17,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+
 import com.airbnb.R
 import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.mode.AppMode
@@ -26,8 +29,8 @@ import com.airbnb.core.ui.EditTextDialog
 import com.airbnb.databinding.FragmentProfileBinding
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.bumptech.glide.Glide
+
 import kotlinx.coroutines.launch
-import androidx.navigation.NavOptions
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -45,25 +48,24 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: ProfileViewModel by viewModels()
 
     // =========================================================
-    // ACTIVITY RESULT LAUNCHERS
+    // IMAGE PICKER
     // =========================================================
 
     private val imagePickerLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.GetContent()
-        ) { uri: Uri? ->
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
 
             uri ?: return@registerForActivityResult
 
             showSelectedAvatar(uri)
-
             viewModel.uploadAvatar(uri)
         }
 
+    // =========================================================
+    // PERMISSION
+    // =========================================================
+
     private val permissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { granted ->
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
 
             if (granted) {
                 openGallery()
@@ -85,9 +87,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         _binding = FragmentProfileBinding.bind(view)
 
         setupClicks()
-
         observeState()
-
         adjustFloatingCardForBottomNav()
     }
 
@@ -97,19 +97,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     // =========================================================
-    // OBSERVE STATE
+    // OBSERVE
     // =========================================================
 
     private fun observeState() {
-
         viewLifecycleOwner.lifecycleScope.launch {
 
-            viewLifecycleOwner.repeatOnLifecycle(
-                Lifecycle.State.STARTED
-            ) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 viewModel.state.collect { state ->
-
                     renderAll(state)
                 }
             }
@@ -121,23 +117,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     // =========================================================
 
     private fun renderAll(state: ProfileUiState) {
-
         renderGuestLayout(state.isGuest)
-
-        renderProfileLayout(state)
-
-        renderSwitchCard(
-            isGuest = state.isGuest,
-            mode = state.currentMode
-        )
-
+        renderProfile(state)
+        renderSwitchCard(state.isGuest, state.currentMode)
         renderLoading(state.avatarUploading)
-
         renderMessage(state.message)
     }
 
     private fun renderGuestLayout(isGuest: Boolean) {
-
         binding.layoutGuest.visibility =
             if (isGuest) View.VISIBLE else View.GONE
 
@@ -145,7 +132,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             if (isGuest) View.GONE else View.VISIBLE
     }
 
-    private fun renderProfileLayout(state: ProfileUiState) {
+    private fun renderProfile(state: ProfileUiState) {
 
         val user = state.user ?: return
 
@@ -160,14 +147,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
 
         binding.tvLocation.text =
-            user.location.ifBlank {
-                "Philippines"
-            }
+            user.location.ifBlank { "Philippines" }
 
         binding.tvBio.text =
-            user.bio?.takeIf {
-                it.isNotBlank()
-            } ?: "Tell guests about yourself."
+            user.bio?.takeIf { it.isNotBlank() }
+                ?: "Tell guests about yourself."
 
         AvatarHelper.bind(
             imgView = binding.imgAvatar,
@@ -183,25 +167,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     ) {
 
         if (isGuest) {
-
             binding.floatingHostingCard.visibility = View.GONE
             return
         }
 
         binding.floatingHostingCard.visibility = View.VISIBLE
 
-        binding.tvFloatingHostingTitle.text = when (mode) {
-
-            AppMode.TRAVELER ->
-                getString(R.string.switch_to_hosting)
-
-            AppMode.HOST ->
-                getString(R.string.switch_to_traveling)
-        }
+        binding.tvFloatingHostingTitle.text =
+            when (mode) {
+                AppMode.TRAVELER -> getString(R.string.switch_to_hosting)
+                AppMode.HOST -> getString(R.string.switch_to_traveling)
+            }
     }
 
     private fun renderLoading(loading: Boolean) {
-
         binding.progressAvatar.visibility =
             if (loading) View.VISIBLE else View.GONE
     }
@@ -211,196 +190,172 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         message ?: return
 
         toast(message)
-
         viewModel.consumeMessage()
     }
 
     // =========================================================
-    // SETUP
+    // CLICKS
     // =========================================================
 
     private fun setupClicks() {
 
-        // =====================================================
-        // TOP BAR
-        // =====================================================
-
-        binding.btnNotifications.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.notificationsFragment
-            )
-        }
-
-        // =====================================================
-        // AVATAR
-        // =====================================================
-
         binding.imgAvatar.setOnClickListener {
-
             requestGalleryPermission()
         }
 
         binding.btnUploadPhoto.setOnClickListener {
-
             requestGalleryPermission()
         }
 
-        // =====================================================
-        // EDIT BIO
-        // =====================================================
-
         binding.btnEditBio.setOnClickListener {
-
             showEditBioDialog()
         }
 
-        // =====================================================
-        // EDIT PROFILE
-        // =====================================================
-
         binding.rowEditProfile.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.editProfileFragment
-            )
+            findNavController().navigate(R.id.editProfileFragment)
         }
 
-        // =====================================================
-        // HOSTING
-        // =====================================================
-
         binding.rowHostingAccess.setOnClickListener {
-
             openHosting()
         }
 
-        binding.floatingHostingCard.setOnClickListener {
-
-            onSwitchModeClicked()
-        }
-
-        // =====================================================
-        // TRIPS
-        // =====================================================
-
         binding.tvSeeAllHikes.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.tripsFragment
-            )
+            findNavController().navigate(R.id.tripsFragment)
         }
-
-        // =====================================================
-        // APP INFO
-        // =====================================================
 
         binding.rowAppInfo.setOnClickListener {
-
             showAppInfoDialog()
         }
 
-        // =====================================================
-        // LOGOUT
-        // =====================================================
+        binding.rowSwitchAccount.setOnClickListener {
+            showSwitchAccountDialog()
+        }
 
         binding.rowLogout.setOnClickListener {
-
             showLogoutDialog()
         }
-    }
 
-    private fun adjustFloatingCardForBottomNav() {
-
-        val params =
-            binding.floatingHostingCard.layoutParams
-                    as FrameLayout.LayoutParams
-
-        params.bottomMargin =
-            if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
-                92.dp()
-            } else {
-                20.dp()
-            }
-
-        binding.floatingHostingCard.layoutParams =
-            params
-    }
-
-    // =========================================================
-    // MODE SWITCH
-    // =========================================================
-
-    private fun onSwitchModeClicked() {
-
-        if (!AuthManager.isAuthenticated()) {
-
-            GuestPromptDialog.show(
-                childFragmentManager,
-                onSuccess = {
-                    onSwitchModeClicked()
-                }
-            )
-
-            return
+        binding.floatingHostingCard.setOnClickListener {
+            onSwitchModeClicked()
         }
 
+        binding.btnLogin.setOnClickListener {
+            GuestPromptDialog.show(childFragmentManager)
+        }
+
+        binding.btnSignup.setOnClickListener {
+            GuestPromptDialog.show(childFragmentManager)
+        }
+    }
+
+    // =========================================================
+    // SWITCH ACCOUNT
+    // =========================================================
+
+    private fun showSwitchAccountDialog() {
+
         AlertDialog.Builder(requireContext())
-            .setTitle("Switch mode")
-            .setMessage("Do you want to switch app mode?")
+            .setTitle("Switch account")
+            .setMessage("Do you want to switch to another account?")
             .setPositiveButton("Switch") { _, _ ->
-
-                val navController = findNavController()
-
-                val navOptions = NavOptions.Builder()
-                    .setLaunchSingleTop(true)
-                    .setRestoreState(true)
-                    .setPopUpTo(
-                        navController.graph.startDestinationId,
-                        false
-                    )
-                    .build()
-
-                when (AppModeManager.toggleMode()) {
-
-                    AppMode.HOST -> {
-
-                        navController.navigate(
-                            R.id.hostTodayFragment,
-                            null,
-                            navOptions
-                        )
-                    }
-
-                    AppMode.TRAVELER -> {
-
-                        navController.navigate(
-                            R.id.exploreFragment,
-                            null,
-                            navOptions
-                        )
-                    }
-
-                    null -> {
-                        // guest blocked from host mode
-                    }
-                }
-
-                adjustFloatingCardForBottomNav()
+                switchAccount()
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
 
+    private fun switchAccount() {
+        AppModeManager.resetToTraveler()
+        AuthManager.signOut()
+
+        GuestPromptDialog.show(childFragmentManager)
+    }
+
     // =========================================================
-    // NAVIGATION
+    // MODE
     // =========================================================
 
-    private fun openHosting() {
+    private fun onSwitchModeClicked() {
 
-        findNavController().navigate(
-            R.id.action_profileFragment_to_hostListingsFragment
-        )
+        if (!AuthManager.isAuthenticated()) {
+            GuestPromptDialog.show(childFragmentManager)
+            return
+        }
+
+        val navController = findNavController()
+
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setRestoreState(true)
+            .setPopUpTo(
+                navController.graph.startDestinationId,
+                false
+            )
+            .build()
+
+        when (AppModeManager.toggleMode()) {
+
+            AppMode.HOST -> {
+                navController.navigate(
+                    R.id.hostTodayFragment,
+                    null,
+                    navOptions
+                )
+            }
+
+            AppMode.TRAVELER -> {
+                navController.navigate(
+                    R.id.exploreFragment,
+                    null,
+                    navOptions
+                )
+            }
+
+            null -> Unit
+        }
+    }
+
+    // =========================================================
+    // GALLERY
+    // =========================================================
+
+    private fun requestGalleryPermission() {
+
+        val permission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+
+        when {
+
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+
+                openGallery()
+            }
+
+            else -> {
+                permissionLauncher.launch(permission)
+            }
+        }
+    }
+
+    private fun openGallery() {
+        imagePickerLauncher.launch("image/*")
+    }
+
+    private fun showSelectedAvatar(uri: Uri) {
+
+        binding.tvAvatarInitial.visibility = View.GONE
+
+        Glide.with(this)
+            .load(uri)
+            .circleCrop()
+            .into(binding.imgAvatar)
     }
 
     // =========================================================
@@ -426,9 +381,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         AlertDialog.Builder(requireContext())
             .setTitle("About Airbnb Clone")
-            .setMessage(
-                "Version ${appVersionName()}\n\nBuilt with Kotlin and Firebase."
-            )
+            .setMessage("Built with Kotlin and Firebase.")
             .setPositiveButton("OK", null)
             .show()
     }
@@ -441,100 +394,35 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             .setPositiveButton("Log out") { _, _ ->
 
                 AppModeManager.resetToTraveler()
-
                 AuthManager.signOut()
 
-                val navController = findNavController()
-
-                navController.popBackStack(
-                    navController.graph.startDestinationId,
-                    false
-                )
-
-                navController.navigate(
-                    R.id.exploreFragment
-                )
+                findNavController().navigate(R.id.exploreFragment)
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
 
     // =========================================================
-    // PERMISSIONS
+    // NAVIGATION
     // =========================================================
 
-    private fun requestGalleryPermission() {
-
-        val permission =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                Manifest.permission.READ_MEDIA_IMAGES
-            } else {
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            }
-
-        when {
-
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                permission
-            ) == PackageManager.PERMISSION_GRANTED -> {
-
-                openGallery()
-            }
-
-            else -> {
-
-                permissionLauncher.launch(permission)
-            }
-        }
+    private fun openHosting() {
+        findNavController().navigate(
+            R.id.action_profileFragment_to_hostListingsFragment
+        )
     }
 
     // =========================================================
-    // GALLERY
+    // UI
     // =========================================================
 
-    private fun openGallery() {
+    private fun adjustFloatingCardForBottomNav() {
 
-        imagePickerLauncher.launch("image/*")
+        (binding.floatingHostingCard.layoutParams as FrameLayout.LayoutParams)
+            .bottomMargin = 20.dp()
     }
-
-    private fun showSelectedAvatar(uri: Uri) {
-
-        binding.tvAvatarInitial.visibility = View.GONE
-
-        Glide.with(this)
-            .load(uri)
-            .circleCrop()
-            .into(binding.imgAvatar)
-    }
-
-    // =========================================================
-    // APP INFO
-    // =========================================================
-
-    private fun appVersionName(): String {
-
-        return runCatching {
-
-            val packageInfo =
-                requireContext()
-                    .packageManager
-                    .getPackageInfo(
-                        requireContext().packageName,
-                        0
-                    )
-
-            packageInfo.versionName ?: "1.0"
-
-        }.getOrDefault("1.0")
-    }
-
-    // =========================================================
-    // EXTENSIONS
-    // =========================================================
 
     private fun Int.dp(): Int {
-
         return (
                 this *
                         requireContext()
@@ -544,12 +432,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 ).toInt()
     }
 
-    // =========================================================
-    // UTIL
-    // =========================================================
-
     private fun toast(message: String) {
-
         Toast.makeText(
             requireContext(),
             message,

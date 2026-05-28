@@ -173,6 +173,7 @@ private fun Listing.toFirestoreMap(includeCreatedAt: Boolean): Map<String, Any?>
         "pricePerNight" to pricePerNight,
         "hostId" to hostId,
         "hostName" to hostName,
+        "hostProfileImage" to hostProfileImage,
         "imageUrl" to imageUrl,
         "galleryImageUrls" to galleryImageUrls,
         "amenities" to amenities,

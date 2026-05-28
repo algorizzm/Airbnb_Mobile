@@ -118,9 +118,24 @@ class CreateListingViewModel(
                 bathrooms = bathrooms,
                 amenities = standardizedAmenities,
                 imageUrl = imageUrl,
+
                 hostId = currentUser.uid,
                 hostName = hostName,
-                createdAt = if (listingId.isNullOrBlank()) Timestamp.now() else _state.value.listing?.createdAt,
+
+                // IMPORTANT
+                hostProfileImage =
+                user?.profileImage
+                    ?.ifBlank { null }
+                    ?: currentUser.photoUrl?.toString()
+                    ?: "",
+
+                createdAt =
+                if (listingId.isNullOrBlank()) {
+                    Timestamp.now()
+                } else {
+                    _state.value.listing?.createdAt
+                },
+
                 updatedAt = Timestamp.now()
             )
 

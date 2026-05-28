@@ -10,6 +10,7 @@ data class Listing(
     val pricePerNight: Double = 0.0,
     val hostId: String = "",
     val hostName: String = "",
+    val hostProfileImage: String = "",
     val imageUrl: String = "",
     val galleryImageUrls: List<String> = emptyList(),
     val amenities: List<String> = emptyList(),

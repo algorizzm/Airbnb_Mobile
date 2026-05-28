@@ -150,4 +150,20 @@
             app:tint="#000000" />
     </LinearLayout>
 
+    <!-- Use Another Account -->
+    <TextView
+        android:id="@+id/tvUseAnotherAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Use another account"
+        android:textColor="#FF385C"
+        android:textSize="15sp"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground" />
+
 </LinearLayout>

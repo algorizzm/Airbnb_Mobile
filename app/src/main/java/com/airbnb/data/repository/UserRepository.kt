@@ -101,7 +101,12 @@ class UserRepository {
         url: String
     ): Result<Unit> = runCatching {
         usersCol.document(uid)
-            .update("profileImage", url)
+            .update(
+                mapOf(
+                    "profileImage" to url,
+                    "profileImageUrl" to url
+                )
+            )
             .await()
     }
 

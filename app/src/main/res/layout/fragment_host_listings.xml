@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/ic_add"
         android:contentDescription="@string/content_description_create_listing"
         app:tint="@color/white" />

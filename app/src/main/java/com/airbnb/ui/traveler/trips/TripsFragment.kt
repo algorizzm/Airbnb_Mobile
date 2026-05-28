@@ -13,9 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.databinding.FragmentTripsBinding
-import com.airbnb.ui.traveler.trips.adapter.TripAdapter
 import com.airbnb.ui.auth.GuestPromptHelper
 import com.airbnb.ui.auth.isUserAuthenticated
+import com.airbnb.ui.traveler.trips.adapter.TripAdapter
 import kotlinx.coroutines.launch
 
 class TripsFragment : Fragment(R.layout.fragment_trips) {
@@ -48,13 +48,15 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
 
     override fun onResume() {
         super.onResume()
-        // Refresh trips when returning to screen to sync lifecycle states
+
+        // Refresh trips when returning to screen
         if (isUserAuthenticated()) {
             updateTripsList()
         }
     }
 
     private fun showGuestState() {
+
         GuestPromptHelper.setupGuestPrompt(
             promptLayout = binding.layoutGuestPrompt.root,
             fragment = this,
@@ -62,44 +64,60 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
             message = getString(R.string.guest_prompt_message_trips),
             iconRes = R.drawable.ic_calendar
         )
-        
+
         // Hide filters and show guest prompt
         binding.layoutFilters.visibility = View.GONE
+
         GuestPromptHelper.showGuestPrompt(
             promptLayout = binding.layoutGuestPrompt.root,
             contentLayout = binding.recyclerTrips
         )
-        binding.tvEmpty.visibility = View.GONE
+
+        binding.layoutEmptyState.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
     }
 
     private fun setupAdapter() {
+
         adapter = TripAdapter(
+
             onItemClick = { tripItem ->
-                // Navigate to trip details
+
                 val bundle = Bundle().apply {
                     putString("reservationId", tripItem.reservation.id)
                 }
+
                 try {
+
                     findNavController().navigate(
                         R.id.action_tripsFragment_to_tripDetailsFragment,
                         bundle
                     )
+
                 } catch (e: IllegalArgumentException) {
-                    // Fallback to listing detail if trip details not available yet
+
                     val listingBundle = Bundle().apply {
                         putString("listingId", tripItem.reservation.listingId)
                     }
+
                     try {
+
                         findNavController().navigate(
                             R.id.action_tripsFragment_to_listingDetailFragment,
                             listingBundle
                         )
+
                     } catch (e2: IllegalArgumentException) {
-                        Toast.makeText(requireContext(), "Trip details coming soon", Toast.LENGTH_SHORT).show()
+
+                        Toast.makeText(
+                            requireContext(),
+                            "Trip details coming soon",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             },
+
             onCancelClick = { tripItem ->
                 showCancelConfirmationDialog(tripItem.reservation.id)
             }
@@ -107,27 +125,33 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
     }
 
     private fun setupRecycler() {
-        binding.recyclerTrips.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.recyclerTrips.layoutManager =
+            LinearLayoutManager(requireContext())
+
         binding.recyclerTrips.adapter = adapter
     }
 
     private fun setupFilters() {
-        // Set initial filter state
+
         updateFilterButtons()
 
         binding.btnUpcoming.setOnClickListener {
+
             currentFilter = TripFilter.UPCOMING
             updateFilterButtons()
             updateTripsList()
         }
 
         binding.btnPast.setOnClickListener {
+
             currentFilter = TripFilter.PAST
             updateFilterButtons()
             updateTripsList()
         }
 
         binding.btnCancelled.setOnClickListener {
+
             currentFilter = TripFilter.CANCELLED
             updateFilterButtons()
             updateTripsList()
@@ -140,41 +164,78 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
         binding.btnPast.setBackgroundResource(R.drawable.bg_chip_unselected)
         binding.btnCancelled.setBackgroundResource(R.drawable.bg_chip_unselected)
 
-        binding.btnUpcoming.setTextColor(requireContext().getColor(R.color.black))
-        binding.btnPast.setTextColor(requireContext().getColor(R.color.black))
-        binding.btnCancelled.setTextColor(requireContext().getColor(R.color.black))
+        binding.btnUpcoming.setTextColor(
+            requireContext().getColor(R.color.black)
+        )
+
+        binding.btnPast.setTextColor(
+            requireContext().getColor(R.color.black)
+        )
+
+        binding.btnCancelled.setTextColor(
+            requireContext().getColor(R.color.black)
+        )
 
         when (currentFilter) {
+
             TripFilter.UPCOMING -> {
-                binding.btnUpcoming.setBackgroundResource(R.drawable.bg_chip_selected)
-                binding.btnUpcoming.setTextColor(requireContext().getColor(android.R.color.white))
+
+                binding.btnUpcoming.setBackgroundResource(
+                    R.drawable.bg_chip_selected
+                )
+
+                binding.btnUpcoming.setTextColor(
+                    requireContext().getColor(android.R.color.white)
+                )
             }
 
             TripFilter.ACTIVE_STAY -> {
-                // Active stay trips are shown in upcoming for now
-                // Can be separated into its own filter button if needed
-                binding.btnUpcoming.setBackgroundResource(R.drawable.bg_chip_selected)
-                binding.btnUpcoming.setTextColor(requireContext().getColor(android.R.color.white))
+
+                binding.btnUpcoming.setBackgroundResource(
+                    R.drawable.bg_chip_selected
+                )
+
+                binding.btnUpcoming.setTextColor(
+                    requireContext().getColor(android.R.color.white)
+                )
             }
 
             TripFilter.PAST -> {
-                binding.btnPast.setBackgroundResource(R.drawable.bg_chip_selected)
-                binding.btnPast.setTextColor(requireContext().getColor(android.R.color.white))
+
+                binding.btnPast.setBackgroundResource(
+                    R.drawable.bg_chip_selected
+                )
+
+                binding.btnPast.setTextColor(
+                    requireContext().getColor(android.R.color.white)
+                )
             }
 
             TripFilter.CANCELLED -> {
-                binding.btnCancelled.setBackgroundResource(R.drawable.bg_chip_selected)
-                binding.btnCancelled.setTextColor(requireContext().getColor(android.R.color.white))
+
+                binding.btnCancelled.setBackgroundResource(
+                    R.drawable.bg_chip_selected
+                )
+
+                binding.btnCancelled.setTextColor(
+                    requireContext().getColor(android.R.color.white)
+                )
             }
         }
     }
 
     private fun observeUi() {
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+            viewLifecycleOwner.repeatOnLifecycle(
+                Lifecycle.State.STARTED
+            ) {
 
                 launch {
+
                     viewModel.upcomingTrips.collect {
+
                         if (currentFilter == TripFilter.UPCOMING) {
                             updateTripsList()
                         }
@@ -182,7 +243,9 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
                 }
 
                 launch {
+
                     viewModel.activeStayTrips.collect {
+
                         if (currentFilter == TripFilter.ACTIVE_STAY) {
                             updateTripsList()
                         }
@@ -190,7 +253,9 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
                 }
 
                 launch {
+
                     viewModel.pastTrips.collect {
+
                         if (currentFilter == TripFilter.PAST) {
                             updateTripsList()
                         }
@@ -198,7 +263,9 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
                 }
 
                 launch {
+
                     viewModel.cancelledTrips.collect {
+
                         if (currentFilter == TripFilter.CANCELLED) {
                             updateTripsList()
                         }
@@ -206,15 +273,38 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
                 }
 
                 launch {
+
                     viewModel.isLoading.collect { isLoading ->
-                        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+
+                        binding.progressBar.visibility =
+                            if (isLoading) View.VISIBLE else View.GONE
+
+                        if (isLoading) {
+
+                            // Hide everything during loading
+                            binding.layoutEmptyState.visibility = View.GONE
+                            binding.recyclerTrips.visibility = View.GONE
+
+                        } else {
+
+                            // Restore proper state after loading finishes
+                            updateTripsList()
+                        }
                     }
                 }
 
                 launch {
+
                     viewModel.toast.collect { msg ->
+
                         if (!msg.isNullOrBlank()) {
-                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+
+                            Toast.makeText(
+                                requireContext(),
+                                msg,
+                                Toast.LENGTH_SHORT
+                            ).show()
+
                             viewModel.consumeToast()
                         }
                     }
@@ -224,37 +314,72 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
     }
 
     private fun updateTripsList() {
+
+        // Prevent empty state showing during loading
+        if (viewModel.isLoading.value) return
+
         val trips = when (currentFilter) {
-            TripFilter.UPCOMING -> viewModel.upcomingTrips.value
-            TripFilter.ACTIVE_STAY -> viewModel.activeStayTrips.value
-            TripFilter.PAST -> viewModel.pastTrips.value
-            TripFilter.CANCELLED -> viewModel.cancelledTrips.value
+
+            TripFilter.UPCOMING ->
+                viewModel.upcomingTrips.value
+
+            TripFilter.ACTIVE_STAY ->
+                viewModel.activeStayTrips.value
+
+            TripFilter.PAST ->
+                viewModel.pastTrips.value
+
+            TripFilter.CANCELLED ->
+                viewModel.cancelledTrips.value
         }
 
         adapter.submitList(trips)
 
-        // Show/hide empty state
-        binding.layoutEmptyState.visibility =
-            if (trips.isEmpty()) View.VISIBLE else View.GONE
-        binding.recyclerTrips.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
+        val isEmpty = trips.isEmpty()
 
-        // Update empty message based on filter
+        binding.layoutEmptyState.visibility =
+            if (isEmpty) View.VISIBLE else View.GONE
+
+        binding.recyclerTrips.visibility =
+            if (isEmpty) View.GONE else View.VISIBLE
+
         binding.tvEmpty.text = when (currentFilter) {
-            TripFilter.UPCOMING -> getString(R.string.trips_empty_upcoming)
-            TripFilter.ACTIVE_STAY -> "No active stays"
-            TripFilter.PAST -> getString(R.string.trips_empty_past)
-            TripFilter.CANCELLED -> getString(R.string.trips_empty_cancelled)
+
+            TripFilter.UPCOMING ->
+                getString(R.string.trips_empty_upcoming)
+
+            TripFilter.ACTIVE_STAY ->
+                "No active stays"
+
+            TripFilter.PAST ->
+                getString(R.string.trips_empty_past)
+
+            TripFilter.CANCELLED ->
+                getString(R.string.trips_empty_cancelled)
         }
     }
 
-    private fun showCancelConfirmationDialog(reservationId: String) {
+    private fun showCancelConfirmationDialog(
+        reservationId: String
+    ) {
+
         AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.dialog_cancel_reservation_title))
-            .setMessage(getString(R.string.dialog_cancel_reservation_message))
-            .setPositiveButton(getString(R.string.dialog_yes)) { _, _ ->
+            .setTitle(
+                getString(R.string.dialog_cancel_reservation_title)
+            )
+            .setMessage(
+                getString(R.string.dialog_cancel_reservation_message)
+            )
+            .setPositiveButton(
+                getString(R.string.dialog_yes)
+            ) { _, _ ->
+
                 viewModel.cancelReservation(reservationId)
             }
-            .setNegativeButton(getString(R.string.dialog_no), null)
+            .setNegativeButton(
+                getString(R.string.dialog_no),
+                null
+            )
             .show()
     }
 
