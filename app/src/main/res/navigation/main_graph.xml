@@ -32,6 +32,34 @@
             android:id="@+id/action_wishlistFragment_to_listingDetailFragment"
             app:destination="@id/listingDetailFragment" />
 
+        <action
+            android:id="@+id/action_wishlistFragment_to_collectionDetailFragment"
+            app:destination="@id/collectionDetailFragment" />
+
+    </fragment>
+
+    <!-- Collection Detail -->
+    <fragment
+        android:id="@+id/collectionDetailFragment"
+        android:name="com.airbnb.ui.traveler.wishlist.CollectionDetailFragment"
+        android:label="Collection">
+
+        <argument
+            android:name="collectionId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="collectionName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_listingDetailFragment"
+            app:destination="@id/listingDetailFragment" />
+
     </fragment>
 
     <!-- Trips -->

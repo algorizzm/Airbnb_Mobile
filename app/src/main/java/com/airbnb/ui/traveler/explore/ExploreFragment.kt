@@ -79,11 +79,11 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
                     GuestPromptDialog.show(
                         childFragmentManager,
                         onSuccess = {
-                            viewModel.toggleWishlist(listing.id)
+                            handleWishlistClick(listing.id)
                         }
                     )
                 } else {
-                    viewModel.toggleWishlist(listing.id)
+                    handleWishlistClick(listing.id)
                 }
             }
         )
@@ -256,6 +256,51 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
     }
 
 
+
+    // =====================================================
+    // Wishlist Collection Handling
+    // =====================================================
+    private fun handleWishlistClick(listingId: String) {
+        // Check if listing is already in wishlist
+        val isInWishlist = viewModel.wishlistIds.value.contains(listingId)
+        
+        if (isInWishlist) {
+            // Remove from all collections
+            viewModel.toggleWishlist(listingId)
+        } else {
+            // Check how many collections exist
+            lifecycleScope.launch {
+                val userId = com.airbnb.core.auth.AuthManager.currentUserId() ?: return@launch
+                val collectionRepo = com.airbnb.data.repository.WishlistCollectionRepository()
+                
+                collectionRepo.getCollections(userId)
+                    .onSuccess { collections ->
+                        when {
+                            collections.isEmpty() || collections.size == 1 -> {
+                                // Auto-save to default collection
+                                viewModel.toggleWishlist(listingId)
+                            }
+                            else -> {
+                                // Show collection selection dialog
+                                showCollectionSelectionDialog(listingId)
+                            }
+                        }
+                    }
+                    .onFailure {
+                        // Fallback to default behavior
+                        viewModel.toggleWishlist(listingId)
+                    }
+            }
+        }
+    }
+
+    private fun showCollectionSelectionDialog(listingId: String) {
+        val dialog = com.airbnb.ui.traveler.wishlist.SelectCollectionDialog.newInstance(listingId)
+        dialog.setOnCollectionSelected { collectionId ->
+            viewModel.addToCollection(listingId, collectionId)
+        }
+        dialog.show(childFragmentManager, "SelectCollectionDialog")
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

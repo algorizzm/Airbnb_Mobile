@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class WishlistRepository(
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
+    private val collectionRepository: WishlistCollectionRepository = WishlistCollectionRepository()
 ) {
 
     private val wishlistsCol get() = db.collection("wishlists")
@@ -64,8 +65,23 @@ class WishlistRepository(
 
     /**
      * Adds a listing to the user's wishlist.
+     * If collectionId is provided, adds to that collection.
+     * Otherwise, adds to default collection (creating it if needed).
+     * Also maintains legacy wishlist document for backward compatibility.
      */
-    suspend fun addToWishlist(userId: String, listingId: String): Result<Unit> = runCatching {
+    suspend fun addToWishlist(
+        userId: String,
+        listingId: String,
+        collectionId: String? = null
+    ): Result<Unit> = runCatching {
+        // Add to collection (new system)
+        val targetCollectionId = collectionId ?: run {
+            val defaultCollection = collectionRepository.getOrCreateDefaultCollection(userId).getOrThrow()
+            defaultCollection.id
+        }
+        collectionRepository.addListingToCollection(targetCollectionId, listingId).getOrThrow()
+
+        // Also maintain legacy wishlist document for backward compatibility
         val docRef = wishlistsCol.document(userId)
         val doc = docRef.get().await()
         
@@ -94,8 +110,13 @@ class WishlistRepository(
 
     /**
      * Removes a listing from the user's wishlist.
+     * Removes from all collections and legacy wishlist document.
      */
     suspend fun removeFromWishlist(userId: String, listingId: String): Result<Unit> = runCatching {
+        // Remove from all collections (new system)
+        collectionRepository.removeListingFromAllCollections(userId, listingId).getOrThrow()
+
+        // Also remove from legacy wishlist document
         val docRef = wishlistsCol.document(userId)
         
         docRef.update(
@@ -108,15 +129,21 @@ class WishlistRepository(
 
     /**
      * Toggles a listing in the wishlist (add if not present, remove if present).
+     * If adding and collectionId is provided, adds to that collection.
+     * Otherwise, adds to default collection.
      */
-    suspend fun toggleWishlist(userId: String, listingId: String): Result<Boolean> = runCatching {
+    suspend fun toggleWishlist(
+        userId: String,
+        listingId: String,
+        collectionId: String? = null
+    ): Result<Boolean> = runCatching {
         val isInWishlist = isListingInWishlist(userId, listingId)
         
         if (isInWishlist) {
             removeFromWishlist(userId, listingId).getOrThrow()
             false // Removed
         } else {
-            addToWishlist(userId, listingId).getOrThrow()
+            addToWishlist(userId, listingId, collectionId).getOrThrow()
             true // Added
         }
     }

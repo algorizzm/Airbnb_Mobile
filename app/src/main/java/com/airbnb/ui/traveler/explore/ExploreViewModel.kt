@@ -137,7 +137,7 @@ class ExploreViewModel(
         _toast.value = null
     }
 
-    fun toggleWishlist(listingId: String) {
+    fun toggleWishlist(listingId: String, collectionId: String? = null) {
         val userId = AuthManager.currentUserId()
         if (userId == null) {
             _toast.value = "Please log in to save listings"
@@ -145,7 +145,7 @@ class ExploreViewModel(
         }
 
         viewModelScope.launch {
-            wishlistRepository.toggleWishlist(userId, listingId)
+            wishlistRepository.toggleWishlist(userId, listingId, collectionId)
                 .onSuccess { isAdded ->
                     _toast.value = if (isAdded) {
                         "Added to wishlist"
@@ -155,6 +155,28 @@ class ExploreViewModel(
                 }
                 .onFailure { error ->
                     _toast.value = "Failed to update wishlist: ${error.message}"
+                }
+        }
+    }
+
+    /**
+     * Adds a listing to a specific collection.
+     * Used when user selects a collection from the dialog.
+     */
+    fun addToCollection(listingId: String, collectionId: String) {
+        val userId = AuthManager.currentUserId()
+        if (userId == null) {
+            _toast.value = "Please log in to save listings"
+            return
+        }
+
+        viewModelScope.launch {
+            wishlistRepository.addToWishlist(userId, listingId, collectionId)
+                .onSuccess {
+                    _toast.value = "Added to collection"
+                }
+                .onFailure { error ->
+                    _toast.value = "Failed to add: ${error.message}"
                 }
         }
     }

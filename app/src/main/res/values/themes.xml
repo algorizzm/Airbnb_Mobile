@@ -5,42 +5,105 @@
     <!-- BASE APP THEME -->
     <!-- ========================================= -->
 
-    <style name="Base.Theme.Airbnb"
+    <style
+        name="Base.Theme.Airbnb"
         parent="Theme.Material3.DayNight.NoActionBar">
 
-        <!-- Main Airbnb Colors -->
+        <!-- ========================================= -->
+        <!-- PRIMARY COLORS -->
+        <!-- ========================================= -->
+
         <item name="colorPrimary">@color/airbnb_red</item>
         <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorPrimaryContainer">@color/airbnb_red</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+
+        <!-- ========================================= -->
+        <!-- SECONDARY COLORS -->
+        <!-- ========================================= -->
 
         <item name="colorSecondary">@color/airbnb_red_dark</item>
         <item name="colorOnSecondary">@color/white</item>
 
+        <item name="colorSecondaryContainer">@color/airbnb_red_dark</item>
+
+        <!-- ========================================= -->
+        <!-- TERTIARY COLORS -->
+        <!-- ========================================= -->
+
         <item name="colorTertiary">@color/airbnb_red_light</item>
 
-        <!-- Backgrounds -->
-        <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="colorSurface">@color/colorSurface</item>
+        <!-- ========================================= -->
+        <!-- SURFACES / BACKGROUNDS -->
+        <!-- ========================================= -->
 
-        <!-- Status Bar -->
+        <item name="android:colorBackground">@color/colorBackground</item>
+
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorSurfaceVariant">@color/colorSurface2</item>
+
+        <!-- ========================================= -->
+        <!-- MATERIAL CONTROL COLORS -->
+        <!-- ========================================= -->
+
+        <!-- Fixes purple switches, checkboxes, sliders, etc -->
+        <item name="colorControlActivated">@color/airbnb_red</item>
+
+        <!-- Ripple / pressed states -->
+        <item name="colorControlHighlight">@color/airbnb_red_light</item>
+
+        <!-- ========================================= -->
+        <!-- STATUS / NAVIGATION BARS -->
+        <!-- ========================================= -->
+
         <item name="android:statusBarColor">@color/airbnb_red</item>
+
+        <item name="android:navigationBarColor">
+            @color/airbnb_red
+        </item>
+
+        <!-- ========================================= -->
+        <!-- MATERIAL COMPONENT DEFAULTS -->
+        <!-- ========================================= -->
+
+        <item name="materialButtonStyle">
+            @style/AirbnbMaterialButton
+        </item>
 
     </style>
 
     <!-- ========================================= -->
-    <!-- MAIN THEME -->
+    <!-- MAIN APP THEME -->
     <!-- ========================================= -->
 
-    <style name="Theme.Airbnb"
+    <style
+        name="Theme.Airbnb"
         parent="Base.Theme.Airbnb">
 
-        <!-- Material Picker Themes -->
+        <!-- Material Date Picker -->
         <item name="materialCalendarTheme">
             @style/AirbnbCalendarTheme
         </item>
 
+        <!-- Material Time Picker -->
         <item name="materialTimePickerTheme">
             @style/AirbnbTimePickerTheme
         </item>
+
+    </style>
+
+    <!-- ========================================= -->
+    <!-- MATERIAL BUTTON STYLE -->
+    <!-- ========================================= -->
+
+    <style
+        name="AirbnbMaterialButton"
+        parent="Widget.Material3.Button">
+
+        <item name="backgroundTint">@color/airbnb_red</item>
+
+        <item name="android:textColor">@color/white</item>
 
     </style>
 
@@ -118,7 +181,8 @@
     <!-- EDIT TEXT -->
     <!-- ========================================= -->
 
-    <style name="AirbnbEditText"
+    <style
+        name="AirbnbEditText"
         parent="Widget.AppCompat.EditText">
 
         <item name="android:layout_width">match_parent</item>
@@ -193,7 +257,8 @@
     <!-- CALENDAR THEME -->
     <!-- ========================================= -->
 
-    <style name="AirbnbCalendarTheme"
+    <style
+        name="AirbnbCalendarTheme"
         parent="ThemeOverlay.Material3.MaterialCalendar">
 
         <item name="colorPrimary">@color/airbnb_red</item>
@@ -207,7 +272,8 @@
     <!-- TIME PICKER THEME -->
     <!-- ========================================= -->
 
-    <style name="AirbnbTimePickerTheme"
+    <style
+        name="AirbnbTimePickerTheme"
         parent="ThemeOverlay.Material3.MaterialTimePicker">
 
         <item name="colorPrimary">@color/airbnb_red</item>

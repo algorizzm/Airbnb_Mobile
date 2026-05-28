@@ -11,134 +11,260 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Header -->
-        <TextView
-            android:id="@+id/tvCalendarTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Calendar"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#1A1A1A"
-            android:layout_marginTop="56dp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <!-- ================================= -->
+        <!-- HEADER -->
+        <!-- ================================= -->
 
-        <!-- Listing Selector -->
-        <Spinner
-            android:id="@+id/spinnerListings"
+        <LinearLayout
+            android:id="@+id/topHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="20dp"
-            android:minHeight="48dp"
-            android:background="@android:drawable/btn_dropdown"
-            android:padding="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvCalendarTitle"
+            android:layout_marginTop="36dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- No Listings Message -->
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvCalendarTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Calendar"
+                android:textColor="#111111"
+                android:textSize="28sp"
+                android:fontFamily="@font/poppins_bold" />
+
+            <!-- Calendar Action -->
+            <ImageButton
+                android:id="@+id/btnCalendarInfo"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_circle_light"
+                android:contentDescription="Calendar"
+                android:elevation="2dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_calendar"
+                app:tint="#222222" />
+
+            <!-- Settings -->
+            <ImageButton
+                android:id="@+id/btnSettings"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_circle_light"
+                android:contentDescription="Settings"
+                android:elevation="2dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_settings"
+                app:tint="#222222" />
+
+        </LinearLayout>
+
+        <!-- ================================= -->
+        <!-- LISTING SELECTOR CARD -->
+        <!-- ================================= -->
+
+        <LinearLayout
+            android:id="@+id/listingCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/bg_airbnb_card"
+            android:elevation="6dp"
+            android:orientation="vertical"
+            android:padding="18dp"
+            app:layout_constraintTop_toBottomOf="@id/topHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Listing"
+                android:textColor="#111111"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_medium" />
+
+            <Spinner
+                android:id="@+id/spinnerListings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:minHeight="48dp"
+                android:background="@android:color/transparent"
+                android:paddingVertical="10dp" />
+
+        </LinearLayout>
+
+        <!-- ================================= -->
+        <!-- NO LISTINGS -->
+        <!-- ================================= -->
+
         <TextView
             android:id="@+id/tvNoListings"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="You don't have any listings yet"
-            android:textSize="16sp"
-            android:textColor="#717171"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:gravity="center"
-            android:layout_marginTop="100dp"
-            android:layout_marginHorizontal="40dp"
+            android:text="You don't have any listings yet"
+            android:textColor="#717171"
+            android:textSize="16sp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tvCalendarTitle"
+            app:layout_constraintTop_toBottomOf="@id/listingCard"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Calendar Content -->
+        <!-- ================================= -->
+        <!-- MAIN CONTENT -->
+        <!-- ================================= -->
+
         <LinearLayout
             android:id="@+id/layoutCalendarContent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/spinnerListings"
+            android:orientation="vertical"
+            android:paddingBottom="32dp"
+            app:layout_constraintTop_toBottomOf="@id/listingCard"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
             <!-- Block Dates Button -->
+
             <Button
                 android:id="@+id/btnBlockDates"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Block Dates"
-                android:textColor="#FFFFFF"
+                android:layout_height="54dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
                 android:backgroundTint="#FF385C"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="24dp" />
+                android:elevation="2dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Block Dates"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
 
-            <!-- Reservations Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservations"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="12dp" />
+            <!-- ================================= -->
+            <!-- RESERVATIONS CARD -->
+            <!-- ================================= -->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvReservations"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:nestedScrollingEnabled="false" />
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_airbnb_card"
+                android:elevation="6dp"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <TextView
-                android:id="@+id/tvNoReservations"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reservations"
+                    android:textColor="#111111"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Upcoming and current bookings"
+                    android:textColor="#717171"
+                    android:textSize="13sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvReservations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    android:id="@+id/tvNoReservations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="8dp"
+                    android:text="No reservations yet"
+                    android:textColor="#717171"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- ================================= -->
+            <!-- BLOCKED DATES CARD -->
+            <!-- ================================= -->
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No reservations yet"
-                android:textSize="14sp"
-                android:textColor="#717171"
-                android:gravity="center"
-                android:padding="24dp"
-                android:visibility="gone" />
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_airbnb_card"
+                android:elevation="6dp"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <!-- Blocked Dates Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Blocked Dates"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blocked Dates"
+                    android:textColor="#111111"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/poppins_medium" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvBlockedDates"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:nestedScrollingEnabled="false" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Dates unavailable for booking"
+                    android:textColor="#717171"
+                    android:textSize="13sp" />
 
-            <TextView
-                android:id="@+id/tvNoBlockedDates"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No blocked dates"
-                android:textSize="14sp"
-                android:textColor="#717171"
-                android:gravity="center"
-                android:padding="24dp"
-                android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBlockedDates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    android:id="@+id/tvNoBlockedDates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="8dp"
+                    android:text="No blocked dates"
+                    android:textColor="#717171"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Loading Indicator -->
+        <!-- ================================= -->
+        <!-- LOADING -->
+        <!-- ================================= -->
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
