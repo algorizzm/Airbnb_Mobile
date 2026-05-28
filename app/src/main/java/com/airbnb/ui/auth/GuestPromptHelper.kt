@@ -80,11 +80,7 @@ object GuestPromptHelper {
      */
     private fun navigateToAuth(fragment: Fragment) {
         try {
-            val navController = fragment.findNavController()
-            val authDest = navController.graph.findNode(R.id.auth_graph)
-            if (authDest != null) {
-                navController.navigate(R.id.auth_graph)
-            }
+            GuestPromptDialog.show(fragment.parentFragmentManager)
         } catch (e: Exception) {
             // Navigation failed - fragment may be detached
         }

@@ -5,6 +5,7 @@ object UserRole {
     const val HIKER = "hiker"
     const val GUIDE = "guide"
     const val ADMIN = "admin"
+    const val TRAVELER = "traveler"
 }
 
 object HikeStatus {
@@ -43,7 +44,7 @@ object Permissions {
         role == UserRole.GUEST
 
     fun isHiker(role: String?): Boolean =
-        role == UserRole.HIKER
+        role == UserRole.HIKER || role == UserRole.TRAVELER
 
     fun isGuide(role: String?): Boolean =
         role == UserRole.GUIDE

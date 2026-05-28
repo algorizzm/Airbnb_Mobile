@@ -15,6 +15,22 @@ class AuthViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    fun loginWithGoogle(idToken: String) {
+        try {
+            repository.loginWithGoogle(
+                idToken,
+                onSuccess = {
+                    _authState.postValue(true)
+                },
+                onFailure = { exception ->
+                    _error.postValue(exception.message ?: "Google sign-in failed")
+                }
+            )
+        } catch (e: Exception) {
+            _error.postValue(e.message ?: "Google login crashed")
+        }
+    }
+
     fun login(email: String, password: String) {
         try {
             repository.login(

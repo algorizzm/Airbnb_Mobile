@@ -353,7 +353,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         if (!AuthManager.isAuthenticated()) {
 
-            GuestPromptDialog.show(childFragmentManager)
+            GuestPromptDialog.show(
+                childFragmentManager,
+                onSuccess = {
+                    onSwitchModeClicked()
+                }
+            )
 
             return
         }
@@ -457,8 +462,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                 AuthManager.signOut()
 
-                findNavController().navigate(
-                    R.id.auth_graph
+                val navController = findNavController()
+
+                navController.popBackStack(
+                    navController.graph.startDestinationId,
+                    false
+                )
+
+                navController.navigate(
+                    R.id.exploreFragment
                 )
             }
             .setNegativeButton("Cancel", null)

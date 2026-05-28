@@ -168,30 +168,12 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         // ----- DEBOUNCED NAVIGATE -----
-        val protectedTabs = setOf(
-            R.id.wishlistFragment,
-            R.id.tripsFragment,
-            R.id.messagesFragment,
-            R.id.profileFragment
-        )
-
         fun navigateTo(destId: Int) {
             val now = System.currentTimeMillis()
             if (now - lastNavTime < NAV_DEBOUNCE_MS) return
             lastNavTime = now
 
             if (navController.currentDestination?.id == destId) return
-
-            if (destId in protectedTabs && !AuthManager.isAuthenticated()) {
-                val currentFragment =
-                    navHostFragment.childFragmentManager.primaryNavigationFragment
-                if (currentFragment != null) {
-                    GuestPromptDialog.show(currentFragment.childFragmentManager)
-                } else {
-                    navController.navigate(R.id.loginFragment)
-                }
-                return
-            }
 
             navController.navigate(destId, null, navOptions())
         }

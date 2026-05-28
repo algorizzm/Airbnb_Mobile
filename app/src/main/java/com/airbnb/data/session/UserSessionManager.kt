@@ -57,6 +57,8 @@ object UserSessionManager {
         } else {
             detachUserListener()
             _authState.value = AuthState.Guest
+            AppModeManager.resetToTraveler()
+            resetGuestPrompt()
         }
     }
 

@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
 import com.airbnb.databinding.FragmentExploreBinding
 import com.airbnb.ui.traveler.explore.adapter.ListingAdapter
+import com.airbnb.ui.auth.GuestPromptDialog
+import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
 
 class ExploreFragment : Fragment(R.layout.fragment_explore) {
@@ -73,10 +75,16 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
             },
 
             onWishlistClick = { listing ->
-
-                viewModel.toggleWishlist(
-                    listing.id
-                )
+                if (!isUserAuthenticated()) {
+                    GuestPromptDialog.show(
+                        childFragmentManager,
+                        onSuccess = {
+                            viewModel.toggleWishlist(listing.id)
+                        }
+                    )
+                } else {
+                    viewModel.toggleWishlist(listing.id)
+                }
             }
         )
     }

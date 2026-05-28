@@ -42,25 +42,38 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_detail) {
         }
 
         binding.btnReserve.setOnClickListener {
-            // Check if user is authenticated
             if (!isUserAuthenticated()) {
-                GuestPromptDialog.show(childFragmentManager)
-                return@setOnClickListener
-            }
-            
-            val listingId = arguments?.getString(ARG_LISTING_ID)
-            if (listingId != null) {
+                val listingId = arguments?.getString(ARG_LISTING_ID)
                 val bundle = Bundle().apply {
                     putString("listingId", listingId)
                 }
-                try {
-                    findNavController().navigate(
-                        R.id.action_listingDetailFragment_to_createReservationFragment,
-                        bundle
-                    )
-                } catch (e: IllegalArgumentException) {
-                    Toast.makeText(requireContext(), getString(R.string.toast_navigation_not_configured), Toast.LENGTH_SHORT).show()
-                }
+                GuestPromptDialog.show(
+                    childFragmentManager,
+                    destId = R.id.createReservationFragment,
+                    destArgs = bundle,
+                    onSuccess = {
+                        navigateToReservation()
+                    }
+                )
+                return@setOnClickListener
+            }
+            navigateToReservation()
+        }
+    }
+
+    private fun navigateToReservation() {
+        val listingId = arguments?.getString(ARG_LISTING_ID)
+        if (listingId != null) {
+            val bundle = Bundle().apply {
+                putString("listingId", listingId)
+            }
+            try {
+                findNavController().navigate(
+                    R.id.action_listingDetailFragment_to_createReservationFragment,
+                    bundle
+                )
+            } catch (e: IllegalArgumentException) {
+                Toast.makeText(requireContext(), getString(R.string.toast_navigation_not_configured), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -12,6 +12,7 @@ import com.airbnb.R
 import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.auth.AuthState
 import com.airbnb.databinding.FragmentMessagesBinding
+import com.airbnb.ui.auth.GuestPromptDialog
 import kotlinx.coroutines.launch
 
 class MessagesFragment : Fragment(R.layout.fragment_messages) {
@@ -42,7 +43,7 @@ class MessagesFragment : Fragment(R.layout.fragment_messages) {
         }
 
         binding.btnLogin.setOnClickListener {
-            // TODO: Navigate to login
+            GuestPromptDialog.show(parentFragmentManager)
         }
     }
 

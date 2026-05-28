@@ -15,5 +15,10 @@ data class User(
     val totalListings: Int = 0,
     val hostModeEnabled: Boolean = false,
     val badges: List<String> = emptyList(),
-    val userCode: String? = null
+    val userCode: String? = null,
+    val userId: String = "",
+    val displayName: String = "",
+    val profileImageUrl: String = "",
+    val hostingEnabled: Boolean = false,
+    val createdAt: Long? = null
 )
