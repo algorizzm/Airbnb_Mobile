@@ -136,7 +136,7 @@
                         android:text="Profile"
                         android:textColor="#111111"
                         android:textSize="30sp"
-                        android:fontFamily="@font/poppins_bold"/>
+                        android:fontFamily="@font/poppins_medium"/>
 
                 </LinearLayout>
 
@@ -361,6 +361,26 @@
                             android:text="Become a host"
                             android:textSize="15sp"
                             android:textColor="#111111"/>
+
+                    </LinearLayout>
+
+                    <!-- Mode Switch Row — text set dynamically by ProfileFragment -->
+                    <LinearLayout
+                        android:id="@+id/rowSwitchMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvSwitchModeLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Switch to hosting"
+                            android:textSize="15sp"
+                            android:textColor="#FF385C"/>
 
                     </LinearLayout>
 

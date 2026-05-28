@@ -19,7 +19,7 @@
     <!-- Explore -->
     <fragment
         android:id="@+id/exploreFragment"
-        android:name="com.airbnb.ui.explore.ExploreFragment"
+        android:name="com.airbnb.ui.traveler.explore.ExploreFragment"
         android:label="Explore">
 
         <action
@@ -31,7 +31,7 @@
     <!-- Wishlist -->
     <fragment
         android:id="@+id/wishlistFragment"
-        android:name="com.airbnb.ui.wishlist.WishlistFragment"
+        android:name="com.airbnb.ui.traveler.wishlist.WishlistFragment"
         android:label="Wishlists">
 
         <action
@@ -43,7 +43,7 @@
     <!-- Trips -->
     <fragment
         android:id="@+id/tripsFragment"
-        android:name="com.airbnb.ui.trips.TripsFragment"
+        android:name="com.airbnb.ui.traveler.trips.TripsFragment"
         android:label="Trips">
 
         <action
@@ -55,7 +55,7 @@
     <!-- Profile -->
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.airbnb.ui.profile.ProfileFragment"
+        android:name="com.airbnb.ui.shared.profile.ProfileFragment"
         android:label="Profile">
 
         <action
@@ -100,6 +100,18 @@
         android:name="com.airbnb.ui.hosting.HostReservationsFragment"
         android:label="Reservations" />
 
+    <!-- Host Today (cross-listing reservation inbox — host mode root tab) -->
+    <fragment
+        android:id="@+id/hostTodayFragment"
+        android:name="com.airbnb.ui.hosting.HostTodayFragment"
+        android:label="Today" />
+
+    <!-- Host Calendar (placeholder — host mode root tab) -->
+    <fragment
+        android:id="@+id/hostCalendarFragment"
+        android:name="com.airbnb.ui.hosting.HostCalendarFragment"
+        android:label="Calendar" />
+
     <!-- Listing Details -->
     <fragment
         android:id="@+id/listingDetailFragment"
@@ -121,13 +133,13 @@
     <!-- Messages -->
     <fragment
         android:id="@+id/messagesFragment"
-        android:name="com.airbnb.ui.messages.MessagesFragment"
+        android:name="com.airbnb.ui.shared.messages.MessagesFragment"
         android:label="Messages" />
 
     <!-- Settings -->
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.airbnb.ui.settings.SettingsFragment"
+        android:name="com.airbnb.ui.shared.settings.SettingsFragment"
         android:label="Settings">
 
         <action
@@ -147,7 +159,7 @@
     <!-- Account Information -->
     <fragment
         android:id="@+id/accountInformationFragment"
-        android:name="com.airbnb.ui.settings.AccountInformationFragment"
+        android:name="com.airbnb.ui.shared.settings.AccountInformationFragment"
         android:label="Account Information">
 
         <action
@@ -159,31 +171,31 @@
     <!-- Edit Profile -->
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.airbnb.ui.settings.EditProfileFragment"
+        android:name="com.airbnb.ui.shared.settings.EditProfileFragment"
         android:label="Edit Profile" />
 
     <!-- Privacy & Security -->
     <fragment
         android:id="@+id/privacySecurityFragment"
-        android:name="com.airbnb.ui.settings.PrivacySecurityFragment"
+        android:name="com.airbnb.ui.shared.settings.PrivacySecurityFragment"
         android:label="Privacy and Security" />
 
     <!-- Notification Settings (from Settings screen) -->
     <fragment
         android:id="@+id/notificationSettingsFragment"
-        android:name="com.airbnb.ui.settings.NotificationsFragment"
+        android:name="com.airbnb.ui.shared.settings.NotificationsFragment"
         android:label="Notification Settings" />
 
     <!-- Notification Inbox (from main screen bell icon) -->
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.airbnb.ui.notifications.NotificationInboxFragment"
+        android:name="com.airbnb.ui.shared.notifications.NotificationInboxFragment"
         android:label="Notifications" />
 
     <!-- Change Password -->
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.airbnb.ui.settings.ChangePasswordFragment"
+        android:name="com.airbnb.ui.shared.settings.ChangePasswordFragment"
         android:label="Change Password" />
 
 </navigation>

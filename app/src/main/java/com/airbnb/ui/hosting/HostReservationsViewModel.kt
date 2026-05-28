@@ -2,6 +2,7 @@ package com.airbnb.ui.hosting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.airbnb.core.auth.AuthManager
 import com.airbnb.data.model.Reservation
 import com.airbnb.data.repository.ReservationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +33,32 @@ class HostReservationsViewModel(
         
         viewModelScope.launch {
             reservationRepository.observeReservationsForListing(listingId)
+                .catch { e ->
+                    _state.value = _state.value.copy(
+                        isLoading = false,
+                        error = e.message ?: "Failed to load reservations"
+                    )
+                }
+                .collect { reservations ->
+                    _state.value = _state.value.copy(
+                        reservations = reservations,
+                        isLoading = false,
+                        error = null
+                    )
+                }
+        }
+    }
+
+    /**
+     * Loads ALL reservations for the currently authenticated host, across all listings.
+     * Used by the host Today tab to show a cross-listing reservation inbox.
+     */
+    fun loadAllReservationsForHost() {
+        val hostId = AuthManager.currentUserId() ?: return
+        _state.value = _state.value.copy(isLoading = true, error = null)
+
+        viewModelScope.launch {
+            reservationRepository.observeReservationsForHost(hostId)
                 .catch { e ->
                     _state.value = _state.value.copy(
                         isLoading = false,

@@ -27,9 +27,9 @@
                 android:layout_height="44dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/bg_circle_light"
+                android:contentDescription="Search"
                 android:padding="10dp"
                 android:src="@drawable/ic_search"
-                android:contentDescription="Search"
                 app:tint="#222222" />
 
             <!-- Settings -->
@@ -38,9 +38,9 @@
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:background="@drawable/bg_circle_light"
+                android:contentDescription="Settings"
                 android:padding="10dp"
                 android:src="@drawable/ic_settings"
-                android:contentDescription="Settings"
                 app:tint="#222222" />
 
         </LinearLayout>
@@ -51,81 +51,88 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Messages"
             android:textColor="#111111"
-            android:textSize="28sp"
-            android:fontFamily="@font/poppins_medium" />
+            android:textSize="28sp" />
 
         <!-- FILTER CHIPS -->
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp">
+            android:scrollbars="none">
 
-            <!-- ALL -->
-            <TextView
-                android:id="@+id/chipAll"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:background="@drawable/bg_chip_selected"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="All"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp">
 
-            <!-- HOSTING -->
-            <TextView
-                android:id="@+id/chipHosting"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="Hosting"
-                android:textColor="#222222"
-                android:textSize="13sp" />
+                <!-- ALL -->
+                <TextView
+                    android:id="@+id/chipAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_chip_selected"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="All"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
 
-            <!-- TRAVELLING -->
-            <TextView
-                android:id="@+id/chipTravelling"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="Travelling"
-                android:textColor="#222222"
-                android:textSize="13sp" />
+                <!-- HOSTING -->
+                <TextView
+                    android:id="@+id/chipHosting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_unselected"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Hosting"
+                    android:textColor="#222222"
+                    android:textSize="13sp" />
 
-            <!-- SUPPORT -->
-            <TextView
-                android:id="@+id/chipSupport"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="Support"
-                android:textColor="#222222"
-                android:textSize="13sp" />
+                <!-- TRAVELLING -->
+                <TextView
+                    android:id="@+id/chipTravelling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_unselected"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Travelling"
+                    android:textColor="#222222"
+                    android:textSize="13sp" />
 
-        </LinearLayout>
+                <!-- SUPPORT -->
+                <TextView
+                    android:id="@+id/chipSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_unselected"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Support"
+                    android:textColor="#222222"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <!-- MAIN CONTENT -->
         <FrameLayout
@@ -158,8 +165,9 @@
 
                 </FrameLayout>
 
-                <!-- Title -->
+                <!-- Empty State Title -->
                 <TextView
+                    android:id="@+id/tvEmptyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -168,8 +176,9 @@
                     android:textColor="#111111"
                     android:textSize="21sp" />
 
-                <!-- Subtitle -->
+                <!-- Empty State Subtitle -->
                 <TextView
+                    android:id="@+id/tvEmptySubtitle"
                     android:layout_width="270dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -192,6 +201,7 @@
                 android:padding="32dp"
                 android:visibility="gone">
 
+                <!-- Title -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -200,6 +210,7 @@
                     android:textColor="#111111"
                     android:textSize="22sp" />
 
+                <!-- Subtitle -->
                 <TextView
                     android:layout_width="280dp"
                     android:layout_height="wrap_content"
@@ -210,6 +221,7 @@
                     android:textColor="#8B8B8B"
                     android:textSize="15sp" />
 
+                <!-- Login Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogin"
                     android:layout_width="wrap_content"

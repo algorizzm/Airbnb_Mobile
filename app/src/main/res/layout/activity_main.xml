@@ -19,7 +19,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- BOTTOM NAV -->
+    <!-- ===================================================== -->
+    <!-- TRAVELER BOTTOM NAV (default visible)                  -->
+    <!-- ===================================================== -->
     <LinearLayout
         android:id="@+id/navBarBg"
         android:layout_width="0dp"
@@ -203,4 +205,191 @@
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- ===================================================== -->
+    <!-- HOST BOTTOM NAV (GONE by default, shown in host mode) -->
+    <!-- ===================================================== -->
+    <LinearLayout
+        android:id="@+id/navBarHost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="72dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/bg_bottom_nav"
+        android:elevation="8dp"
+        android:weightSum="5"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Today -->
+        <LinearLayout
+            android:id="@+id/navToday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/navIconToday"
+                android:layout_width="48dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_airbnb"
+                app:tint="#FF385C"
+                android:contentDescription="Today"/>
+
+            <TextView
+                android:id="@+id/navLabelToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#FF385C"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Calendar -->
+        <LinearLayout
+            android:id="@+id/navCalendar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/navIconCalendar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_calendar"
+                app:tint="#717171"
+                android:contentDescription="Calendar"/>
+
+            <TextView
+                android:id="@+id/navLabelCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calendar"
+                android:textSize="11sp"
+                android:textColor="#717171"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Listings -->
+        <LinearLayout
+            android:id="@+id/navListings"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/navIconListings"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home"
+                app:tint="#717171"
+                android:contentDescription="Listings"/>
+
+            <TextView
+                android:id="@+id/navLabelListings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Listings"
+                android:textSize="11sp"
+                android:textColor="#717171"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Messages (host side — shared fragment) -->
+        <LinearLayout
+            android:id="@+id/navHostMessages"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/navIconHostMessages"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_message"
+                app:tint="#717171"
+                android:contentDescription="Messages"/>
+
+            <TextView
+                android:id="@+id/navLabelHostMessages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Messages"
+                android:textSize="11sp"
+                android:textColor="#717171"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Profile (host side — shared fragment) -->
+        <LinearLayout
+            android:id="@+id/navHostProfile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
+
+            <FrameLayout
+                android:layout_width="24dp"
+                android:layout_height="24dp">
+
+                <ImageView
+                    android:id="@+id/navIconHostProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_profile"
+                    android:contentDescription="Profile"/>
+
+                <TextView
+                    android:id="@+id/navHostProfileInitial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="10sp"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/navLabelHostProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textSize="11sp"
+                android:textColor="#717171"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

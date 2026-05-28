@@ -12,6 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
+import com.airbnb.core.mode.AppMode
+import com.airbnb.core.mode.AppModeManager
 import com.airbnb.databinding.FragmentHostListingsBinding
 import kotlinx.coroutines.launch
 
@@ -34,8 +36,12 @@ class HostListingsFragment : Fragment(R.layout.fragment_host_listings) {
     }
 
     private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
+            binding.toolbar.navigationIcon = null
+        } else {
+            binding.toolbar.setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
     }
 

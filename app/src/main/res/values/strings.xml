@@ -92,4 +92,17 @@
     <string name="history_empty_title">No trip history yet</string>
     <string name="history_empty_message">Completed trips will appear here.</string>
 
+
+    <string name="messages_empty_all_title">You don’t have any messages</string>
+    <string name="messages_empty_all_subtitle">When you receive a new message, it will appear here.</string>
+
+    <string name="messages_empty_hosting_title">No hosting messages yet</string>
+    <string name="messages_empty_hosting_subtitle">Messages from your guests will appear here.</string>
+
+    <string name="messages_empty_travelling_title">No trip messages yet</string>
+    <string name="messages_empty_travelling_subtitle">Messages with your hosts will appear here.</string>
+
+    <string name="messages_empty_support_title">No support messages</string>
+    <string name="messages_empty_support_subtitle">Support conversations will appear here.</string>
+
 </resources>
