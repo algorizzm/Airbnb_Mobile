@@ -1,105 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
-    app:cardBackgroundColor="#1E1E1E"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="false"
+    app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#FFFFFF">
 
-        <!-- Listing Image -->
-        <ImageView
-            android:id="@+id/imgTrip"
+        <!-- ================================================= -->
+        <!-- IMAGE -->
+        <!-- ================================================= -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:contentDescription="Trip image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_hike_placeholder" />
+            android:layout_height="190dp">
 
-        <!-- Trip Details -->
+            <ImageView
+                android:id="@+id/imgTrip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_hike_placeholder"
+                android:contentDescription="Trip image" />
+
+        </FrameLayout>
+
+        <!-- ================================================= -->
+        <!-- INFO SECTION -->
+        <!-- ================================================= -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="14dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="14dp">
 
-            <!-- Title -->
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/poppins_bold"
-                android:maxLines="2"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                tools:text="Cozy Apartment in Manila" />
-
-            <!-- Location -->
+            <!-- LOCATION -->
             <TextView
                 android:id="@+id/tvLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/poppins_regular"
-                android:textColor="#80FFFFFF"
-                android:textSize="13sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="#111111"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_medium"
                 tools:text="Manila, Philippines" />
 
-            <!-- Dates -->
+            <!-- TITLE -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="#666666"
+                android:textSize="13sp"
+                android:fontFamily="@font/poppins_regular"
+                tools:text="Cozy Apartment in Manila" />
+
+            <!-- DATES -->
             <TextView
                 android:id="@+id/tvDates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="#888888"
+                android:textSize="11sp"
                 android:fontFamily="@font/poppins_regular"
-                android:textColor="#AAAAAA"
-                android:textSize="13sp"
                 tools:text="Dec 25, 2024 - Dec 30, 2024" />
 
-            <!-- Status and Price Row -->
+            <!-- STATUS + PRICE -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- Status -->
+                <!-- STATUS -->
                 <TextView
                     android:id="@+id/tvStatus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     tools:text="Confirmed"
                     tools:textColor="@color/green" />
 
-                <!-- Price -->
+                <!-- PRICE -->
                 <TextView
                     android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="#111111"
+                    android:textSize="13sp"
                     tools:text="₱5,000" />
 
             </LinearLayout>
 
-            <!-- Cancel Button -->
+            <!-- CANCEL BUTTON -->
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_button_secondary"
                 android:fontFamily="@font/poppins_medium"
