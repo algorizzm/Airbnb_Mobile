@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.databinding.FragmentTripsBinding
-import com.airbnb.ui.auth.GuestPromptHelper
+import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.ui.auth.isUserAuthenticated
 import com.airbnb.ui.traveler.trips.adapter.TripAdapter
 import kotlinx.coroutines.launch
@@ -34,9 +34,14 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
 
         _binding = FragmentTripsBinding.bind(view)
 
-        // Check authentication status
+        // Force sign in for guests
         if (!isUserAuthenticated()) {
-            showGuestState()
+
+            binding.recyclerTrips.visibility = View.GONE
+            binding.layoutFilters.visibility = View.GONE
+            binding.layoutEmptyState.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
+
             return
         }
 
@@ -49,32 +54,34 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
     override fun onResume() {
         super.onResume()
 
-        // Refresh trips when returning to screen
-        if (isUserAuthenticated()) {
-            updateTripsList()
+        if (!isUserAuthenticated()) {
+
+            val existing =
+                parentFragmentManager.findFragmentByTag(
+                    GuestPromptDialog.TAG
+                )
+
+            if (existing == null) {
+
+                GuestPromptDialog.show(
+                    parentFragmentManager
+                )
+            }
+
+            return
         }
+
+        updateTripsList()
     }
 
-    private fun showGuestState() {
+    private fun showGuestPromptDialog() {
 
-        GuestPromptHelper.setupGuestPrompt(
-            promptLayout = binding.layoutGuestPrompt.root,
-            fragment = this,
-            title = getString(R.string.guest_prompt_title_trips),
-            message = getString(R.string.guest_prompt_message_trips),
-            iconRes = R.drawable.ic_calendar
+        val dialog = GuestPromptDialog()
+
+        dialog.show(
+            parentFragmentManager,
+            "GuestPromptDialog"
         )
-
-        // Hide filters and show guest prompt
-        binding.layoutFilters.visibility = View.GONE
-
-        GuestPromptHelper.showGuestPrompt(
-            promptLayout = binding.layoutGuestPrompt.root,
-            contentLayout = binding.recyclerTrips
-        )
-
-        binding.layoutEmptyState.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
     }
 
     private fun setupAdapter() {
@@ -343,20 +350,6 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
         binding.recyclerTrips.visibility =
             if (isEmpty) View.GONE else View.VISIBLE
 
-        binding.tvEmpty.text = when (currentFilter) {
-
-            TripFilter.UPCOMING ->
-                getString(R.string.trips_empty_upcoming)
-
-            TripFilter.ACTIVE_STAY ->
-                "No active stays"
-
-            TripFilter.PAST ->
-                getString(R.string.trips_empty_past)
-
-            TripFilter.CANCELLED ->
-                getString(R.string.trips_empty_cancelled)
-        }
     }
 
     private fun showCancelConfirmationDialog(

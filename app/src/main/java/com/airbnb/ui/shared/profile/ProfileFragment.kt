@@ -243,9 +243,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             GuestPromptDialog.show(childFragmentManager)
         }
 
-        binding.btnSignup.setOnClickListener {
-            GuestPromptDialog.show(childFragmentManager)
-        }
     }
 
     // =========================================================

@@ -148,54 +148,14 @@
 
     <LinearLayout
         android:id="@+id/layoutEmptyState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
+        android:background="#FFFFFF"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/filterScroll"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="visible">
-
-        <!-- Icon Bubble -->
-        <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:background="@drawable/bg_empty_icon_circle">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_airbnb"
-                app:tint="#222222"/>
-
-        </FrameLayout>
-
-        <!-- Title -->
-        <TextView
-            android:id="@+id/tvEmpty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:text="@string/trips_empty_upcoming"
-            android:textColor="#111111"
-            android:textSize="20sp"
-            android:fontFamily="@font/poppins_medium"/>
-
-        <!-- Subtitle -->
-        <TextView
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="When you book your next stay, your trips will appear here."
-            android:textColor="#8B8B8B"
-            android:textSize="15sp"
-            android:fontFamily="@font/poppins_regular"/>
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

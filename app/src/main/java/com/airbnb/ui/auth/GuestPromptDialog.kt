@@ -57,9 +57,12 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
     override fun getTheme(): Int = R.style.RoundedBottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         val webClientId =
             "531642391047-f1q2li806aujucvucj21u9f07gq7jo47.apps.googleusercontent.com"
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(webClientId)
             .requestEmail()
@@ -78,7 +81,7 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
             bottomSheet?.let { sheet ->
                 val behavior = BottomSheetBehavior.from(sheet)
                 val screenHeight = resources.displayMetrics.heightPixels
-                val desiredHeight = (screenHeight * 0.90f).toInt()
+                val desiredHeight = (screenHeight * 0.95f).toInt()
 
                 sheet.layoutParams = sheet.layoutParams.apply {
                     height = desiredHeight

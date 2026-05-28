@@ -390,12 +390,74 @@
 
             </LinearLayout>
 
+            <!-- DIVIDER -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"/>
+
+            <!-- TRIP ACTIONS SECTION -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Trip Actions"
+                android:textColor="#111111"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <!-- CHECK IN BUTTON -->
+            <Button
+                android:id="@+id/btnCheckIn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_button_primary"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Check In"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <!-- CHECK OUT BUTTON -->
+            <Button
+                android:id="@+id/btnCheckOut"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_button_primary"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Check Out"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <!-- EARLY CHECK OUT BUTTON -->
+            <Button
+                android:id="@+id/btnEarlyCheckOut"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_button_secondary"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Check Out Early"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
             <!-- CANCEL BUTTON -->
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bg_button_secondary"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Cancel Reservation"

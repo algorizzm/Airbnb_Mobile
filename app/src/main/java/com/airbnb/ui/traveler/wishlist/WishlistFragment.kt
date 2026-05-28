@@ -16,6 +16,7 @@ import com.airbnb.ui.traveler.wishlist.adapter.WishlistAdapter
 import com.airbnb.ui.auth.GuestPromptHelper
 import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
+import com.airbnb.ui.auth.GuestPromptDialog
 
 class WishlistFragment : Fragment() {
 
@@ -48,19 +49,17 @@ class WishlistFragment : Fragment() {
     }
 
     private fun showGuestState() {
-        GuestPromptHelper.setupGuestPrompt(
-            promptLayout = binding.layoutGuestPrompt.root,
-            fragment = this,
-            title = getString(R.string.guest_prompt_title_wishlist),
-            message = getString(R.string.guest_prompt_message_wishlist),
-            iconRes = R.drawable.ic_heart
-        )
-        GuestPromptHelper.showGuestPrompt(
-            promptLayout = binding.layoutGuestPrompt.root,
-            contentLayout = binding.recyclerView
-        )
+
+        binding.layoutGuestPrompt.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.GONE
         binding.emptyStateLayout.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
+        binding.headerDivider.visibility = View.GONE
+
+        binding.btnLogin.setOnClickListener {
+
+            GuestPromptDialog().show(parentFragmentManager, "GuestPromptDialog")
+        }
     }
 
     private fun setupRecyclerView() {

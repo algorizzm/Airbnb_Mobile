@@ -180,6 +180,134 @@ class ReservationRepository(
         updateReservationStatus(reservationId, ReservationStatus.COMPLETED)
 
     /**
+     * Checks in a traveler to their reservation.
+     * 
+     * Rules:
+     * - Reservation must be CONFIRMED or UPCOMING
+     * - Current date must be >= check-in date
+     * - checkedIn must be false
+     * 
+     * Effects:
+     * - Sets checkedIn = true
+     * - Sets status = ACTIVE_STAY
+     * - Updates updatedAt timestamp
+     */
+    suspend fun checkInReservation(reservationId: String): Result<Unit> = runCatching {
+        val reservation = getReservation(reservationId).getOrThrow()
+        
+        // Validate check-in eligibility
+        if (reservation.status !in listOf(ReservationStatus.CONFIRMED, ReservationStatus.UPCOMING)) {
+            error("Cannot check in: reservation status is ${reservation.status}")
+        }
+        
+        if (reservation.checkedIn) {
+            error("Already checked in")
+        }
+        
+        val checkInDate = reservation.checkInDate?.toDate()
+            ?: error("Check-in date not found")
+        
+        val now = java.util.Date()
+        if (now.before(checkInDate)) {
+            error("Cannot check in before check-in date")
+        }
+        
+        // Perform check-in
+        reservationsCol.document(reservationId).update(
+            mapOf(
+                "checkedIn" to true,
+                "status" to ReservationStatus.ACTIVE_STAY,
+                "updatedAt" to Timestamp.now()
+            )
+        ).await()
+    }
+
+    /**
+     * Checks out a traveler from their reservation.
+     * 
+     * Rules:
+     * - checkedIn must be true
+     * - checkedOut must be false
+     * - status must be ACTIVE_STAY
+     * 
+     * Effects:
+     * - Sets checkedOut = true
+     * - Sets status = COMPLETED
+     * - Updates updatedAt timestamp
+     */
+    suspend fun checkOutReservation(reservationId: String): Result<Unit> = runCatching {
+        val reservation = getReservation(reservationId).getOrThrow()
+        
+        // Validate check-out eligibility
+        if (!reservation.checkedIn) {
+            error("Cannot check out: not checked in")
+        }
+        
+        if (reservation.checkedOut) {
+            error("Already checked out")
+        }
+        
+        if (reservation.status != ReservationStatus.ACTIVE_STAY) {
+            error("Cannot check out: reservation status is ${reservation.status}")
+        }
+        
+        // Perform check-out
+        reservationsCol.document(reservationId).update(
+            mapOf(
+                "checkedOut" to true,
+                "status" to ReservationStatus.COMPLETED,
+                "updatedAt" to Timestamp.now()
+            )
+        ).await()
+    }
+
+    /**
+     * Performs early check-out before the scheduled check-out date.
+     * 
+     * Rules:
+     * - checkedIn must be true
+     * - checkedOut must be false
+     * - current date must be < check-out date
+     * 
+     * Effects:
+     * - Sets checkedOut = true
+     * - Sets status = COMPLETED
+     * - Updates updatedAt timestamp
+     * 
+     * Note: This sprint does NOT handle refunds or pricing adjustments.
+     * Early checkout is lifecycle-only for now.
+     */
+    suspend fun earlyCheckOutReservation(reservationId: String): Result<Unit> = runCatching {
+        val reservation = getReservation(reservationId).getOrThrow()
+        
+        // Validate early check-out eligibility
+        if (!reservation.checkedIn) {
+            error("Cannot check out: not checked in")
+        }
+        
+        if (reservation.checkedOut) {
+            error("Already checked out")
+        }
+        
+        val checkOutDate = reservation.checkOutDate?.toDate()
+            ?: error("Check-out date not found")
+        
+        val now = java.util.Date()
+        if (!now.before(checkOutDate)) {
+            error("Cannot perform early check-out: check-out date has passed")
+        }
+        
+        // Perform early check-out (same as regular check-out for now)
+        reservationsCol.document(reservationId).update(
+            mapOf(
+                "checkedOut" to true,
+                "status" to ReservationStatus.COMPLETED,
+                "updatedAt" to Timestamp.now()
+            )
+        ).await()
+    }
+
+    /**
      * Deletes a reservation.
      */
     suspend fun deleteReservation(reservationId: String): Result<Unit> = runCatching {

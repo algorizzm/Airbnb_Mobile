@@ -31,63 +31,163 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
-                android:paddingTop="120dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingTop="44dp"
+                android:paddingBottom="40dp"
                 android:visibility="gone">
 
-                <ImageView
-                    android:id="@+id/imgGuestAvatar"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:src="@drawable/blank_profile"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/ic_user"
-                    android:padding="2dp"/>
+                <!-- TITLE -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Welcome to Airbnb"
+                    android:text="Profile"
                     android:textColor="#111111"
-                    android:textSize="26sp"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/poppins_medium"/>
+                    android:textSize="30sp"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <!-- SUBTITLE -->
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Log in or sign up to start booking unique stays and experiences."
-                    android:textColor="#717171"
-                    android:textSize="14sp"
-                    android:gravity="center"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:text="Log in and start planning your next trip."
+                    android:textColor="#6A6A6A"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_regular" />
 
-                <Button
+                <!-- LOGIN BUTTON -->
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="32dp"
-                    android:background="@drawable/bg_airbnb_primary_button"
-                    android:text="Log in"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="26dp"
+                    android:text="Log in or sign up"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    app:backgroundTint="@null"/>
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:backgroundTint="#000000"
+                    app:cornerRadius="14dp" />
 
-                <Button
-                    android:id="@+id/btnSignup"
+                <!-- DIVIDER -->
+
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_airbnb_outline_button"
-                    android:text="Sign up"
-                    android:textAllCaps="false"
-                    android:textColor="#111111"
-                    android:textSize="15sp"
-                    app:backgroundTint="@null"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="40dp"
+                    android:background="#EAEAEA" />
+
+                <!-- ACCOUNT SETTINGS -->
+
+                <LinearLayout
+                    android:id="@+id/rowAccountSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_settings"
+                        app:tint="#222222" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_weight="1"
+                        android:text="Account settings"
+                        android:textColor="#111111"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8B8B8B" />
+
+                </LinearLayout>
+
+                <!-- GET HELP -->
+
+                <LinearLayout
+                    android:id="@+id/rowGetHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_help"
+                        app:tint="#222222" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_weight="1"
+                        android:text="Get help"
+                        android:textColor="#111111"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8B8B8B" />
+
+                </LinearLayout>
+
+                <!-- DIVIDER -->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#EAEAEA" />
+
+                <!-- LEGAL -->
+
+                <LinearLayout
+                    android:id="@+id/rowLegal"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_legal"
+                        app:tint="#222222" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_weight="1"
+                        android:text="Legal"
+                        android:textColor="#111111"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8B8B8B" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

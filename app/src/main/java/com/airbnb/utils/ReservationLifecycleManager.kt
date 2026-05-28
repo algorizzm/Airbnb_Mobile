@@ -26,8 +26,24 @@ object ReservationLifecycleManager {
     /**
      * Determines the correct lifecycle status for a reservation based on current date.
      * Does not modify the reservation, only returns the appropriate status.
+     * 
+     * IMPORTANT: Manual check-in/check-out actions override automatic date logic.
+     * - If checkedOut=true, always return COMPLETED
+     * - If checkedIn=true, return ACTIVE_STAY (unless checkedOut=true)
+     * - ACTIVE_STAY can ONLY be achieved via manual check-in
+     * - Automatic transitions: CONFIRMED -> UPCOMING -> (manual check-in required) -> ACTIVE_STAY
      */
     fun determineLifecycleStatus(reservation: Reservation): String {
+        // Manual check-out always results in COMPLETED
+        if (reservation.checkedOut) {
+            return ReservationStatus.COMPLETED
+        }
+        
+        // Manual check-in always results in ACTIVE_STAY (unless checked out)
+        if (reservation.checkedIn) {
+            return ReservationStatus.ACTIVE_STAY
+        }
+        
         // Don't transition terminal or cancelled states
         if (reservation.status in listOf(
                 ReservationStatus.CANCELLED,
@@ -44,11 +60,22 @@ object ReservationLifecycleManager {
         val now = Date()
 
         return when {
-            // If checkout has passed, mark as completed
+            // If checkout has passed and NOT manually checked in, mark as completed
+            // (This handles cases where user never checked in)
             now.after(checkOutDate) -> ReservationStatus.COMPLETED
 
-            // If check-in has passed but checkout hasn't, it's an active stay
-            now.after(checkInDate) || isSameDay(now, checkInDate) -> ReservationStatus.ACTIVE_STAY
+            // DO NOT automatically transition to ACTIVE_STAY
+            // User must manually check in to reach ACTIVE_STAY status
+            // If check-in date has passed, keep as UPCOMING (waiting for manual check-in)
+            now.after(checkInDate) || isSameDay(now, checkInDate) -> {
+                // If already ACTIVE_STAY (from manual check-in), keep it
+                if (reservation.status == ReservationStatus.ACTIVE_STAY) {
+                    ReservationStatus.ACTIVE_STAY
+                } else {
+                    // Otherwise, keep as UPCOMING (waiting for manual check-in)
+                    ReservationStatus.UPCOMING
+                }
+            }
 
             // If check-in is within 30 days, mark as upcoming
             isWithinDays(now, checkInDate, 30) -> ReservationStatus.UPCOMING

@@ -57,4 +57,95 @@ data class Reservation(
         "completed" -> "Completed"
         else -> status.replaceFirstChar { it.uppercase() }
     }
+
+    /** Returns true if the traveler can check in. */
+    fun canCheckIn(): Boolean {
+        android.util.Log.d("Reservation", "=== canCheckIn() Debug ===")
+        android.util.Log.d("Reservation", "checkedIn: $checkedIn")
+        
+        if (checkedIn) {
+            android.util.Log.d("Reservation", "FAIL: Already checked in")
+            return false
+        }
+        
+        android.util.Log.d("Reservation", "status: $status")
+        if (status !in listOf(ReservationStatus.CONFIRMED, ReservationStatus.UPCOMING)) {
+            android.util.Log.d("Reservation", "FAIL: Status not CONFIRMED or UPCOMING")
+            return false
+        }
+        
+        val checkInDate = checkInDate?.toDate()
+        android.util.Log.d("Reservation", "checkInDate: $checkInDate")
+        
+        if (checkInDate == null) {
+            android.util.Log.d("Reservation", "FAIL: checkInDate is null")
+            return false
+        }
+        
+        val now = java.util.Date()
+        android.util.Log.d("Reservation", "now: $now")
+        
+        // Normalize dates to midnight for comparison (ignore time component)
+        val checkInCal = java.util.Calendar.getInstance().apply {
+            time = checkInDate
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        
+        val nowCal = java.util.Calendar.getInstance().apply {
+            time = now
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        
+        android.util.Log.d("Reservation", "checkInCal (normalized): ${checkInCal.time}")
+        android.util.Log.d("Reservation", "nowCal (normalized): ${nowCal.time}")
+        
+        val canCheckIn = !nowCal.time.before(checkInCal.time)
+        android.util.Log.d("Reservation", "nowCal.time.before(checkInCal.time): ${nowCal.time.before(checkInCal.time)}")
+        android.util.Log.d("Reservation", "Result: $canCheckIn")
+        
+        // Can check in on or after check-in date (comparing dates only, not time)
+        return canCheckIn
+    }
+
+    /** Returns true if the traveler can check out. */
+    fun canCheckOut(): Boolean {
+        if (!checkedIn) return false
+        if (checkedOut) return false
+        return status == ReservationStatus.ACTIVE_STAY
+    }
+
+    /** Returns true if the traveler can check out early. */
+    fun canEarlyCheckOut(): Boolean {
+        if (!checkedIn) return false
+        if (checkedOut) return false
+        
+        val checkOutDate = checkOutDate?.toDate() ?: return false
+        val now = java.util.Date()
+        
+        // Normalize dates to midnight for comparison (ignore time component)
+        val checkOutCal = java.util.Calendar.getInstance().apply {
+            time = checkOutDate
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        
+        val nowCal = java.util.Calendar.getInstance().apply {
+            time = now
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        
+        // Can early check out if current date is before scheduled check-out (comparing dates only)
+        return nowCal.time.before(checkOutCal.time)
+    }
 }

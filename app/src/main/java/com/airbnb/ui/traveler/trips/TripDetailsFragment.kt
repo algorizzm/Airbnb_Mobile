@@ -55,6 +55,18 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         binding.btnCancel.setOnClickListener {
             showCancelConfirmationDialog()
         }
+
+        binding.btnCheckIn.setOnClickListener {
+            showCheckInConfirmationDialog()
+        }
+
+        binding.btnCheckOut.setOnClickListener {
+            showCheckOutConfirmationDialog()
+        }
+
+        binding.btnEarlyCheckOut.setOnClickListener {
+            showEarlyCheckOutConfirmationDialog()
+        }
     }
 
     private fun observeUi() {
@@ -147,8 +159,24 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         // Set booking timeline
         binding.tvBookedDate.text = reservation.createdAt?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
 
-        // Show cancel button if cancellable
-        binding.btnCancel.visibility = if (reservation.isCancellable()) View.VISIBLE else View.GONE
+        // Show/hide action buttons based on reservation state
+        val canCheckIn = reservation.canCheckIn()
+        val canCheckOut = reservation.canCheckOut()
+        val canEarlyCheckOut = reservation.canEarlyCheckOut()
+        val isCancellable = reservation.isCancellable()
+        
+        // Debug logging
+        android.util.Log.d("TripDetails", "Reservation status: ${reservation.status}")
+        android.util.Log.d("TripDetails", "checkedIn: ${reservation.checkedIn}, checkedOut: ${reservation.checkedOut}")
+        android.util.Log.d("TripDetails", "canCheckIn: $canCheckIn")
+        android.util.Log.d("TripDetails", "canCheckOut: $canCheckOut")
+        android.util.Log.d("TripDetails", "canEarlyCheckOut: $canEarlyCheckOut")
+        android.util.Log.d("TripDetails", "isCancellable: $isCancellable")
+        
+        binding.btnCancel.visibility = if (isCancellable) View.VISIBLE else View.GONE
+        binding.btnCheckIn.visibility = if (canCheckIn) View.VISIBLE else View.GONE
+        binding.btnCheckOut.visibility = if (canCheckOut && !canEarlyCheckOut) View.VISIBLE else View.GONE
+        binding.btnEarlyCheckOut.visibility = if (canEarlyCheckOut) View.VISIBLE else View.GONE
     }
 
     private fun showCancelConfirmationDialog() {
@@ -159,6 +187,39 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
                 reservationId?.let { viewModel.cancelReservation(it) }
             }
             .setNegativeButton("No", null)
+            .show()
+    }
+
+    private fun showCheckInConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Check In")
+            .setMessage("Ready to check in to your stay?")
+            .setPositiveButton("Check In") { _, _ ->
+                reservationId?.let { viewModel.checkInReservation(it) }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showCheckOutConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Check Out")
+            .setMessage("Ready to check out? We hope you enjoyed your stay!")
+            .setPositiveButton("Check Out") { _, _ ->
+                reservationId?.let { viewModel.checkOutReservation(it) }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showEarlyCheckOutConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Early Check Out")
+            .setMessage("You're checking out before your scheduled date. Continue?")
+            .setPositiveButton("Check Out") { _, _ ->
+                reservationId?.let { viewModel.earlyCheckOutReservation(it) }
+            }
+            .setNegativeButton("Cancel", null)
             .show()
     }
 

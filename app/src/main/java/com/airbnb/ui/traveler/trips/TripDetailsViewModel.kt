@@ -78,6 +78,54 @@ class TripDetailsViewModel(
         }
     }
 
+    fun checkInReservation(reservationId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            reservationRepository.checkInReservation(reservationId)
+                .onSuccess {
+                    _toast.value = "Checked in successfully!"
+                    // Reload reservation to reflect changes
+                    loadReservation(reservationId)
+                }
+                .onFailure { error ->
+                    _toast.value = "Check-in failed: ${error.message}"
+                    _isLoading.value = false
+                }
+        }
+    }
+
+    fun checkOutReservation(reservationId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            reservationRepository.checkOutReservation(reservationId)
+                .onSuccess {
+                    _toast.value = "Checked out successfully!"
+                    // Reload reservation to reflect changes
+                    loadReservation(reservationId)
+                }
+                .onFailure { error ->
+                    _toast.value = "Check-out failed: ${error.message}"
+                    _isLoading.value = false
+                }
+        }
+    }
+
+    fun earlyCheckOutReservation(reservationId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            reservationRepository.earlyCheckOutReservation(reservationId)
+                .onSuccess {
+                    _toast.value = "Early check-out completed successfully!"
+                    // Reload reservation to reflect changes
+                    loadReservation(reservationId)
+                }
+                .onFailure { error ->
+                    _toast.value = "Early check-out failed: ${error.message}"
+                    _isLoading.value = false
+                }
+        }
+    }
+
     fun consumeToast() {
         _toast.value = null
     }
