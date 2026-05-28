@@ -5,6 +5,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
 import com.airbnb.core.mode.AppMode
@@ -21,22 +22,34 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         logo.startAnimation(anim)
 
         view.postDelayed({
-            if (isAdded) {
-                try {
 
-                    val destination =
-                        if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
-                            R.id.hostTodayFragment
-                        } else {
-                            R.id.exploreFragment
-                        }
+            if (!isAdded) return@postDelayed
 
-                    findNavController().navigate(destination)
+            try {
 
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                val destination =
+                    if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
+                        R.id.hostTodayFragment
+                    } else {
+                        R.id.exploreFragment
+                    }
+
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.splashFragment, true)
+                    .build()
+
+                findNavController().navigate(
+                    destination,
+                    null,
+                    androidx.navigation.NavOptions.Builder()
+                        .setPopUpTo(R.id.splashFragment, true)
+                        .build()
+                )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+
         }, 1800)
     }
 }

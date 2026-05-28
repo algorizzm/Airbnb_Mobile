@@ -58,11 +58,8 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val webClientId = try {
-            getString(R.string.default_web_client_id)
-        } catch (e: Exception) {
+        val webClientId =
             "531642391047-f1q2li806aujucvucj21u9f07gq7jo47.apps.googleusercontent.com"
-        }
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(webClientId)
             .requestEmail()
@@ -113,37 +110,89 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Continue button - Email Link Flow
         binding.btnGuestSignUp.setOnClickListener {
-            navigateToAuth()
+            val input = binding.etPhoneEmail.text.toString().trim()
+            if (input.isEmpty()) {
+                showError("Please enter your email")
+                return@setOnClickListener
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(input).matches()) {
+                showError("Please enter a valid email address")
+                return@setOnClickListener
+            }
+            sendEmailLink(input)
         }
 
+        // Google Sign-In button
         binding.btnGuestLogIn.setOnClickListener {
             val signInIntent = googleSignInClient.signInIntent
             googleSignInLauncher.launch(signInIntent)
         }
 
+        // Apple button - fallback to legacy auth
         binding.btnApple.setOnClickListener {
-            navigateToAuth()
+            showError("Apple Sign-In coming soon")
         }
 
         binding.btnGuestDismiss.setOnClickListener {
             dismiss()
         }
 
+        // Auth state observer
         authViewModel.authState.observe(viewLifecycleOwner) { success ->
             if (success == true) {
+
                 authViewModel.resetAuthState()
+
+                val destId = arguments?.getInt(ARG_DEST_ID) ?: 0
+                val destArgs = arguments?.getBundle(ARG_DEST_ARGS)
+
                 dismiss()
+
+                if (destId != 0) {
+                    try {
+                        findNavController().navigate(destId, destArgs)
+                    } catch (_: Exception) {
+                    }
+                }
+
                 onAuthSuccess?.invoke()
             }
         }
 
+        // Error observer
         authViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
             if (!errorMsg.isNullOrEmpty()) {
                 showError(errorMsg)
                 onAuthFailure?.invoke(Exception(errorMsg))
             }
         }
+
+        // Email link sent observer
+        authViewModel.emailLinkSent.observe(viewLifecycleOwner) { sent ->
+            if (sent == true) {
+                authViewModel.resetEmailLinkSent()
+                showSuccess("Check your email for your secure sign-in link")
+                dismiss()
+            }
+        }
+
+        // Loading observer
+        authViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            binding.btnGuestSignUp.isEnabled = !isLoading
+            binding.btnGuestLogIn.isEnabled = !isLoading
+            binding.btnApple.isEnabled = !isLoading
+            binding.etPhoneEmail.isEnabled = !isLoading
+        }
+    }
+
+    private fun sendEmailLink(email: String) {
+        authViewModel.sendSignInLinkToEmail(email, requireContext())
+    }
+
+    private fun showSuccess(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun performGoogleAuth(idToken: String) {
@@ -153,31 +202,6 @@ class GuestPromptDialog : BottomSheetDialogFragment() {
 
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun navigateToAuth() {
-        if (navigated) return
-        navigated = true
-        dismiss()
-
-        try {
-            val navController = requireParentFragment().findNavController()
-            val destination = navController.graph.findNode(R.id.auth_graph)
-            if (destination != null) {
-                val destId = arguments?.getInt(ARG_DEST_ID) ?: 0
-                val destArgs = arguments?.getBundle(ARG_DEST_ARGS)
-                val forwardArgs = Bundle().apply {
-                    if (destId != 0) {
-                        putInt(com.airbnb.core.navigation.AuthNavKeys.POST_LOGIN_DEST_ID, destId)
-                        if (destArgs != null) {
-                            putBundle(com.airbnb.core.navigation.AuthNavKeys.POST_LOGIN_ARGS, destArgs)
-                        }
-                    }
-                }
-                navController.navigate(R.id.auth_graph, forwardArgs)
-            }
-        } catch (_: Exception) {
-        }
     }
 
     override fun onDestroyView() {

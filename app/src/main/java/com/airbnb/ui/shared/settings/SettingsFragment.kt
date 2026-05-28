@@ -36,7 +36,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         binding.rowSignOut.setOnClickListener {
             AuthManager.signOut()
-            findNavController().navigate(R.id.auth_graph)
+            findNavController().navigate(R.id.main_graph)
         }
     }
 

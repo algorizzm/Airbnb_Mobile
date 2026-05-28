@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0D0D0D">
+    android:background="#FFFFFF">
 
     <!-- Logo + wordmark group -->
     <LinearLayout
@@ -37,22 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name_display"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:letterSpacing="0.3"
-            android:fontFamily="sans-serif-medium" />
-
-        <TextView
-            android:id="@+id/splashTagline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/splash_tagline"
-            android:textColor="#00C853"
-            android:textSize="12sp"
-            android:textStyle="italic"
-            android:letterSpacing="0.08" />
+            android:fontFamily="@font/poppins_bold" />
 
     </LinearLayout>
 
@@ -63,8 +51,8 @@
         android:layout_height="3dp"
         android:layout_marginBottom="40dp"
         android:indeterminate="true"
-        android:indeterminateTint="#00C853"
-        android:progressBackgroundTint="#1A3D2B"
+        android:indeterminateTint="@color/airbnb_red"
+        android:progressBackgroundTint="@color/airbnb_red_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

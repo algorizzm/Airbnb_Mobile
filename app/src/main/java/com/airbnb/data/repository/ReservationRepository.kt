@@ -3,10 +3,12 @@ package com.airbnb.data.repository
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.airbnb.data.model.BlockedDate
 import com.airbnb.data.model.Reservation
 import com.airbnb.data.model.ReservationStatus
 import com.airbnb.utils.PublicCodeGenerator
 import com.airbnb.utils.ReservationDateValidator
+import com.airbnb.utils.ReservationConflictValidator
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -89,6 +91,15 @@ class ReservationRepository(
 
     /**
      * Creates a new reservation in Firestore.
+     * 
+     * IMPORTANT: This method performs conflict validation before creating the reservation.
+     * It checks for:
+     * - Overlapping reservations
+     * - Blocked dates
+     * - Invalid date ranges
+     * - Past dates
+     * 
+     * This is the final validation layer before Firestore write.
      */
     suspend fun createReservation(reservation: Reservation): Result<String> = runCatching {
         val checkInDate = reservation.checkInDate?.toDate()
@@ -98,6 +109,22 @@ class ReservationRepository(
 
         if (!ReservationDateValidator.isDateRangeValid(checkInDate, checkOutDate)) {
             error("Invalid reservation date range")
+        }
+
+        // CRITICAL: Perform final conflict validation before write
+        // This protects against race conditions and stale UI state
+        val existingReservations = getReservationsForListing(reservation.listingId)
+        val blockedDates = getBlockedDatesForListing(reservation.listingId)
+        
+        val validationResult = ReservationConflictValidator.validateReservation(
+            checkInDate = reservation.checkInDate!!,
+            checkOutDate = reservation.checkOutDate!!,
+            existingReservations = existingReservations,
+            blockedDates = blockedDates
+        )
+        
+        if (validationResult is ReservationConflictValidator.ValidationResult.Invalid) {
+            error(validationResult.reason)
         }
 
         val data = reservation.copy(
@@ -183,6 +210,36 @@ class ReservationRepository(
             .await()
         snapshot.size()
     }.getOrDefault(0)
+    
+    /**
+     * Gets all reservations for a listing (for conflict validation).
+     * Internal helper method used by conflict validator.
+     */
+    private suspend fun getReservationsForListing(listingId: String): List<Reservation> {
+        val snapshot = reservationsCol
+            .whereEqualTo("listingId", listingId)
+            .get()
+            .await()
+        
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(Reservation::class.java)?.copy(id = doc.id)
+        }
+    }
+    
+    /**
+     * Gets all blocked dates for a listing (for conflict validation).
+     * Internal helper method used by conflict validator.
+     */
+    private suspend fun getBlockedDatesForListing(listingId: String): List<BlockedDate> {
+        val snapshot = db.collection("blocked_dates")
+            .whereEqualTo("listingId", listingId)
+            .get()
+            .await()
+        
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(BlockedDate::class.java)?.copy(id = doc.id)
+        }
+    }
 }
 
 /**
@@ -195,8 +252,10 @@ private fun Reservation.toFirestoreMap(): Map<String, Any?> {
         "listingImageUrl" to listingImageUrl,
         "guestId" to guestId,
         "guestName" to guestName,
+        "guestAvatarUrl" to guestAvatarUrl,
         "hostId" to hostId,
         "hostName" to hostName,
+        "hostAvatarUrl" to hostAvatarUrl,
         "checkInDate" to checkInDate,
         "checkOutDate" to checkOutDate,
         "numberOfGuests" to numberOfGuests,
@@ -205,6 +264,9 @@ private fun Reservation.toFirestoreMap(): Map<String, Any?> {
         "paymentStatus" to paymentStatus,
         "createdAt" to createdAt,
         "updatedAt" to updatedAt,
-        "reservationCode" to reservationCode
+        "reservationCode" to reservationCode,
+        "checkedIn" to checkedIn,
+        "checkedOut" to checkedOut,
+        "reviewSubmitted" to reviewSubmitted
     ).filterValues { it != null }
 }

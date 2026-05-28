@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
+import com.airbnb.data.model.ReservationStatus
 import com.airbnb.data.model.TripItem
 import com.airbnb.databinding.ItemTripBinding
 import com.bumptech.glide.Glide
@@ -51,31 +52,65 @@ class TripAdapter(
                 binding.imgTrip.visibility = View.GONE
             }
 
+            // Set status chip overlay
+            binding.tvStatusChip.text = reservation.statusLabel()
+            binding.tvStatusChip.setBackgroundResource(getStatusChipBackground(reservation.status))
+
             // Set trip details
             binding.tvTitle.text = tripItem.title()
             binding.tvLocation.text = tripItem.location()
 
-            // Format dates
+            // Set host info
+            binding.tvHostName.text = "Hosted by ${tripItem.hostName()}"
+            
+            // Load host avatar
+            val hostAvatarUrl = tripItem.hostAvatarUrl()
+            if (!hostAvatarUrl.isNullOrBlank()) {
+                Glide.with(binding.root.context)
+                    .load(hostAvatarUrl)
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
+                    .circleCrop()
+                    .into(binding.imgHostAvatar)
+            } else {
+                binding.imgHostAvatar.setImageResource(R.drawable.ic_profile)
+            }
+
+            // Format dates with nights
             val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
             val checkIn = reservation.checkInDate?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
             val checkOut = reservation.checkOutDate?.toDate()?.let { dateFormat.format(it) } ?: "N/A"
-            binding.tvDates.text = "$checkIn - $checkOut"
+            val nightsSummary = tripItem.nightsSummary()
+            binding.tvDates.text = if (nightsSummary.isNotBlank()) {
+                "$checkIn - $checkOut • $nightsSummary"
+            } else {
+                "$checkIn - $checkOut"
+            }
+
+            // Set countdown message
+            val countdown = tripItem.countdownMessage()
+            binding.tvCountdown.text = countdown
+            binding.tvCountdown.visibility = if (tripItem.isUpcoming() || tripItem.isActiveStay()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            // Set reservation code
+            binding.tvReservationCode.text = "Code: ${tripItem.reservationCode()}"
+
+            // Set guest count
+            binding.tvGuests.text = reservation.guestSummary()
 
             // Set status
             binding.tvStatus.text = reservation.statusLabel()
-            binding.tvStatus.setTextColor(
-                when {
-                    tripItem.isUpcoming() -> binding.root.context.getColor(R.color.green)
-                    tripItem.isCancelled() -> binding.root.context.getColor(R.color.red)
-                    else -> binding.root.context.getColor(R.color.gray)
-                }
-            )
+            binding.tvStatus.setTextColor(getStatusColor(reservation.status))
 
             // Set price
             binding.tvPrice.text = reservation.formattedTotalPrice()
 
-            // Show cancel button only for upcoming trips
-            if (tripItem.isUpcoming() && reservation.isCancellable()) {
+            // Show cancel button only for cancellable trips
+            if (reservation.isCancellable()) {
                 binding.btnCancel.visibility = View.VISIBLE
                 binding.btnCancel.setOnClickListener {
                     onCancelClick(tripItem)
@@ -87,6 +122,29 @@ class TripAdapter(
             // Handle item click
             binding.root.setOnClickListener {
                 onItemClick(tripItem)
+            }
+        }
+
+        private fun getStatusChipBackground(status: String): Int {
+            return when (status.lowercase()) {
+                ReservationStatus.UPCOMING -> R.drawable.bg_chip_selected
+                ReservationStatus.ACTIVE_STAY -> R.drawable.bg_chip_selected
+                ReservationStatus.CONFIRMED -> R.drawable.bg_chip_selected
+                ReservationStatus.PENDING -> R.drawable.bg_chip_unselected
+                else -> R.drawable.bg_chip_unselected
+            }
+        }
+
+        private fun getStatusColor(status: String): Int {
+            return when (status.lowercase()) {
+                ReservationStatus.UPCOMING -> binding.root.context.getColor(R.color.green)
+                ReservationStatus.ACTIVE_STAY -> binding.root.context.getColor(R.color.green)
+                ReservationStatus.CONFIRMED -> binding.root.context.getColor(R.color.green)
+                ReservationStatus.PENDING -> binding.root.context.getColor(R.color.status_pending)
+                ReservationStatus.CANCELLED -> binding.root.context.getColor(R.color.red)
+                ReservationStatus.REJECTED -> binding.root.context.getColor(R.color.red)
+                ReservationStatus.COMPLETED -> binding.root.context.getColor(R.color.gray)
+                else -> binding.root.context.getColor(R.color.gray)
             }
         }
     }

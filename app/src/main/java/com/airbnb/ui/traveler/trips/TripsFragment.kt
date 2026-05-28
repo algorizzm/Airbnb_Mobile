@@ -46,6 +46,14 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
         observeUi()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Refresh trips when returning to screen to sync lifecycle states
+        if (isUserAuthenticated()) {
+            updateTripsList()
+        }
+    }
+
     private fun showGuestState() {
         GuestPromptHelper.setupGuestPrompt(
             promptLayout = binding.layoutGuestPrompt.root,
@@ -68,17 +76,28 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
     private fun setupAdapter() {
         adapter = TripAdapter(
             onItemClick = { tripItem ->
-                // Navigate to listing detail
+                // Navigate to trip details
                 val bundle = Bundle().apply {
-                    putString("listingId", tripItem.reservation.listingId)
+                    putString("reservationId", tripItem.reservation.id)
                 }
                 try {
                     findNavController().navigate(
-                        R.id.action_tripsFragment_to_listingDetailFragment,
+                        R.id.action_tripsFragment_to_tripDetailsFragment,
                         bundle
                     )
                 } catch (e: IllegalArgumentException) {
-                    Toast.makeText(requireContext(), getString(R.string.toast_listing_details_coming_soon), Toast.LENGTH_SHORT).show()
+                    // Fallback to listing detail if trip details not available yet
+                    val listingBundle = Bundle().apply {
+                        putString("listingId", tripItem.reservation.listingId)
+                    }
+                    try {
+                        findNavController().navigate(
+                            R.id.action_tripsFragment_to_listingDetailFragment,
+                            listingBundle
+                        )
+                    } catch (e2: IllegalArgumentException) {
+                        Toast.makeText(requireContext(), "Trip details coming soon", Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             onCancelClick = { tripItem ->
@@ -131,6 +150,13 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
                 binding.btnUpcoming.setTextColor(requireContext().getColor(android.R.color.white))
             }
 
+            TripFilter.ACTIVE_STAY -> {
+                // Active stay trips are shown in upcoming for now
+                // Can be separated into its own filter button if needed
+                binding.btnUpcoming.setBackgroundResource(R.drawable.bg_chip_selected)
+                binding.btnUpcoming.setTextColor(requireContext().getColor(android.R.color.white))
+            }
+
             TripFilter.PAST -> {
                 binding.btnPast.setBackgroundResource(R.drawable.bg_chip_selected)
                 binding.btnPast.setTextColor(requireContext().getColor(android.R.color.white))
@@ -150,6 +176,14 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
                 launch {
                     viewModel.upcomingTrips.collect {
                         if (currentFilter == TripFilter.UPCOMING) {
+                            updateTripsList()
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.activeStayTrips.collect {
+                        if (currentFilter == TripFilter.ACTIVE_STAY) {
                             updateTripsList()
                         }
                     }
@@ -192,6 +226,7 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
     private fun updateTripsList() {
         val trips = when (currentFilter) {
             TripFilter.UPCOMING -> viewModel.upcomingTrips.value
+            TripFilter.ACTIVE_STAY -> viewModel.activeStayTrips.value
             TripFilter.PAST -> viewModel.pastTrips.value
             TripFilter.CANCELLED -> viewModel.cancelledTrips.value
         }
@@ -206,6 +241,7 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
         // Update empty message based on filter
         binding.tvEmpty.text = when (currentFilter) {
             TripFilter.UPCOMING -> getString(R.string.trips_empty_upcoming)
+            TripFilter.ACTIVE_STAY -> "No active stays"
             TripFilter.PAST -> getString(R.string.trips_empty_past)
             TripFilter.CANCELLED -> getString(R.string.trips_empty_cancelled)
         }
@@ -229,6 +265,7 @@ class TripsFragment : Fragment(R.layout.fragment_trips) {
 
     private enum class TripFilter {
         UPCOMING,
+        ACTIVE_STAY,
         PAST,
         CANCELLED
     }

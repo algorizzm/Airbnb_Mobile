@@ -7,9 +7,6 @@
     <!-- Public flow: Splash + Onboarding -->
     <include app:graph="@navigation/public_graph" />
 
-    <!-- Auth flow: Login + Signup -->
-    <include app:graph="@navigation/auth_graph" />
-
     <!-- Main flow: Bottom tabs + their destinations -->
     <include app:graph="@navigation/main_graph" />
 

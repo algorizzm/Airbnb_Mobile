@@ -233,24 +233,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         // =====================================================
-        // GUEST
-        // =====================================================
-
-        binding.btnLogin.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.auth_graph
-            )
-        }
-
-        binding.btnSignup.setOnClickListener {
-
-            findNavController().navigate(
-                R.id.auth_graph
-            )
-        }
-
-        // =====================================================
         // AVATAR
         // =====================================================
 
@@ -338,7 +320,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
                 92.dp()
             } else {
-                0
+                20.dp()
             }
 
         binding.floatingHostingCard.layoutParams =

@@ -35,6 +35,23 @@
                 android:src="@drawable/img_hike_placeholder"
                 android:contentDescription="Trip image" />
 
+            <!-- STATUS CHIP OVERLAY -->
+            <TextView
+                android:id="@+id/tvStatusChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="12dp"
+                android:background="@drawable/bg_chip_selected"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                tools:text="Upcoming" />
+
         </FrameLayout>
 
         <!-- ================================================= -->
@@ -74,24 +91,108 @@
                 android:fontFamily="@font/poppins_regular"
                 tools:text="Cozy Apartment in Manila" />
 
+            <!-- HOST INFO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- HOST AVATAR -->
+                <ImageView
+                    android:id="@+id/imgHostAvatar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:contentDescription="Host avatar"
+                    tools:src="@drawable/ic_person" />
+
+                <!-- HOST NAME -->
+                <TextView
+                    android:id="@+id/tvHostName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="#888888"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/poppins_regular"
+                    tools:text="Hosted by John Doe" />
+
+            </LinearLayout>
+
             <!-- DATES -->
             <TextView
                 android:id="@+id/tvDates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="#888888"
                 android:textSize="11sp"
                 android:fontFamily="@font/poppins_regular"
-                tools:text="Dec 25, 2024 - Dec 30, 2024" />
+                tools:text="Dec 25, 2024 - Dec 30, 2024 • 5 nights" />
 
-            <!-- STATUS + PRICE -->
+            <!-- COUNTDOWN MESSAGE -->
+            <TextView
+                android:id="@+id/tvCountdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="#FF385C"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="Check-in in 5 days" />
+
+            <!-- RESERVATION CODE + GUESTS -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvReservationCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="#AAAAAA"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/poppins_regular"
+                    tools:text="Code: RES-20241225-A1B2" />
+
+                <TextView
+                    android:id="@+id/tvGuests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAAAAA"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/poppins_regular"
+                    tools:text="2 guests" />
+
+            </LinearLayout>
+
+            <!-- DIVIDER -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#EEEEEE" />
+
+            <!-- PRICE + STATUS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -113,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
                     android:textColor="#111111"
-                    android:textSize="13sp"
+                    android:textSize="14sp"
                     tools:text="₱5,000" />
 
             </LinearLayout>

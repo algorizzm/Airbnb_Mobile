@@ -6,6 +6,7 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.data.model.TripItem
 import com.airbnb.data.repository.ListingRepository
 import com.airbnb.data.repository.ReservationRepository
+import com.airbnb.utils.ReservationLifecycleManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +20,9 @@ class TripsViewModel(
 
     private val _upcomingTrips = MutableStateFlow<List<TripItem>>(emptyList())
     val upcomingTrips: StateFlow<List<TripItem>> = _upcomingTrips.asStateFlow()
+
+    private val _activeStayTrips = MutableStateFlow<List<TripItem>>(emptyList())
+    val activeStayTrips: StateFlow<List<TripItem>> = _activeStayTrips.asStateFlow()
 
     private val _pastTrips = MutableStateFlow<List<TripItem>>(emptyList())
     val pastTrips: StateFlow<List<TripItem>> = _pastTrips.asStateFlow()
@@ -52,8 +56,22 @@ class TripsViewModel(
                         _isLoading.value = false
                     }
                     .collect { reservations ->
+                        // Sync lifecycle status for all reservations
+                        val syncedReservations = reservations.map { reservation ->
+                            val newStatus = ReservationLifecycleManager.determineLifecycleStatus(reservation)
+                            if (newStatus != reservation.status) {
+                                // Update in background
+                                launch {
+                                    reservationRepository.updateReservationStatus(reservation.id, newStatus)
+                                }
+                                reservation.copy(status = newStatus)
+                            } else {
+                                reservation
+                            }
+                        }
+
                         // Fetch listing details for each reservation
-                        val tripItems = reservations.mapNotNull { reservation ->
+                        val tripItems = syncedReservations.mapNotNull { reservation ->
                             val listing = try {
                                 listingRepository.getListing(reservation.listingId).getOrNull()
                             } catch (e: Exception) {
@@ -63,9 +81,18 @@ class TripsViewModel(
                         }
 
                         // Group trips by status
-                        _upcomingTrips.value = tripItems.filter { it.isUpcoming() }
+                        // Note: Active stays are included in upcoming for UI simplicity
+                        _upcomingTrips.value = tripItems.filter { it.isUpcoming() || it.isPending() || it.isActiveStay() }
+                            .sortedByDescending { it.reservation.checkInDate?.toDate()?.time ?: 0 }
+                        
+                        _activeStayTrips.value = tripItems.filter { it.isActiveStay() }
+                            .sortedByDescending { it.reservation.checkInDate?.toDate()?.time ?: 0 }
+                        
                         _pastTrips.value = tripItems.filter { it.isCompleted() }
+                            .sortedByDescending { it.reservation.checkOutDate?.toDate()?.time ?: 0 }
+                        
                         _cancelledTrips.value = tripItems.filter { it.isCancelled() }
+                            .sortedByDescending { it.reservation.updatedAt?.toDate()?.time ?: 0 }
 
                         _isLoading.value = false
                     }

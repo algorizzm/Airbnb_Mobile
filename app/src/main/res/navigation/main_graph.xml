@@ -2,19 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/exploreFragment">
+    app:startDestination="@id/splashFragment">
 
-    <!-- Home -->
+    <!-- Splash -->
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.airbnb.ui.home.HomeFragment"
-        android:label="Home" />
-
-    <!-- Post Detail -->
-    <fragment
-        android:id="@+id/postDetailFragment"
-        android:name="com.airbnb.ui.home.PostDetailFragment"
-        android:label="Post" />
+        android:id="@+id/splashFragment"
+        android:name="com.airbnb.ui.main.SplashFragment"
+        android:label="Splash" />
 
     <!-- Explore -->
     <fragment
@@ -50,6 +44,24 @@
             android:id="@+id/action_tripsFragment_to_listingDetailFragment"
             app:destination="@id/listingDetailFragment" />
 
+        <action
+            android:id="@+id/action_tripsFragment_to_tripDetailsFragment"
+            app:destination="@id/tripDetailsFragment" />
+
+    </fragment>
+
+    <!-- Trip Details -->
+    <fragment
+        android:id="@+id/tripDetailsFragment"
+        android:name="com.airbnb.ui.traveler.trips.TripDetailsFragment"
+        android:label="Trip Details">
+
+        <argument
+            android:name="reservationId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
     </fragment>
 
     <!-- Profile -->
@@ -57,10 +69,6 @@
         android:id="@+id/profileFragment"
         android:name="com.airbnb.ui.shared.profile.ProfileFragment"
         android:label="Profile">
-
-        <action
-            android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/auth_graph" />
 
         <action
             android:id="@+id/action_profileFragment_to_listingDetailFragment"

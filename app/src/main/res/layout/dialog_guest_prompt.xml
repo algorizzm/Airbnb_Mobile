@@ -146,7 +146,7 @@
             android:background="@drawable/bg_social_button"
             android:padding="16dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_apple"
+            android:src="@drawable/ic_apple_vector"
             app:tint="#000000" />
     </LinearLayout>
 

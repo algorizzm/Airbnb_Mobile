@@ -9,8 +9,10 @@ data class Reservation(
     val listingImageUrl: String = "",
     val guestId: String = "",
     val guestName: String = "",
+    val guestAvatarUrl: String? = null,
     val hostId: String = "",
     val hostName: String = "",
+    val hostAvatarUrl: String? = null,
     val checkInDate: Timestamp? = null,
     val checkOutDate: Timestamp? = null,
     val numberOfGuests: Int = 1,
@@ -19,15 +21,21 @@ data class Reservation(
     val paymentStatus: String = "unpaid", // unpaid, paid, refunded
     val createdAt: Timestamp? = null,
     val updatedAt: Timestamp? = null,
-    val reservationCode: String? = null
+    val reservationCode: String? = null,
+    val checkedIn: Boolean = false,
+    val checkedOut: Boolean = false,
+    val reviewSubmitted: Boolean = false
 ) {
     /** Returns true if the reservation is active (not cancelled or completed). */
     fun isActive(): Boolean = status.equals(ReservationStatus.PENDING, ignoreCase = true) || 
-                              status.equals(ReservationStatus.CONFIRMED, ignoreCase = true)
+                              status.equals(ReservationStatus.CONFIRMED, ignoreCase = true) ||
+                              status.equals(ReservationStatus.UPCOMING, ignoreCase = true) ||
+                              status.equals(ReservationStatus.ACTIVE_STAY, ignoreCase = true)
 
     /** Returns true if the reservation can be cancelled. */
     fun isCancellable(): Boolean = status.equals(ReservationStatus.PENDING, ignoreCase = true) || 
-                                    status.equals(ReservationStatus.CONFIRMED, ignoreCase = true)
+                                    status.equals(ReservationStatus.CONFIRMED, ignoreCase = true) ||
+                                    status.equals(ReservationStatus.UPCOMING, ignoreCase = true)
 
     /** Returns a formatted total price string. */
     fun formattedTotalPrice(): String = "₱${totalPrice.toInt()}"
@@ -42,6 +50,8 @@ data class Reservation(
     fun statusLabel(): String = when (status.lowercase()) {
         "pending" -> "Pending"
         "confirmed" -> "Confirmed"
+        "upcoming" -> "Upcoming"
+        "active_stay" -> "Active Stay"
         "rejected" -> "Rejected"
         "cancelled" -> "Cancelled"
         "completed" -> "Completed"

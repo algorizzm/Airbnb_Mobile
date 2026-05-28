@@ -8,18 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * Manages and persists the current app navigation mode (TRAVELER / HOST).
- *
- * Responsibilities:
- * - Persist current mode across app restarts via SharedPreferences
- * - Expose the current mode as a StateFlow for reactive UI updates
- * - Provide mode switching (authenticated users only for HOST mode)
- * - Reset to TRAVELER on logout
- *
- * Usage:
- *   AppModeManager.init(context)
- *   AppModeManager.currentMode.collect { mode -> ... }
- *   AppModeManager.setMode(AppMode.HOST)
+ * Manages and persists the current app navigation mode.
  */
 object AppModeManager {
 
@@ -34,26 +23,68 @@ object AppModeManager {
     // STATE
     // =========================================================
 
-    private lateinit var prefs: SharedPreferences
+    private lateinit var appContext: Context
 
-    private val _currentMode = MutableStateFlow(AppMode.TRAVELER)
-    val currentMode: StateFlow<AppMode> = _currentMode.asStateFlow()
+    /**
+     * Lazy initialization prevents crashes caused by
+     * Firebase auth callbacks happening too early.
+     */
+    private val prefs: SharedPreferences by lazy {
+        appContext.getSharedPreferences(
+            PREFS_NAME,
+            Context.MODE_PRIVATE
+        )
+    }
+
+    private val _currentMode =
+        MutableStateFlow(AppMode.TRAVELER)
+
+    val currentMode: StateFlow<AppMode> =
+        _currentMode.asStateFlow()
 
     // =========================================================
     // INITIALIZATION
     // =========================================================
 
     /**
-     * Must be called once from Application.onCreate() or MainActivity.onCreate()
-     * before any mode reads or writes.
+     * Must be called once from Application.onCreate()
      */
     fun init(context: Context) {
-        prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val saved = prefs.getString(KEY_MODE, AppMode.TRAVELER.name) ?: AppMode.TRAVELER.name
-        _currentMode.value = runCatching { AppMode.valueOf(saved) }.getOrDefault(AppMode.TRAVELER)
+
+        // Prevent accidental double initialization
+        if (::appContext.isInitialized) return
+
+        appContext = context.applicationContext
+
+        restoreSavedMode()
     }
 
+    // =========================================================
+    // INTERNAL SAFETY
+    // =========================================================
+
+    private fun ensureInitialized() {
+
+        check(::appContext.isInitialized) {
+            """
+            AppModeManager is not initialized.
+
+            Call:
+                AppModeManager.init(context)
+
+            from Application.onCreate()
+            before using AppModeManager.
+            """.trimIndent()
+        }
+    }
+
+    // =========================================================
+    // RESTORE SAVED MODE
+    // =========================================================
+
     fun restoreSavedMode() {
+
+        ensureInitialized()
 
         val saved =
             prefs.getString(
@@ -68,58 +99,78 @@ object AppModeManager {
     }
 
     // =========================================================
-    // CURRENT MODE (SNAPSHOT)
+    // CURRENT MODE
     // =========================================================
 
-    fun currentModeSnapshot(): AppMode = _currentMode.value
+    fun currentModeSnapshot(): AppMode {
+        return _currentMode.value
+    }
 
     // =========================================================
     // SET MODE
     // =========================================================
 
     /**
-     * Switches the app to the requested mode.
+     * Switch app mode.
      *
-     * HOST mode is only allowed for authenticated users.
-     * Guests attempting to switch to HOST are silently ignored —
-     * callers should check authentication before calling this.
-     *
-     * @param mode The target mode to switch to.
-     * @return true if the switch succeeded, false if blocked (guest → HOST).
+     * HOST mode requires authentication.
      */
     fun setMode(mode: AppMode): Boolean {
-        if (mode == AppMode.HOST && !AuthManager.isAuthenticated()) {
-            // Guests cannot enter host mode
+
+        ensureInitialized()
+
+        // Guests cannot enter HOST mode
+        if (
+            mode == AppMode.HOST &&
+            !AuthManager.isAuthenticated()
+        ) {
             return false
         }
+
         _currentMode.value = mode
-        prefs.edit().putString(KEY_MODE, mode.name).apply()
+
+        prefs.edit()
+            .putString(KEY_MODE, mode.name)
+            .apply()
+
         return true
     }
 
     // =========================================================
-    // TOGGLE
+    // TOGGLE MODE
     // =========================================================
 
-    /**
-     * Toggles between TRAVELER and HOST mode.
-     *
-     * @return The new mode after toggle, or null if blocked (guest → HOST).
-     */
     fun toggleMode(): AppMode? {
-        val next = if (_currentMode.value == AppMode.TRAVELER) AppMode.HOST else AppMode.TRAVELER
-        return if (setMode(next)) next else null
+
+        val next =
+            if (_currentMode.value == AppMode.TRAVELER) {
+                AppMode.HOST
+            } else {
+                AppMode.TRAVELER
+            }
+
+        return if (setMode(next)) {
+            next
+        } else {
+            null
+        }
     }
 
     // =========================================================
-    // RESET (LOGOUT)
+    // RESET MODE
     // =========================================================
 
     /**
-     * Resets mode to TRAVELER. Must be called on user logout.
+     * Reset mode after logout.
      */
     fun resetToTraveler() {
+
+        ensureInitialized()
+
         _currentMode.value = AppMode.TRAVELER
-        prefs.edit().putString(KEY_MODE, AppMode.TRAVELER.name).apply()
+
+        prefs.edit()
+            .putString(KEY_MODE, AppMode.TRAVELER.name)
+            .apply()
     }
 }

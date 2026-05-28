@@ -55,7 +55,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                 Toast.LENGTH_SHORT
             ).show()
 
-            findNavController().navigate(R.id.auth_graph)
+            findNavController().navigate(R.id.main_graph)
         }
     }
 

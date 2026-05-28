@@ -4,14 +4,14 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
-import com.airbnb.R
 import com.airbnb.core.auth.AuthManager
 import com.airbnb.ui.auth.GuestPromptDialog
 
 object ProtectedNav {
+
     /**
      * If guest, show the guest prompt dialog.
-     * Returns true if navigation to [destId] happened, false if guest prompt was shown.
+     * Returns true if navigation happened.
      */
     fun navigate(
         navController: NavController,
@@ -21,16 +21,17 @@ object ProtectedNav {
         isProtected: Boolean = true,
         fragmentManager: FragmentManager? = null,
     ): Boolean {
+
         if (isProtected && !AuthManager.isAuthenticated()) {
-            if (fragmentManager != null) {
-                GuestPromptDialog.show(fragmentManager)
-            } else {
-                val loginArgs = Bundle().apply {
-                    putInt(AuthNavKeys.POST_LOGIN_DEST_ID, destId)
-                    if (args != null) putBundle(AuthNavKeys.POST_LOGIN_ARGS, args)
-                }
-                navController.navigate(R.id.loginFragment, loginArgs)
+
+            fragmentManager?.let {
+                GuestPromptDialog.show(
+                    fragmentManager = it,
+                    destId = destId,
+                    destArgs = args
+                )
             }
+
             return false
         }
 

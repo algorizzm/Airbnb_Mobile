@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 """
-Generate Android launcher icons from verdant_logo.png
-This script creates properly sized launcher icons for all density buckets.
-Requires: Pillow (pip install Pillow)
+Modern Airbnb-style Android launcher icon generator
+
+Creates launcher icons for all Android density buckets
+with:
+- Warm coral background
+- Rounded corners
+- Cleaner spacing
+- Modern minimal aesthetic
+
+Requires:
+    pip install Pillow
 """
 
-from PIL import Image
+from PIL import Image, ImageDraw
 import os
 
-# Icon sizes for each density
+# Android launcher icon sizes
 SIZES = {
     'mdpi': 48,
     'hdpi': 72,
@@ -17,65 +25,215 @@ SIZES = {
     'xxxhdpi': 192
 }
 
+# Airbnb-inspired coral color
+BACKGROUND_COLOR = (255, 90, 95, 255)
+
+# Optional:
+# Set to True if your logo is already white
+USE_ORIGINAL_LOGO_COLORS = False
+
+
+def make_logo_white(logo):
+    """
+    Convert logo to solid white while preserving transparency.
+    """
+
+    logo = logo.convert("RGBA")
+
+    white_logo = Image.new("RGBA", logo.size, (255, 255, 255, 0))
+
+    pixels = logo.load()
+    white_pixels = white_logo.load()
+
+    for y in range(logo.size[1]):
+        for x in range(logo.size[0]):
+            r, g, b, a = pixels[x, y]
+
+            if a > 0:
+                white_pixels[x, y] = (255, 255, 255, a)
+
+    return white_logo
+
+
+def apply_rounded_corners(image, radius):
+    """
+    Apply rounded corners to icon.
+    """
+
+    mask = Image.new("L", image.size, 0)
+
+    draw = ImageDraw.Draw(mask)
+
+    draw.rounded_rectangle(
+        [(0, 0), image.size],
+        radius=radius,
+        fill=255
+    )
+
+    rounded = Image.new("RGBA", image.size)
+
+    rounded.paste(image, (0, 0), mask)
+
+    return rounded
+
+
 def create_launcher_icon(logo_path, output_dir, density, size):
-    """Create a launcher icon with dark background and centered logo"""
-    
-    # Create dark background
-    icon = Image.new('RGBA', (size, size), (18, 18, 18, 255))  # #121212
-    
-    # Open and resize logo
-    logo = Image.open(logo_path)
-    
-    # Calculate logo size (70% of icon size to leave padding)
-    logo_size = int(size * 0.7)
-    logo = logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
-    
-    # Center the logo
-    offset = ((size - logo_size) // 2, (size - logo_size) // 2)
-    icon.paste(logo, offset, logo if logo.mode == 'RGBA' else None)
-    
-    # Create output directory if it doesn't exist
-    mipmap_dir = os.path.join(output_dir, f'mipmap-{density}')
+    """
+    Create a launcher icon with modern Airbnb-style design.
+    """
+
+    # Create background
+    icon = Image.new(
+        'RGBA',
+        (size, size),
+        BACKGROUND_COLOR
+    )
+
+    # Open logo
+    logo = Image.open(logo_path).convert("RGBA")
+
+    # Convert logo to white
+    if not USE_ORIGINAL_LOGO_COLORS:
+        logo = make_logo_white(logo)
+
+    # Logo sizing
+    # Smaller = more premium/minimal look
+    logo_size = int(size * 0.56)
+
+    logo = logo.resize(
+        (logo_size, logo_size),
+        Image.Resampling.LANCZOS
+    )
+
+    # Center logo
+    offset = (
+        (size - logo_size) // 2,
+        (size - logo_size) // 2
+    )
+
+    # Paste logo
+    icon.paste(logo, offset, logo)
+
+    # Apply rounded corners
+    corner_radius = int(size * 0.22)
+
+    icon = apply_rounded_corners(
+        icon,
+        corner_radius
+    )
+
+    # Create output directory
+    mipmap_dir = os.path.join(
+        output_dir,
+        f'mipmap-{density}'
+    )
+
     os.makedirs(mipmap_dir, exist_ok=True)
-    
-    # Save as PNG (replacing .webp)
-    icon.save(os.path.join(mipmap_dir, 'ic_launcher.png'), 'PNG')
-    icon.save(os.path.join(mipmap_dir, 'ic_launcher_round.png'), 'PNG')
-    
+
+    # Save launcher icons
+    icon.save(
+        os.path.join(mipmap_dir, 'ic_launcher.png'),
+        'PNG'
+    )
+
+    icon.save(
+        os.path.join(mipmap_dir, 'ic_launcher_round.png'),
+        'PNG'
+    )
+
     print(f"✓ Generated {density} icons ({size}x{size})")
 
+
 def main():
-    # Paths
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    logo_path = os.path.join(script_dir, 'app', 'src', 'main', 'res', 'drawable', 'verdant_logo.png')
-    res_dir = os.path.join(script_dir, 'app', 'src', 'main', 'res')
-    
+
+    # Locate project paths
+    script_dir = os.path.dirname(
+        os.path.abspath(__file__)
+    )
+
+    logo_path = os.path.join(
+        script_dir,
+        'app',
+        'src',
+        'main',
+        'res',
+        'drawable',
+        'verdant_logo.png'
+    )
+
+    res_dir = os.path.join(
+        script_dir,
+        'app',
+        'src',
+        'main',
+        'res'
+    )
+
+    # Validate logo file
     if not os.path.exists(logo_path):
-        print(f"❌ Error: verdant_logo.png not found at {logo_path}")
+
+        print()
+        print("❌ ERROR")
+        print(f"Logo file not found:")
+        print(logo_path)
+        print()
+
         return
-    
-    print("Generating launcher icons from verdant_logo.png...")
-    print(f"Source: {logo_path}")
-    print(f"Output: {res_dir}/mipmap-*/")
+
     print()
-    
-    # Generate icons for each density
+    print("══════════════════════════════════════")
+    print(" Modern Launcher Icon Generator")
+    print("══════════════════════════════════════")
+    print()
+
+    print(f"Source Logo:")
+    print(f"  {logo_path}")
+    print()
+
+    print(f"Generating icons into:")
+    print(f"  {res_dir}")
+    print()
+
+    # Generate icons
     for density, size in SIZES.items():
-        create_launcher_icon(logo_path, res_dir, density, size)
-    
+
+        create_launcher_icon(
+            logo_path,
+            res_dir,
+            density,
+            size
+        )
+
     print()
-    print("✅ All launcher icons generated successfully!")
+    print("══════════════════════════════════════")
+    print(" ✅ All icons generated successfully!")
+    print("══════════════════════════════════════")
     print()
-    print("Next steps:")
-    print("1. Delete the old .webp files from each mipmap-* folder")
-    print("2. Rebuild the project in Android Studio")
-    print("3. Reinstall the app to see the new icon")
+
+    print("Next Steps:")
+    print("1. Delete old .webp launcher icons")
+    print("2. Clean/Rebuild project")
+    print("3. Reinstall app on emulator/device")
+    print()
+
 
 if __name__ == '__main__':
+
     try:
         main()
+
     except ImportError:
-        print("❌ Error: Pillow library not found")
-        print("Install it with: pip install Pillow")
+
+        print()
+        print("❌ Pillow is not installed")
+        print()
+        print("Install with:")
+        print("pip install Pillow")
+        print()
+
     except Exception as e:
-        print(f"❌ Error: {e}")
+
+        print()
+        print("❌ Unexpected Error")
+        print(e)
+        print()

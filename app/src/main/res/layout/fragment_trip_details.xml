@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ================================= -->
+        <!-- HEADER WITH BACK BUTTON -->
+        <!-- ================================= -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_back"
+                android:contentDescription="Back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Trip Details"
+                android:textColor="#111111"
+                android:textSize="20sp"
+                android:fontFamily="@font/poppins_medium"
+                app:layout_constraintStart_toEndOf="@id/btnBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btnBack"
+                app:layout_constraintBottom_toBottomOf="@id/btnBack"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- ================================= -->
+        <!-- LISTING IMAGE -->
+        <!-- ================================= -->
+        <ImageView
+            android:id="@+id/imgListing"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Listing image"
+            tools:src="@drawable/img_hike_placeholder"/>
+
+        <!-- ================================= -->
+        <!-- CONTENT SECTION -->
+        <!-- ================================= -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- STATUS CHIP -->
+            <TextView
+                android:id="@+id/tvStatusChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_selected"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                tools:text="Upcoming"/>
+
+            <!-- LISTING TITLE -->
+            <TextView
+                android:id="@+id/tvListingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="#111111"
+                android:textSize="22sp"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="Cozy Apartment in Manila"/>
+
+            <!-- LOCATION -->
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_regular"
+                tools:text="Manila, Philippines"/>
+
+            <!-- DIVIDER -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"/>
+
+            <!-- RESERVATION SUMMARY SECTION -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Reservation Summary"
+                android:textColor="#111111"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <!-- CHECK-IN -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Check-in"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/tvCheckIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="Dec 25, 2024"/>
+
+            </LinearLayout>
+
+            <!-- CHECK-OUT -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Check-out"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/tvCheckOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="Dec 30, 2024"/>
+
+            </LinearLayout>
+
+            <!-- GUESTS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Guests"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/tvGuests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="2 guests"/>
+
+            </LinearLayout>
+
+            <!-- RESERVATION CODE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Reservation Code"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/tvReservationCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="RES-20241225-A1B2"/>
+
+            </LinearLayout>
+
+            <!-- DIVIDER -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"/>
+
+            <!-- HOST INFORMATION SECTION -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Host Information"
+                android:textColor="#111111"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgHostAvatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:contentDescription="Host avatar"
+                    tools:src="@drawable/ic_person"/>
+
+                <TextView
+                    android:id="@+id/tvHostName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:textColor="#111111"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="John Doe"/>
+
+            </LinearLayout>
+
+            <!-- DIVIDER -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"/>
+
+            <!-- PAYMENT SUMMARY SECTION -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Payment Summary"
+                android:textColor="#111111"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <!-- TOTAL PAID -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total Paid"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/tvTotalPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="₱5,000"/>
+
+            </LinearLayout>
+
+            <!-- PAYMENT STATUS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Payment Status"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/tvPaymentStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="Paid"/>
+
+            </LinearLayout>
+
+            <!-- DIVIDER -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"/>
+
+            <!-- BOOKING TIMELINE SECTION -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Booking Timeline"
+                android:textColor="#111111"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <!-- BOOKED DATE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Booked on"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/tvBookedDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="Dec 20, 2024"/>
+
+            </LinearLayout>
+
+            <!-- CANCEL BUTTON -->
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_button_secondary"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Cancel Reservation"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <!-- PROGRESS BAR -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

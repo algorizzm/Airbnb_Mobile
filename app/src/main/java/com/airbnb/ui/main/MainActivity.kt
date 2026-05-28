@@ -1,13 +1,17 @@
 package com.airbnb.ui.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
@@ -17,6 +21,7 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.mode.AppMode
 import com.airbnb.core.mode.AppModeManager
 import com.airbnb.core.ui.AvatarHelper
+import com.airbnb.ui.auth.AuthViewModel
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.utils.BackfillUtility
 import com.google.firebase.firestore.FirebaseFirestore
@@ -77,6 +82,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navHostProfileInit: TextView
 
     // =========================================================
+    // AUTH
+    // =========================================================
+
+    private lateinit var authViewModel: AuthViewModel
+
+    // =========================================================
     // DEBOUNCE
     // =========================================================
 
@@ -94,6 +105,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Initialize AuthViewModel
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
         // Initialize AppModeManager (safe to call multiple times)
         AppModeManager.init(this)
 
@@ -103,15 +117,6 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         val graph = navController.navInflater.inflate(R.navigation.main_graph)
-
-        graph.setStartDestination(
-            if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
-                R.id.hostTodayFragment
-            } else {
-                R.id.exploreFragment
-            }
-        )
-
         navController.graph = graph
 
         // ----- TRAVELER VIEWS -----
@@ -206,8 +211,6 @@ class MainActivity : AppCompatActivity() {
 
             val hiddenScreens = setOf(
                 R.id.splashFragment,
-                R.id.loginFragment,
-                R.id.signupFragment,
             )
 
             val isHidden = destination.id in hiddenScreens
@@ -250,8 +253,6 @@ class MainActivity : AppCompatActivity() {
                     val currentDest = navController.currentDestination?.id
                     val isHidden = currentDest in setOf(
                         R.id.splashFragment,
-                        R.id.loginFragment,
-                        R.id.signupFragment,
                     )
 
                     if (!isHidden) {
@@ -278,6 +279,12 @@ class MainActivity : AppCompatActivity() {
         observeBottomAvatar()
 
         // =========================================================
+        // EMAIL LINK DEEP LINK HANDLING
+        // =========================================================
+
+        handleEmailLinkIntent(intent)
+
+        // =========================================================
         // BACKFILL
         // =========================================================
 
@@ -286,6 +293,60 @@ class MainActivity : AppCompatActivity() {
                 BackfillUtility.runBackfill(FirebaseFirestore.getInstance())
             } catch (e: Exception) {
                 android.util.Log.e("MainActivity", "Public code backfill failed", e)
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleEmailLinkIntent(intent)
+    }
+
+    // =========================================================
+    // EMAIL LINK HANDLING
+    // =========================================================
+
+    private fun handleEmailLinkIntent(intent: Intent?) {
+        val data: Uri? = intent?.data
+        val link = data?.toString()
+
+        if (link != null && authViewModel.isSignInWithEmailLink(link)) {
+            // Check if user is already authenticated
+            if (AuthManager.isAuthenticated()) {
+                Toast.makeText(this, "You are already signed in", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // Get pending email
+            val email = authViewModel.getPendingEmail(this)
+
+            if (email != null) {
+                // Complete sign-in
+                Toast.makeText(this, "Completing sign-in...", Toast.LENGTH_SHORT).show()
+                authViewModel.signInWithEmailLink(email, link)
+                authViewModel.clearPendingEmail(this)
+
+                // Observe auth state
+                authViewModel.authState.observe(this) { success ->
+                    if (success == true) {
+                        Toast.makeText(this, "Sign-in successful!", Toast.LENGTH_SHORT).show()
+                        authViewModel.resetAuthState()
+                    }
+                }
+
+                authViewModel.error.observe(this) { errorMsg ->
+                    if (!errorMsg.isNullOrEmpty()) {
+                        Toast.makeText(this, "Sign-in failed: $errorMsg", Toast.LENGTH_LONG).show()
+                    }
+                }
+            } else {
+                // Email not found - should not happen in normal flow
+                Toast.makeText(
+                    this,
+                    "Email link expired or invalid. Please try again.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E0E0E0">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Guest Name -->
+        <TextView
+            android:id="@+id/tvGuestName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Guest Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvStatus" />
+
+        <!-- Status -->
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirmed"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Reservation Code -->
+        <TextView
+            android:id="@+id/tvReservationCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ABC123"
+            android:textSize="12sp"
+            android:textColor="#717171"
+            android:layout_marginTop="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvGuestName"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Dates -->
+        <TextView
+            android:id="@+id/tvDates"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Jan 15, 2024 - Jan 20, 2024"
+            android:textSize="14sp"
+            android:textColor="#1A1A1A"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tvReservationCode"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Guests -->
+        <TextView
+            android:id="@+id/tvGuests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 guests"
+            android:textSize="14sp"
+            android:textColor="#717171"
+            android:layout_marginTop="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvDates"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Price -->
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₱5,000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:layout_marginTop="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvGuests"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
