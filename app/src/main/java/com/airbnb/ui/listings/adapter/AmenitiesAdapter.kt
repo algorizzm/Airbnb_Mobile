@@ -9,13 +9,14 @@ import com.airbnb.databinding.ItemAmenityChipBinding
 
 /**
  * Adapter for displaying listing amenities as chips in a RecyclerView.
- * 
+ *
  * Features:
  * - Displays amenities in a clean chip format
  * - Supports grid layout for compact display
  * - Uses Material Design 3 chip styling
  */
-class AmenitiesAdapter : ListAdapter<String, AmenitiesAdapter.AmenityViewHolder>(AmenityDiffCallback()) {
+class AmenitiesAdapter :
+    ListAdapter<String, AmenitiesAdapter.AmenityViewHolder>(AmenityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AmenityViewHolder {
         val binding = ItemAmenityChipBinding.inflate(
@@ -35,11 +36,12 @@ class AmenitiesAdapter : ListAdapter<String, AmenitiesAdapter.AmenityViewHolder>
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(amenity: String) {
-            binding.chipAmenity.text = amenity
+            binding.tvAmenity.text = amenity
         }
     }
 
     private class AmenityDiffCallback : DiffUtil.ItemCallback<String>() {
+
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }

@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.chip.Chip
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/chipAmenity"
-    style="@style/Widget.Material3.Chip.Assist"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutAmenity"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp"
-    android:textSize="13sp"
-    app:chipBackgroundColor="#F5F5F5"
-    app:chipStrokeColor="#E0E0E0"
-    app:chipStrokeWidth="1dp"
-    app:chipCornerRadius="8dp" />
+    android:layout_margin="4dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="8dp"
+    android:background="@drawable/bg_amenity_chip"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/imgAmenity"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:contentDescription="Amenity icon"
+        android:src="@drawable/bg_amenity_icon" />
+
+    <TextView
+        android:id="@+id/tvAmenity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        tools:text="Free Wi-Fi" />
+
+</LinearLayout>
