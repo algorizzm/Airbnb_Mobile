@@ -38,9 +38,10 @@ class HostListingsFragment : Fragment(R.layout.fragment_host_listings) {
 
     private fun setupToolbar() {
         if (AppModeManager.currentModeSnapshot() == AppMode.HOST) {
-            binding.toolbar.navigationIcon = null
+            binding.btnBack.visibility = View.GONE
         } else {
-            binding.toolbar.setNavigationOnClickListener {
+            binding.btnBack.visibility = View.VISIBLE
+            binding.btnBack.setOnClickListener {
                 findNavController().navigateUp()
             }
         }

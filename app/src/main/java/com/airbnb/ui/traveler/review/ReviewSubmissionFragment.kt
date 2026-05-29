@@ -53,10 +53,17 @@ class ReviewSubmissionFragment : Fragment() {
         setupCategoryRatings()
         setupOverallRating()
         setupSubmitButton()
+        setupBackButton()
         observeViewModel()
         
         // Load reservation
         viewModel.loadReservation(reservationId)
+    }
+
+    private fun setupBackButton() {
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
     
     private fun setupCategoryRatings() {

@@ -4,30 +4,82 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
+    <!-- Top Header -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
+            android:id="@+id/topHeader"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/title_my_listings"
-            app:navigationIcon="@drawable/ic_back" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="16dp">
+
+            <!-- Circular Back Button -->
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_circle_light"
+                android:contentDescription="Back"
+                android:elevation="2dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                app:tint="@color/text_primary"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvListingsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My listings"
+                    android:textColor="@color/text_primary"
+                    android:textSize="28sp"
+                    android:fontFamily="@font/poppins_bold" />
+
+                <TextView
+                    android:id="@+id/tvListingsSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Manage your properties"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp">
 
             <!-- Listings RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
@@ -35,8 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:paddingTop="16dp"
-                android:paddingBottom="80dp"
+                android:paddingBottom="96dp"
                 tools:listitem="@layout/item_host_listing" />
 
             <!-- Empty State -->
@@ -52,29 +103,32 @@
                 tools:visibility="visible">
 
                 <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:src="@drawable/ic_home"
-                    android:alpha="0.3"
-                    app:tint="@color/gray" />
+                    android:alpha="0.2"
+                    app:tint="@color/text_secondary"
+                    android:contentDescription="No listings" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/host_listings_empty_title"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:layout_marginTop="20dp"
+                    android:text="No listings yet"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/text_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/host_listings_empty_message"
+                    android:text="Create a listing to start hosting guests and earning."
                     android:textSize="14sp"
-                    android:textColor="@color/gray"
-                    android:gravity="center" />
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/text_secondary"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.2" />
 
             </LinearLayout>
 
@@ -90,16 +144,21 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!-- FAB (Sleek Extended Action Button) -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabCreateListing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_add"
-        android:contentDescription="@string/content_description_create_listing"
-        app:tint="@color/white" />
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="24dp"
+        android:text="Create listing"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_bold"
+        app:icon="@drawable/ic_add"
+        app:iconTint="@android:color/white"
+        app:backgroundTint="@color/airbnb_red"
+        app:elevation="4dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,60 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="#FFE0E0">
+    android:paddingVertical="14dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <!-- Date Range -->
+    <TextView
+        android:id="@+id/tvDateRange"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:text="Jan 15, 2024 - Jan 20, 2024"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/text_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnUnblock"
+        app:layout_constraintBottom_toTopOf="@id/tvReason" />
 
-        <!-- Date Range -->
-        <TextView
-            android:id="@+id/tvDateRange"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Jan 15, 2024 - Jan 20, 2024"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#1A1A1A"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnUnblock" />
+    <!-- Unblock Button (Sleek Red TextButton) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnUnblock"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="Unblock"
+        android:textSize="13sp"
+        android:fontFamily="@font/poppins_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/error_red"
+        android:minHeight="36dp"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Unblock Button -->
-        <Button
-            android:id="@+id/btnUnblock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Unblock"
-            android:textSize="12sp"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#F44336"
-            android:minHeight="36dp"
-            android:paddingHorizontal="12dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Reason -->
+    <TextView
+        android:id="@+id/tvReason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Maintenance"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDateRange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- Reason -->
-        <TextView
-            android:id="@+id/tvReason"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Maintenance"
-            android:textSize="14sp"
-            android:textColor="#717171"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/tvDateRange"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Sleek Item Separator -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_marginTop="14dp"
+        app:layout_constraintTop_toBottomOf="@id/tvReason"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

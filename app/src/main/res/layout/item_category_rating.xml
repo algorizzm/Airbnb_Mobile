@@ -21,6 +21,9 @@
         android:stepSize="1"
         android:rating="5"
         android:isIndicator="false"
-        style="@style/Widget.AppCompat.RatingBar.Small" />
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:progressTint="@color/rating_gold"
+        android:secondaryProgressTint="@color/rating_gold"
+        android:progressBackgroundTint="@color/rating_gold_empty" />
 
 </LinearLayout>

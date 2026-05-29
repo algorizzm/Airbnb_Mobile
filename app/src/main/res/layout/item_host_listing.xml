@@ -7,30 +7,43 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    app:cardBackgroundColor="@color/colorSurface"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@color/divider"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:padding="16dp">
 
-        <!-- Listing Image -->
-        <ImageView
-            android:id="@+id/imgListing"
+        <!-- Listing Image Wrapper (Rounded Card) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardListingImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Listing image"
-            tools:src="@drawable/img_hike_placeholder" />
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <ImageView
+                android:id="@+id/imgListing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Listing image"
+                tools:src="@drawable/img_hike_placeholder" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Listing Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -38,9 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:maxLines="2"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/text_primary"
+                android:maxLines="1"
                 android:ellipsize="end"
                 tools:text="Cozy Beach House" />
 
@@ -48,9 +61,10 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:textSize="14sp"
-                android:textColor="@color/gray"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/text_secondary"
                 android:maxLines="1"
                 android:ellipsize="end"
                 tools:text="Malibu, California" />
@@ -59,9 +73,10 @@
                 android:id="@+id/tvPropertyType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:textSize="12sp"
-                android:textColor="@color/gray"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/text_secondary"
                 android:textStyle="italic"
                 tools:text="Entire home" />
 
@@ -71,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/text_primary"
                 tools:text="$150 / night" />
 
             <!-- Action Buttons -->
@@ -82,39 +97,65 @@
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
-                <Button
+                <!-- Edit Button -->
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEdit"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.1"
                     android:text="Edit"
                     android:textSize="12sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/text_primary"
+                    android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:paddingVertical="4dp" />
+                    android:paddingVertical="0dp"
+                    android:paddingHorizontal="4dp"
+                    app:icon="@android:drawable/ic_menu_edit"
+                    app:iconTint="@color/text_primary"
+                    app:iconSize="12dp"
+                    app:iconPadding="2dp" />
 
-                <Button
-                    android:id="@+id/btnDelete"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
-                    android:text="Delete"
-                    android:textSize="12sp"
-                    android:textColor="@color/red"
-                    android:minHeight="0dp"
-                    android:paddingVertical="4dp" />
-
-                <Button
+                <!-- Bookings Button -->
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnViewReservations"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:text="Bookings"
                     android:textSize="12sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/text_primary"
+                    android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:paddingVertical="4dp" />
+                    android:paddingVertical="0dp"
+                    android:paddingHorizontal="4dp"
+                    app:icon="@drawable/ic_calendar"
+                    app:iconTint="@color/text_primary"
+                    app:iconSize="12dp"
+                    app:iconPadding="2dp" />
+
+                <!-- Delete Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDelete"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1.2"
+                    android:text="Delete"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/error_red"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingVertical="0dp"
+                    android:paddingHorizontal="4dp"
+                    app:icon="@android:drawable/ic_menu_delete"
+                    app:iconTint="@color/error_red"
+                    app:iconSize="12dp"
+                    app:iconPadding="2dp" />
 
             </LinearLayout>
 

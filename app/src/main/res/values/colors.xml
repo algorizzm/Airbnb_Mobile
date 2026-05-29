@@ -11,6 +11,8 @@
     <color name="airbnb_red_light">#FFF1F2</color>
 
     <!-- Text -->
+    <color name="rating_gold">#FFC107</color>
+    <color name="rating_gold_empty">#E0E0E0</color>
     <color name="text_primary">#222222</color>
     <color name="text_secondary">#717171</color>
     <color name="text_muted">#B0B0B0</color>

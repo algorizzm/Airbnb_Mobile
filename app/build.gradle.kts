@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -16,11 +18,24 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // ── Cloudinary credentials (read from local.properties, never committed) ──
+        val localProps = Properties()
+        val localPropsFile = rootProject.file("local.properties")
+        if (localPropsFile.exists()) {
+            localPropsFile.inputStream().use { localProps.load(it) }
+        }
+        // Use variables to avoid nested-quote escaping bugs
+        val cloudName    = (localProps.getProperty("CLOUDINARY_CLOUD_NAME")    ?: "").trim()
+        val uploadPreset = (localProps.getProperty("CLOUDINARY_UPLOAD_PRESET") ?: "").trim()
+        buildConfigField("String", "CLOUDINARY_CLOUD_NAME",    "\"$cloudName\"")
+        buildConfigField("String", "CLOUDINARY_UPLOAD_PRESET", "\"$uploadPreset\"")
     }
 
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -70,4 +85,9 @@ dependencies {
     implementation("io.coil-kt:coil:2.5.0")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.firebase:firebase-auth-ktx")
+
+    // ── OkHttp — used by CloudinaryManager for direct multipart upload ──────
+    // (No Cloudinary Android SDK: it requires WorkManager and dispatch(Context)
+    //  which causes silent upload failures on many devices)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
