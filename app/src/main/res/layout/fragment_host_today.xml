@@ -61,18 +61,6 @@
             android:src="@drawable/ic_calendar"
             app:tint="@color/text_primary" />
 
-        <!-- Settings -->
-        <ImageButton
-            android:id="@+id/btnSettings"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_circle_light"
-            android:contentDescription="Settings"
-            android:elevation="2dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_settings"
-            app:tint="@color/text_primary" />
-
     </LinearLayout>
 
     <!-- ================================= -->

@@ -226,6 +226,7 @@ class MainActivity : AppCompatActivity() {
 
             val hiddenScreens = setOf(
                 R.id.splashFragment,
+                R.id.signupFragment,
             )
 
             val isHidden = destination.id in hiddenScreens

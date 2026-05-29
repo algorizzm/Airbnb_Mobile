@@ -10,6 +10,12 @@
         android:name="com.airbnb.ui.main.SplashFragment"
         android:label="Splash" />
 
+    <!-- Signup / Unified Auth -->
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.airbnb.ui.auth.SignupFragment"
+        android:label="Signup" />
+
     <!-- Explore -->
     <fragment
         android:id="@+id/exploreFragment"
@@ -152,7 +158,7 @@
         android:name="com.airbnb.ui.host.reservation.HostReservationsFragment"
         android:label="Reservations" />
 
-    <!-- Host Today (cross-listing reservation inbox — host mode root tab) -->
+    <!-- Host Today -->
     <fragment
         android:id="@+id/hostTodayFragment"
         android:name="com.airbnb.ui.host.today.HostTodayFragment"
@@ -164,7 +170,7 @@
 
     </fragment>
 
-    <!-- Host Calendar (placeholder — host mode root tab) -->
+    <!-- Host Calendar -->
     <fragment
         android:id="@+id/hostCalendarFragment"
         android:name="com.airbnb.ui.host.calendar.HostCalendarFragment"
@@ -238,13 +244,13 @@
         android:name="com.airbnb.ui.shared.settings.PrivacySecurityFragment"
         android:label="Privacy and Security" />
 
-    <!-- Notification Settings (from Settings screen) -->
+    <!-- Notification Settings -->
     <fragment
         android:id="@+id/notificationSettingsFragment"
         android:name="com.airbnb.ui.shared.settings.NotificationsFragment"
         android:label="Notification Settings" />
 
-    <!-- Notification Inbox (from main screen bell icon) -->
+    <!-- Notification Inbox -->
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="com.airbnb.ui.shared.notifications.NotificationInboxFragment"
@@ -257,4 +263,3 @@
         android:label="Change Password" />
 
 </navigation>
-

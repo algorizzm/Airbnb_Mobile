@@ -164,6 +164,124 @@ class AuthRepository {
         }
     }
 
+    // =========================================================
+    // MANUAL EMAIL/PASSWORD AUTHENTICATION (SPRINT 10)
+    // =========================================================
+
+    /**
+     * Sign up a new user with email and password.
+     * Creates Firebase Auth account and Firestore user document.
+     * 
+     * @param name Full name of the user
+     * @param email Email address
+     * @param password Password (minimum 6 characters)
+     * @param onSuccess Callback with FirebaseUser on success
+     * @param onFailure Callback with Exception on failure
+     */
+    fun signUpWithEmail(
+        name: String,
+        email: String,
+        password: String,
+        onSuccess: (FirebaseUser) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val firebaseUser = task.result?.user
+                    if (firebaseUser != null) {
+                        createUserDocument(firebaseUser, name, onSuccess, onFailure)
+                    } else {
+                        onFailure(Exception("User creation failed: Firebase user is null"))
+                    }
+                } else {
+                    onFailure(task.exception ?: Exception("Sign up failed"))
+                }
+            }
+    }
+
+    /**
+     * Login existing user with email and password.
+     * 
+     * @param email Email address
+     * @param password Password
+     * @param onSuccess Callback with FirebaseUser on success
+     * @param onFailure Callback with Exception on failure
+     */
+    fun loginWithEmail(
+        email: String,
+        password: String,
+        onSuccess: (FirebaseUser) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val firebaseUser = task.result?.user
+                    if (firebaseUser != null) {
+                        onSuccess(firebaseUser)
+                    } else {
+                        onFailure(Exception("Login failed: Firebase user is null"))
+                    }
+                } else {
+                    onFailure(task.exception ?: Exception("Login failed"))
+                }
+            }
+    }
+
+    /**
+     * Creates a complete Firestore user document for manual signup.
+     * Ensures all required fields are initialized with proper defaults.
+     */
+    private fun createUserDocument(
+        firebaseUser: FirebaseUser,
+        name: String,
+        onSuccess: (FirebaseUser) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val uid = firebaseUser.uid
+        val userCode = PublicCodeGenerator.generateUserCode()
+
+        val userMap = hashMapOf(
+            "id" to uid,
+            "userId" to uid,
+            "userCode" to userCode,
+            "name" to name,
+            "displayName" to name,
+            "email" to firebaseUser.email.orEmpty(),
+            "profileImage" to "",
+            "profileImageUrl" to "",
+            "bannerImage" to "",
+            "bio" to null,
+            "role" to "traveler",
+            "location" to "Cebu, Philippines",
+            "createdAt" to System.currentTimeMillis(),
+            "hostModeEnabled" to false,
+            "hostingEnabled" to false,
+            "totalTrips" to 0,
+            "totalListings" to 0,
+            "badges" to emptyList<String>(),
+            "fname" to "",
+            "lname" to ""
+        )
+
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(uid)
+            .set(userMap)
+            .addOnSuccessListener {
+                onSuccess(firebaseUser)
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
+    // =========================================================
+    // LEGACY METHODS (Deprecated - Use signUpWithEmail/loginWithEmail)
+    // =========================================================
+
+    @Deprecated("Use loginWithEmail instead", ReplaceWith("loginWithEmail(email, password, onSuccess, onFailure)"))
     fun login(
         email: String,
         password: String,
@@ -180,6 +298,7 @@ class AuthRepository {
             }
     }
 
+    @Deprecated("Use signUpWithEmail instead", ReplaceWith("signUpWithEmail(name, email, password, onSuccess, onFailure)"))
     fun signup(
         name: String,
         email: String,

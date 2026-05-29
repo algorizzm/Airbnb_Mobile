@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.R
 import com.airbnb.core.ui.ImageLoader
 import com.airbnb.data.model.Listing
 import com.airbnb.databinding.ItemHostListingBinding
@@ -35,6 +34,7 @@ class HostListingAdapter(
 
         fun bind(listing: Listing) {
             binding.apply {
+
                 // Title
                 tvTitle.text = if (listing.listingCode.isNullOrBlank()) {
                     listing.title
@@ -42,16 +42,7 @@ class HostListingAdapter(
                     "${listing.title} (${listing.listingCode})"
                 }
 
-                // Location
-                tvLocation.text = listing.location
-
-                // Price
-                tvPrice.text = root.context.getString(
-                    R.string.price_per_night_format,
-                    listing.pricePerNight.toInt()
-                )
-
-                // Property type
+                // Property Type
                 tvPropertyType.text = listing.propertyType
 
                 // Image
@@ -61,19 +52,34 @@ class HostListingAdapter(
                 )
 
                 // Click listeners
-                btnEdit.setOnClickListener { onEditClick(listing) }
-                btnDelete.setOnClickListener { onDeleteClick(listing) }
-                btnViewReservations.setOnClickListener { onViewReservationsClick(listing) }
+                btnEdit.setOnClickListener {
+                    onEditClick(listing)
+                }
+
+                btnDelete.setOnClickListener {
+                    onDeleteClick(listing)
+                }
+
+                btnViewReservations.setOnClickListener {
+                    onViewReservationsClick(listing)
+                }
             }
         }
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<Listing>() {
-        override fun areItemsTheSame(oldItem: Listing, newItem: Listing): Boolean {
+
+        override fun areItemsTheSame(
+            oldItem: Listing,
+            newItem: Listing
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Listing, newItem: Listing): Boolean {
+        override fun areContentsTheSame(
+            oldItem: Listing,
+            newItem: Listing
+        ): Boolean {
             return oldItem == newItem
         }
     }

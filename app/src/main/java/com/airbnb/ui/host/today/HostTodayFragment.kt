@@ -78,14 +78,6 @@ class HostTodayFragment : Fragment(R.layout.fragment_host_today) {
     }
 
     private fun setupHeaderButtons() {
-        // Quick navigation to Settings tab
-        binding.btnSettings.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.settingsFragment)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Opening Settings...", Toast.LENGTH_SHORT).show()
-            }
-        }
 
         // Quick navigation to Calendar screen
         binding.btnCalendarInfo.setOnClickListener {
