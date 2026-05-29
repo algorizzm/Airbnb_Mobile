@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.core.ui.AvatarHelper
@@ -17,6 +18,8 @@ import com.airbnb.databinding.FragmentListingDetailsBinding
 import com.airbnb.ui.adapter.ReviewsAdapter
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.ui.auth.isUserAuthenticated
+import com.airbnb.ui.listings.adapter.AmenitiesAdapter
+import com.airbnb.ui.listings.adapter.ListingGalleryAdapter
 import kotlinx.coroutines.launch
 
 class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
@@ -25,6 +28,8 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
     private val binding get() = _binding!!
 
     private val reviewsAdapter = ReviewsAdapter()
+    private val galleryAdapter = ListingGalleryAdapter()
+    private val amenitiesAdapter = AmenitiesAdapter()
 
     private val listingId: String by lazy {
         arguments?.getString(ARG_LISTING_ID).orEmpty()
@@ -39,14 +44,27 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
         _binding = FragmentListingDetailsBinding.bind(view)
 
         setupUI()
-        setupReviewsRecyclerView()
+        setupRecyclerViews()
         observeViewModel()
     }
 
-    private fun setupReviewsRecyclerView() {
+    private fun setupRecyclerViews() {
+        // Reviews RecyclerView
         binding.reviewsRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reviewsAdapter
+        }
+
+        // Gallery RecyclerView (horizontal)
+        binding.galleryRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = galleryAdapter
+        }
+
+        // Amenities RecyclerView (grid layout for wrapping chips)
+        binding.amenitiesRecyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = amenitiesAdapter
         }
     }
 
@@ -140,43 +158,53 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
                                 else -> "${listing.bathrooms} bathrooms"
                             }
 
+                            // Beds (if available in future Listing updates)
+                            // For now, hide the beds row as it's not in the current Listing model
+                            binding.bedsRow.visibility = View.GONE
+
                             // Host info
-                            binding.tvHostName.text =
-                                listing.hostName.ifBlank { "Host" }
+                            binding.tvHostName.text = listing.hostName.ifBlank { "Host" }
 
                             try {
-
                                 AvatarHelper.bind(
                                     imgView = binding.imgHostAvatar,
                                     tvInitial = null,
                                     name = listing.hostName,
                                     imageUrl = listing.hostProfileImage
                                 )
-
                             } catch (e: Exception) {
-
-                                binding.imgHostAvatar.setImageResource(
-                                    R.drawable.ic_profile
-                                )
+                                binding.imgHostAvatar.setImageResource(R.drawable.ic_profile)
                             }
 
                             // Description
                             binding.tvDescription.text = listing.description.ifBlank { "No description available" }
 
-                            // Amenities
+                            // Amenities - use RecyclerView with chips
                             if (listing.amenities.isNotEmpty()) {
-                                binding.tvAmenities.text = listing.amenities.joinToString("\n") { "• $it" }
+                                binding.amenitiesRecyclerView.visibility = View.VISIBLE
+                                binding.tvNoAmenities.visibility = View.GONE
+                                amenitiesAdapter.submitList(listing.amenities)
                             } else {
-                                binding.tvAmenities.text = "No amenities listed"
+                                binding.amenitiesRecyclerView.visibility = View.GONE
+                                binding.tvNoAmenities.visibility = View.VISIBLE
+                            }
+
+                            // Gallery images
+                            if (listing.galleryImageUrls.isNotEmpty()) {
+                                binding.gallerySection.visibility = View.VISIBLE
+                                galleryAdapter.submitList(listing.galleryImageUrls)
+                            } else {
+                                binding.gallerySection.visibility = View.GONE
                             }
 
                             // Price using centralized formatter
                             binding.tvPrice.text = listing.formattedPrice()
 
-                            // Rating summary
+                            // Rating summary (display at top and in reviews section)
+                            binding.tvRatingSummaryTop.text = listing.formattedRating()
                             binding.tvRatingSummary.text = listing.formattedRating()
 
-                            // Load listing image
+                            // Load listing cover image
                             ImageLoader.loadListingImageFitCenter(
                                 imageView = binding.imgListing,
                                 imageUrl = listing.coverImageUrl()

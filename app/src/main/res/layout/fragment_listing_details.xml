@@ -84,14 +84,46 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <!-- LISTING IMAGE -->
+            <!-- LISTING COVER IMAGE -->
             <ImageView
                 android:id="@+id/imgListing"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="280dp"
                 android:scaleType="centerCrop"
-                android:contentDescription="Listing image"
+                android:contentDescription="Listing cover image"
                 tools:src="@drawable/img_hike_placeholder"/>
+
+            <!-- GALLERY IMAGES SECTION -->
+            <LinearLayout
+                android:id="@+id/gallerySection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gallery"
+                    android:textColor="#111111"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginBottom="12dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/galleryRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clipToPadding="false"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_listing_gallery_image"/>
+
+            </LinearLayout>
 
             <!-- MAIN CONTENT -->
             <LinearLayout
@@ -137,6 +169,17 @@
                     android:fontFamily="@font/poppins_regular"
                     tools:text="Manila, Philippines"/>
 
+                <!-- RATING SUMMARY (TOP) -->
+                <TextView
+                    android:id="@+id/tvRatingSummaryTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#02D083"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="★ 4.91 · 23 reviews"/>
+
                 <!-- DIVIDER -->
                 <View
                     android:layout_width="match_parent"
@@ -149,7 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Room Details"
+                    android:text="Property Details"
                     android:textColor="#111111"
                     android:textSize="18sp"
                     android:fontFamily="@font/poppins_medium"/>
@@ -232,6 +275,36 @@
                         android:textSize="14sp"
                         android:fontFamily="@font/poppins_medium"
                         tools:text="1 bathroom"/>
+
+                </LinearLayout>
+
+                <!-- BEDS (NEW) -->
+                <LinearLayout
+                    android:id="@+id/bedsRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Beds"
+                        android:textColor="#666666"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_regular"/>
+
+                    <TextView
+                        android:id="@+id/tvBeds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#111111"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium"
+                        tools:text="3 beds"/>
 
                 </LinearLayout>
 
@@ -326,16 +399,29 @@
                     android:textSize="18sp"
                     android:fontFamily="@font/poppins_medium"/>
 
-                <TextView
-                    android:id="@+id/tvAmenities"
+                <!-- AMENITIES RECYCLER VIEW (NEW) -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/amenitiesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:lineSpacingExtra="4dp"
-                    android:textColor="#666666"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/item_amenity_chip"/>
+
+                <!-- FALLBACK TEXT FOR NO AMENITIES -->
+                <TextView
+                    android:id="@+id/tvNoAmenities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="No amenities listed"
+                    android:textColor="#999999"
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins_regular"
-                    tools:text="WiFi, Kitchen, Air Conditioning, Free Parking"/>
+                    android:visibility="gone"/>
 
                 <!-- DIVIDER -->
                 <View
