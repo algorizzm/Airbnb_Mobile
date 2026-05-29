@@ -4,278 +4,508 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Custom Header Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@color/white">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Create Listing"
-            app:navigationIcon="@drawable/ic_back" />
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"
+            app:tint="@color/text_primary"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Create Listing"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginTop="64dp"
+        android:fillViewport="true"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="40dp">
 
-            <!-- Title -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <!-- Title Section -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Title"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                android:text="Title"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"/>
 
-                <com.google.android.material.textfield.TextInputEditText
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_airbnb_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <EditText
                     android:id="@+id/etTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="e.g. Cozy beachfront villa"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_regular"
                     android:inputType="textCapSentences"
-                    android:maxLines="2" />
+                    android:singleLine="true"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <!-- Description -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <!-- Description Section -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Description"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                android:layout_marginTop="22dp"
+                android:text="Description"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"/>
 
-                <com.google.android.material.textfield.TextInputEditText
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_airbnb_input"
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="14dp">
+
+                <EditText
                     android:id="@+id/etDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="Describe what makes your space unique..."
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_regular"
                     android:inputType="textMultiLine|textCapSentences"
                     android:minLines="4"
-                    android:maxLines="8"
-                    android:gravity="top" />
+                    android:maxLines="8" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <!-- Location -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <!-- Location Section -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Location"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                android:layout_marginTop="22dp"
+                android:text="Location"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"/>
 
-                <com.google.android.material.textfield.TextInputEditText
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_airbnb_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <EditText
                     android:id="@+id/etLocation"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="e.g. Manila, Philippines"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_regular"
                     android:inputType="textCapWords"
-                    android:maxLines="1" />
+                    android:singleLine="true"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <!-- Property Type -->
+            <!-- Property Type Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="22dp"
                 android:text="Property Type"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
-                android:textColor="@color/gray" />
+                android:fontFamily="@font/poppins_medium" />
 
-            <Spinner
-                android:id="@+id/spinnerPropertyType"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:minHeight="48dp" />
+                android:layout_height="56dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_airbnb_input"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
 
-            <!-- Price -->
-            <com.google.android.material.textfield.TextInputLayout
+                <Spinner
+                    android:id="@+id/spinnerPropertyType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null" />
+
+            </LinearLayout>
+
+            <!-- Price Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Price per night ($)"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Price per night ($)"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                android:layout_height="56dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_airbnb_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <EditText
                     android:id="@+id/etPrice"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="e.g. 150"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_regular"
                     android:inputType="numberDecimal"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Max Guests -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Max Guests"
-                android:textSize="14sp"
-                android:textColor="@color/gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageButton
-                    android:id="@+id/btnDecreaseGuests"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_minus"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Decrease guests" />
-
-                <TextView
-                    android:id="@+id/tvGuestCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:gravity="center" />
-
-                <ImageButton
-                    android:id="@+id/btnIncreaseGuests"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_plus"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Increase guests" />
+                    android:singleLine="true"/>
 
             </LinearLayout>
 
-            <!-- Bedrooms -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Bedrooms"
-                android:textSize="14sp"
-                android:textColor="@color/gray" />
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/divider"/>
 
+            <!-- Rooms / Guests Section -->
+            <!-- Guest Counter Row -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_height="64dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/btnDecreaseBedrooms"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_minus"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Decrease bedrooms" />
-
-                <TextView
-                    android:id="@+id/tvBedroomCount"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:gravity="center" />
+                    android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/btnIncreaseBedrooms"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_plus"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Increase bedrooms" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Max Guests"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Maximum number of guests allowed"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnDecreaseGuests"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_airbnb_circle"
+                        android:src="@drawable/ic_minus"
+                        app:tint="@color/text_primary"
+                        android:contentDescription="Decrease guests" />
+
+                    <TextView
+                        android:id="@+id/tvGuestCount"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <ImageButton
+                        android:id="@+id/btnIncreaseGuests"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_airbnb_circle"
+                        android:src="@drawable/ic_plus"
+                        app:tint="@color/text_primary"
+                        android:contentDescription="Increase guests" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Bathrooms -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Bathrooms"
-                android:textSize="14sp"
-                android:textColor="@color/gray" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/divider"/>
 
+            <!-- Bedroom Counter Row -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_height="64dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/btnDecreaseBathrooms"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_minus"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Decrease bathrooms" />
-
-                <TextView
-                    android:id="@+id/tvBathroomCount"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:gravity="center" />
+                    android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/btnIncreaseBathrooms"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_plus"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Increase bathrooms" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bedrooms"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Number of bedrooms for guests"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnDecreaseBedrooms"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_airbnb_circle"
+                        android:src="@drawable/ic_minus"
+                        app:tint="@color/text_primary"
+                        android:contentDescription="Decrease bedrooms" />
+
+                    <TextView
+                        android:id="@+id/tvBedroomCount"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <ImageButton
+                        android:id="@+id/btnIncreaseBedrooms"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_airbnb_circle"
+                        android:src="@drawable/ic_plus"
+                        app:tint="@color/text_primary"
+                        android:contentDescription="Increase bedrooms" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Amenities -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/divider"/>
+
+            <!-- Bathroom Counter Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bathrooms"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Number of bathrooms"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnDecreaseBathrooms"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_airbnb_circle"
+                        android:src="@drawable/ic_minus"
+                        app:tint="@color/text_primary"
+                        android:contentDescription="Decrease bathrooms" />
+
+                    <TextView
+                        android:id="@+id/tvBathroomCount"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <ImageButton
+                        android:id="@+id/btnIncreaseBathrooms"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_airbnb_circle"
+                        android:src="@drawable/ic_plus"
+                        app:tint="@color/text_primary"
+                        android:contentDescription="Increase bathrooms" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/divider"/>
+
+            <!-- Amenities Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="Amenities"
-                android:textSize="14sp"
-                android:textColor="@color/gray" />
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Select the amenities available at your property"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroupAmenities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 app:singleSelection="false"
                 app:selectionRequired="false"
                 app:chipSpacingHorizontal="8dp"
                 app:chipSpacingVertical="8dp" />
 
-            <!-- ── Image Upload Section ───────────────────────────────── -->
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/divider"/>
+
+            <!-- Image Upload Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="Listing Photos"
-                android:textSize="14sp"
-                android:textStyle="bold"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/text_primary" />
 
             <TextView
@@ -284,6 +514,7 @@
                 android:layout_marginTop="2dp"
                 android:text="Add photos to help guests picture your space"
                 android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/text_secondary" />
 
             <!-- Select Images Button -->
@@ -292,28 +523,34 @@
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:text="Select Photos"
+                android:textColor="@color/text_primary"
+                android:fontFamily="@font/poppins_medium"
+                app:strokeColor="@color/border_light"
+                app:strokeWidth="1dp"
+                app:cornerRadius="14dp"
                 app:icon="@drawable/ic_camera"
                 app:iconGravity="textStart"
-                app:iconPadding="8dp" />
+                app:iconPadding="8dp"
+                app:iconTint="@color/text_primary" />
 
-            <!-- Image Preview Strip (hidden until images are picked) -->
+            <!-- Image Preview Strip -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvImagePreview"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <!-- Upload Progress Indicator (hidden until upload starts) -->
+            <!-- Upload Progress Indicator -->
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progressUpload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
                 app:trackCornerRadius="4dp"
                 app:indicatorColor="@color/airbnb_red" />
@@ -323,22 +560,33 @@
                 android:id="@+id/tvUploadStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/text_secondary"
                 android:visibility="gone" />
 
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/divider"/>
 
             <!-- Save Button -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="24dp"
+                android:layout_height="54dp"
                 android:layout_marginBottom="16dp"
                 android:text="Save Listing"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_bold"
+                android:backgroundTint="@color/airbnb_red"
+                app:cornerRadius="14dp"/>
 
         </LinearLayout>
 

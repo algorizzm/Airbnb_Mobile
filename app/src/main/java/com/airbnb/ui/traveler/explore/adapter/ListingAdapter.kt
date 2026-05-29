@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.airbnb.R
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.data.model.Listing
 import com.airbnb.databinding.ItemListingBinding
 
@@ -85,14 +85,10 @@ class ListingAdapter(
                 "★ ${listing.rating}"
 
             // LOAD IMAGE
-            binding.imgListing.load(listing.imageUrl) {
-
-                crossfade(true)
-
-                placeholder(R.drawable.img_hike_placeholder)
-
-                error(R.drawable.img_hike_placeholder)
-            }
+            ImageLoader.loadListingCoverImage(
+                imageView = binding.imgListing,
+                listing = listing
+            )
 
             // WISHLIST STATE
             if (isInWishlist) {

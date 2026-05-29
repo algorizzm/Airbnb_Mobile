@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
+import com.airbnb.core.ui.AvatarHelper
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.databinding.FragmentTripDetailsBinding
 import com.airbnb.utils.formatting.DateFormatter
 import com.bumptech.glide.Glide
@@ -112,14 +114,10 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         val reservation = tripItem.reservation
 
         // Load listing image
-        if (tripItem.imageUrl().isNotBlank()) {
-            Glide.with(this)
-                .load(tripItem.imageUrl())
-                .placeholder(R.drawable.img_hike_placeholder)
-                .error(R.drawable.img_hike_placeholder)
-                .centerCrop()
-                .into(binding.imgListing)
-        }
+        ImageLoader.loadListingImageFitCenter(
+            imageView = binding.imgListing,
+            imageUrl = tripItem.imageUrl()
+        )
 
         // Set status chip
         binding.tvStatusChip.text = reservation.statusLabel()

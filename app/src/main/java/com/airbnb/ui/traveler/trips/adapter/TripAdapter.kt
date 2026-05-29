@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.data.model.ReservationStatus
 import com.airbnb.data.model.TripItem
 import com.airbnb.databinding.ItemTripBinding
@@ -39,17 +40,11 @@ class TripAdapter(
             val reservation = tripItem.reservation
 
             // Set listing image
-            if (tripItem.imageUrl().isNotBlank()) {
-                binding.imgTrip.visibility = View.VISIBLE
-                Glide.with(binding.root.context)
-                    .load(tripItem.imageUrl())
-                    .placeholder(R.drawable.img_hike_placeholder)
-                    .error(R.drawable.img_hike_placeholder)
-                    .centerCrop()
-                    .into(binding.imgTrip)
-            } else {
-                binding.imgTrip.visibility = View.GONE
-            }
+            ImageLoader.loadListingImage(
+                imageView = binding.imgTrip,
+                imageUrl = tripItem.imageUrl()
+            )
+            binding.imgTrip.visibility = View.VISIBLE
 
             // Set status chip overlay
             binding.tvStatusChip.text = reservation.statusLabel()

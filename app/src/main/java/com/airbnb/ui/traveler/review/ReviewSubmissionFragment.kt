@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.databinding.FragmentReviewSubmissionBinding
 import com.airbnb.utils.formatting.DateFormatter
 import com.bumptech.glide.Glide
@@ -162,12 +163,10 @@ class ReviewSubmissionFragment : Fragment() {
                     )
                     
                     // Load listing image
-                    if (it.listingImageUrl.isNotBlank()) {
-                        Glide.with(requireContext())
-                            .load(it.listingImageUrl)
-                            .centerCrop()
-                            .into(binding.listingImageView)
-                    }
+                    ImageLoader.loadListingImage(
+                        imageView = binding.listingImageView,
+                        imageUrl = it.listingImageUrl
+                    )
                 }
             }
         }

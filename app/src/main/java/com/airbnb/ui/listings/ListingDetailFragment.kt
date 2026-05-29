@@ -11,12 +11,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
+import com.airbnb.core.ui.AvatarHelper
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.databinding.FragmentListingDetailsBinding
 import com.airbnb.ui.adapter.ReviewsAdapter
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
-import com.airbnb.core.ui.AvatarHelper
 
 class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
 
@@ -175,7 +176,11 @@ class ListingDetailFragment : Fragment(R.layout.fragment_listing_details) {
                             // Rating summary
                             binding.tvRatingSummary.text = listing.formattedRating()
 
-                            // TODO: Load image from listing.imageUrl using Glide/Coil in future
+                            // Load listing image
+                            ImageLoader.loadListingImageFitCenter(
+                                imageView = binding.imgListing,
+                                imageUrl = listing.coverImageUrl()
+                            )
                         }
                     }
                 }

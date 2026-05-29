@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.R
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.databinding.FragmentCreateReservationBinding
 import com.airbnb.utils.formatting.CurrencyFormatter
 import com.airbnb.utils.formatting.DateFormatter
@@ -153,6 +154,12 @@ class CreateReservationFragment : Fragment(R.layout.fragment_create_reservation)
                             binding.tvListingLocation.text = listing.location
                             binding.tvPricePerNight.text = listing.formattedPrice()
                             binding.tvMaxGuests.text = "Maximum ${listing.maxGuests} guests"
+                            
+                            // Load listing image
+                            ImageLoader.loadListingCoverImage(
+                                imageView = binding.imgListing,
+                                listing = listing
+                            )
                         }
                     }
                 }

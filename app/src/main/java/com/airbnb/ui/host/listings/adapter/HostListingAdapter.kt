@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.airbnb.R
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.data.model.Listing
 import com.airbnb.databinding.ItemHostListingBinding
 
@@ -55,11 +55,10 @@ class HostListingAdapter(
                 tvPropertyType.text = listing.propertyType
 
                 // Image
-                Glide.with(root.context)
-                    .load(listing.imageUrl)
-                    .centerCrop()
-                    .placeholder(R.drawable.img_hike_placeholder)
-                    .into(imgListing)
+                ImageLoader.loadListingCoverImage(
+                    imageView = imgListing,
+                    listing = listing
+                )
 
                 // Click listeners
                 btnEdit.setOnClickListener { onEditClick(listing) }

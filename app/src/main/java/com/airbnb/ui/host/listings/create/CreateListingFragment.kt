@@ -65,10 +65,8 @@ class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
     // ── Setup helpers ─────────────────────────────────────────────────────────
 
     private fun setupToolbar() {
-        binding.toolbar.apply {
-            title = if (listingId == null) "Create Listing" else "Edit Listing"
-            setNavigationOnClickListener { findNavController().navigateUp() }
-        }
+        binding.tvHeaderTitle.text = if (listingId == null) "Create Listing" else "Edit Listing"
+        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
     }
 
     private fun setupPropertyTypeSpinner() {
@@ -119,11 +117,13 @@ class CreateListingFragment : Fragment(R.layout.fragment_create_listing) {
     private fun setupAmenitiesChips() {
         val chipGroup = binding.chipGroupAmenities
         chipGroup.removeAllViews()
+        val typeface = androidx.core.content.res.ResourcesCompat.getFont(requireContext(), R.font.poppins_regular)
         Amenities.DEFAULT_AMENITIES.forEach { amenity ->
             val chip = Chip(requireContext()).apply {
                 text = amenity
                 isCheckable = true
                 isClickable = true
+                this.typeface = typeface
             }
             chipGroup.addView(chip)
         }

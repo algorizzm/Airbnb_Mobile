@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.data.model.Listing
 import com.airbnb.databinding.ItemWishlistGridBinding
 
@@ -54,18 +55,11 @@ class WishlistAdapter(
                 onItemClick(listing)
             }
 
-            // TODO:
-            // Load listing images into:
-            // binding.image1
-            // binding.image2
-            // binding.image3
-            // binding.image4
-
-            // Example with Glide later:
-            //
-            // Glide.with(binding.image1)
-            //     .load(listing.imageUrl)
-            //     .into(binding.image1)
+            // Load listing cover image
+            ImageLoader.loadListingCoverImage(
+                imageView = binding.listingImage,
+                listing = listing
+            )
         }
     }
 

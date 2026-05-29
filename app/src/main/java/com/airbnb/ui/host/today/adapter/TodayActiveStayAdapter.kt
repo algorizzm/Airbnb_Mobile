@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
+import com.airbnb.core.ui.ImageLoader
 import com.airbnb.data.model.Reservation
 import com.airbnb.databinding.ItemTodayActiveStayBinding
 import com.airbnb.utils.formatting.DateFormatter
@@ -75,15 +76,12 @@ class TodayActiveStayAdapter(
                 tvReservationInfo.text = "$guestCount • Code: $code"
 
                 // Listing image
-                if (reservation.listingImageUrl.isEmpty()) {
-                    ivListingImage.setImageResource(R.drawable.ic_airbnb)
-                } else {
-                    Glide.with(ivListingImage.context)
-                        .load(reservation.listingImageUrl)
-                        .placeholder(R.drawable.ic_airbnb)
-                        .centerCrop()
-                        .into(ivListingImage)
-                }
+                ImageLoader.loadListingImage(
+                    imageView = ivListingImage,
+                    imageUrl = reservation.listingImageUrl,
+                    placeholder = R.drawable.ic_airbnb,
+                    errorDrawable = R.drawable.ic_airbnb
+                )
 
                 // Click listeners
                 root.setOnClickListener { onItemClick(reservation) }
