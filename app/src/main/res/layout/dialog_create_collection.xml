@@ -30,7 +30,7 @@
                 android:text="Create collection"
                 android:textColor="@color/text_primary"
                 android:textSize="24sp"
-                android:fontFamily="@font/poppins_bold"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_marginBottom="24dp" />
 
             <!-- Collection Name Input -->

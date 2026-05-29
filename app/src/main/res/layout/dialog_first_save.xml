@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorSurface"
+    android:paddingHorizontal="24dp"
+    android:paddingBottom="32dp"
+    android:paddingTop="8dp">
+
+    <!-- Bottom Sheet Drag Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/border_light"
+        android:backgroundTint="@color/border_light"
+        android:layout_marginBottom="24dp"
+        android:importantForAccessibility="no" />
+
+    <!-- Header Frame -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="Save listing"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClose"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|center_vertical"
+            app:icon="@android:drawable/ic_menu_close_clear_cancel"
+            app:iconTint="@color/text_secondary"
+            app:iconSize="20dp"
+            android:contentDescription="Close" />
+    </FrameLayout>
+
+    <!-- Subtitle / Body Description -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose how you'd like to save this listing. You can quickly add it to your Favorites collection or create a custom list to organize your trips."
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Actions Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Save to Favorites Button (Airbnb style primary action) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveToFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:text="Save to Favorites"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_bold"
+            app:backgroundTint="@color/airbnb_red"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_heart"
+            app:iconTint="@android:color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp" />
+
+        <!-- Create Custom Collection Button (Airbnb style secondary action) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreateCollection"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Create custom collection"
+            android:textAllCaps="false"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_bold"
+            app:strokeColor="@color/text_primary"
+            app:strokeWidth="1.5dp"
+            app:cornerRadius="16dp"
+            app:icon="@android:drawable/ic_input_add"
+            app:iconTint="@color/text_primary"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

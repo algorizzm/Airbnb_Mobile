@@ -44,11 +44,6 @@ class WishlistViewModel(
                 collectionRepository.observeCollections(userId).collect { collections ->
                     _collections.value = collections
                     _isLoading.value = false
-
-                    // Auto-create default collection if none exist
-                    if (collections.isEmpty()) {
-                        createDefaultCollection()
-                    }
                 }
             } catch (e: Exception) {
                 _toast.value = "Failed to load collections: ${e.message}"
@@ -81,12 +76,6 @@ class WishlistViewModel(
     }
 
     fun deleteCollection(collection: WishlistCollection) {
-
-        // HARD BLOCK
-        if (collection.isDefault) {
-            _toast.value = "Favorites collection cannot be deleted"
-            return
-        }
 
         val userId = AuthManager.currentUserId() ?: return
 

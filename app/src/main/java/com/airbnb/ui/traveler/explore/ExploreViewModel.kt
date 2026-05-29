@@ -6,6 +6,7 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.data.model.Listing
 import com.airbnb.data.repository.ListingRepository
 import com.airbnb.data.repository.WishlistRepository
+import com.airbnb.data.repository.WishlistCollectionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 
 class ExploreViewModel(
     private val listingRepository: ListingRepository = ListingRepository(),
-    private val wishlistRepository: WishlistRepository = WishlistRepository()
+    private val wishlistRepository: WishlistRepository = WishlistRepository(),
+    private val collectionRepository: WishlistCollectionRepository = WishlistCollectionRepository()
 ) : ViewModel() {
 
     private val _allListings =
@@ -106,13 +108,19 @@ class ExploreViewModel(
             }
         }
 
-        // Observe wishlist changes
+        // Observe wishlist state derived from collections (source of truth).
+        // This ensures that deleting a collection and removing its listings
+        // immediately refreshes the heart icon state in ExploreFragment.
         val userId = AuthManager.currentUserId()
         if (userId != null) {
             viewModelScope.launch {
                 try {
-                    wishlistRepository.observeWishlist(userId).collect { wishlist ->
-                        _wishlistIds.value = wishlist.listingIds.toSet()
+                    collectionRepository.observeCollections(userId).collect { collections ->
+                        // A listing is wishlisted iff it exists in at least one collection
+                        val savedIds = collections
+                            .flatMap { it.listingIds }
+                            .toSet()
+                        _wishlistIds.value = savedIds
                     }
                 } catch (e: Exception) {
                     // Silently fail - wishlist is optional

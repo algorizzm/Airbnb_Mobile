@@ -4,99 +4,115 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212">
+    android:background="@color/colorBackground">
 
-    <!-- Top Bar -->
+    <!-- ====================================================== -->
+    <!-- TOP BAR -->
+    <!-- ====================================================== -->
+
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
+        android:layout_height="64dp"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        android:background="#121212">
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@color/colorBackground">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:padding="6dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_circle_light"
             android:src="@drawable/ic_chevron_left"
-            android:contentDescription="Back" />
+            android:contentDescription="Back"
+            app:tint="@color/text_primary"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Edit Profile"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/poppins_bold"
-            android:gravity="center" />
+            android:text="Edit profile"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"/>
 
-        <!-- Spacer -->
         <View
-            android:layout_width="36dp"
-            android:layout_height="36dp" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
 
     </LinearLayout>
 
-    <!-- Content -->
+    <!-- ====================================================== -->
+    <!-- CONTENT -->
+    <!-- ====================================================== -->
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="64dp"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="12dp">
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="40dp">
 
-            <!-- Section Title -->
+            <!-- TITLE -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Profile Information"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:text="Profile information"
+                android:textColor="@color/text_primary"
+                android:textSize="28sp"
+                android:fontFamily="@font/poppins_bold"/>
 
-            <!-- Card -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Update your personal details and public profile."
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <!-- CARD -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/bg_dark_card"
+                android:layout_marginTop="26dp"
+                android:background="@drawable/bg_airbnb_card"
                 android:orientation="vertical"
-                android:padding="4dp">
+                android:padding="20dp">
 
-                <!-- Username -->
+                <!-- USERNAME -->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
                     android:text="Username"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_dark"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_airbnb_input"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
+                    android:paddingHorizontal="16dp">
 
                     <EditText
                         android:id="@+id/etUsername"
@@ -104,50 +120,41 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
+                        android:hint="@username"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="15sp"
                         android:fontFamily="@font/poppins_regular"
-                        android:hint="/@username"
                         android:inputType="textNoSuggestions"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#60FFFFFF"
-                        android:textSize="14sp" />
+                        android:singleLine="true"/>
 
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:alpha="0.5"
                         android:src="@drawable/ic_user_vector"
-                        android:contentDescription="Username Icon" />
+                        app:tint="@color/text_secondary"/>
 
                 </LinearLayout>
 
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#2A2A2A" />
+                <!-- EMAIL -->
 
-                <!-- Email -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="22dp"
                     android:text="Email"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_dark"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_airbnb_input"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
+                    android:paddingHorizontal="16dp">
 
                     <EditText
                         android:id="@+id/etEmail"
@@ -155,50 +162,41 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:fontFamily="@font/poppins_regular"
                         android:hint="email@example.com"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_regular"
                         android:inputType="textEmailAddress"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#60FFFFFF"
-                        android:textSize="14sp" />
+                        android:singleLine="true"/>
 
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:alpha="0.5"
                         android:src="@drawable/ic_email_vector"
-                        android:contentDescription="Email Icon" />
+                        app:tint="@color/text_secondary"/>
 
                 </LinearLayout>
 
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#2A2A2A" />
+                <!-- LOCATION -->
 
-                <!-- Location -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="22dp"
                     android:text="Location"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_dark"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_airbnb_input"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
+                    android:paddingHorizontal="16dp">
 
                     <EditText
                         android:id="@+id/etLocation"
@@ -206,98 +204,89 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:fontFamily="@font/poppins_regular"
                         android:hint="City, Country"
-                        android:inputType="textPostalAddress"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#60FFFFFF"
-                        android:textSize="14sp" />
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:singleLine="true"/>
 
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:alpha="0.5"
                         android:src="@drawable/ic_trail"
-                        android:contentDescription="Location Icon" />
+                        app:tint="@color/text_secondary"/>
 
                 </LinearLayout>
 
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#2A2A2A" />
+                <!-- BIO -->
 
-                <!-- Bio -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Bio"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
+                    android:layout_marginTop="22dp"
+                    android:text="About you"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/bg_input_dark"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_airbnb_input"
                     android:gravity="top"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="14dp"
-                    android:paddingTop="10dp">
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="14dp">
 
                     <EditText
                         android:id="@+id/etBio"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:background="@null"
-                        android:fontFamily="@font/poppins_regular"
                         android:gravity="top"
-                        android:hint="Tell us about yourself..."
+                        android:hint="Tell guests about yourself..."
                         android:inputType="textMultiLine"
-                        android:maxLines="3"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#60FFFFFF"
-                        android:textSize="14sp" />
+                        android:maxLines="4"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_regular"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Save Changes Button -->
-            <androidx.appcompat.widget.AppCompatButton
+            <!-- SAVE BUTTON -->
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveChanges"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/bg_button_green"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Save Changes"
+                android:layout_height="54dp"
+                android:layout_marginTop="26dp"
+                android:text="Save changes"
                 android:textAllCaps="false"
-                android:textColor="#000000"
+                android:textColor="@android:color/white"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_medium"
+                android:backgroundTint="@color/airbnb_red"
+                app:cornerRadius="14dp"/>
 
-            <!-- Sign Out Button -->
+            <!-- SIGN OUT -->
+
             <Button
                 android:id="@+id/btnSignOut"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/bg_button_outline_red"
-                android:text="Sign Out"
+                android:layout_height="54dp"
+                android:layout_marginTop="14dp"
+                android:text="Sign out"
                 android:textAllCaps="false"
-                android:textColor="#FF4444"
-                android:fontFamily="@font/poppins_bold"
-                app:backgroundTint="@null" />
+                android:textColor="@color/airbnb_red"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:background="@drawable/bg_airbnb_outline_button"
+                app:backgroundTint="@null"/>
 
         </LinearLayout>
 

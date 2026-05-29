@@ -4,46 +4,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/colorBackground">
 
-    <!-- Header -->
-    <TextView
-        android:id="@+id/tvTodayTitle"
+    <!-- ================================= -->
+    <!-- HEADER -->
+    <!-- ================================= -->
+    <LinearLayout
+        android:id="@+id/topHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Today"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#1A1A1A"
-        android:layout_marginTop="56dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="36dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/tvTodaySubtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Your reservation activity"
-        android:textSize="14sp"
-        android:textColor="#717171"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTodayTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <!-- Filter Chips -->
+            <TextView
+                android:id="@+id/tvTodayTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                android:textColor="@color/text_primary"
+                android:textSize="28sp"
+                android:fontFamily="@font/poppins_medium" />
+
+            <TextView
+                android:id="@+id/tvTodaySubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Your reservation activity"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium" />
+        </LinearLayout>
+
+        <!-- Calendar Info -->
+        <ImageButton
+            android:id="@+id/btnCalendarInfo"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_circle_light"
+            android:contentDescription="Calendar"
+            android:elevation="2dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_calendar"
+            app:tint="@color/text_primary" />
+
+        <!-- Settings -->
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_circle_light"
+            android:contentDescription="Settings"
+            android:elevation="2dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_settings"
+            app:tint="@color/text_primary" />
+
+    </LinearLayout>
+
+    <!-- ================================= -->
+    <!-- FILTER CHIPS -->
+    <!-- ================================= -->
     <HorizontalScrollView
         android:id="@+id/filterContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/tvTodaySubtitle"
+        app:layout_constraintTop_toBottomOf="@id/topHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -51,19 +92,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp">
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="4dp">
 
             <TextView
                 android:id="@+id/chipToday"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="38dp"
                 android:text="Today"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
+                android:paddingHorizontal="24dp"
                 android:background="@drawable/bg_chip_selected"
                 android:textColor="@android:color/white"
                 android:clickable="true"
@@ -72,16 +113,15 @@
             <TextView
                 android:id="@+id/chipUpcoming"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="38dp"
                 android:text="Upcoming"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_marginStart="8dp"
+                android:paddingHorizontal="24dp"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/bg_chip_unselected"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:clickable="true"
                 android:focusable="true" />
 
@@ -96,17 +136,21 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/filterContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- ScrollView for Sections -->
+    <!-- ================================= -->
+    <!-- SECTIONS CONTAINER -->
+    <!-- ================================= -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="32dp"
         app:layout_constraintTop_toBottomOf="@id/filterContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,125 +160,172 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="16dp">
+            android:paddingHorizontal="24dp">
 
-            <!-- Today's Check-Ins Section -->
-            <LinearLayout
+            <!-- Today's Check-Ins Section Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/sectionCheckIns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/colorSurface"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TODAY'S CHECK-INS"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#717171"
-                    android:letterSpacing="0.05"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCheckIns"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TODAY'S CHECK-INS"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="12dp" />
 
-            <!-- Today's Check-Outs Section -->
-            <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCheckIns"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Today's Check-Outs Section Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/sectionCheckOuts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/colorSurface"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TODAY'S CHECK-OUTS"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#717171"
-                    android:letterSpacing="0.05"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCheckOuts"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TODAY'S CHECK-OUTS"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="12dp" />
 
-            <!-- Active Stays Section -->
-            <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCheckOuts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Active Stays Section Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/sectionActiveStays"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/colorSurface"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ACTIVE STAYS"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#717171"
-                    android:letterSpacing="0.05"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvActiveStays"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ACTIVE STAYS"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="12dp" />
 
-            <!-- Upcoming Reservations Section -->
-            <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvActiveStays"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Upcoming Reservations Section Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/sectionUpcoming"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/colorSurface"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="UPCOMING"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#717171"
-                    android:letterSpacing="0.05"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvUpcoming"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="UPCOMING RESERVATIONS"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="12dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvUpcoming"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Empty State -->
+    <!-- ================================= -->
+    <!-- EMPTY STATE -->
+    <!-- ================================= -->
     <LinearLayout
         android:id="@+id/emptyState"
         android:layout_width="0dp"
@@ -243,17 +334,17 @@
         android:gravity="center"
         android:visibility="gone"
         android:layout_marginHorizontal="40dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@drawable/ic_airbnb"
-            android:alpha="0.3"
-            app:tint="#717171"
+            android:alpha="0.2"
+            app:tint="@color/text_secondary"
             android:contentDescription="No reservations" />
 
         <TextView
@@ -262,9 +353,9 @@
             android:layout_height="wrap_content"
             android:text="No reservations today"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#1A1A1A"
-            android:layout_marginTop="16dp"/>
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="20dp"/>
 
         <TextView
             android:id="@+id/tvEmptySubtitle"
@@ -272,9 +363,10 @@
             android:layout_height="wrap_content"
             android:text="When guests book your listings, their reservations will appear here."
             android:textSize="14sp"
-            android:textColor="#717171"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/text_secondary"
             android:gravity="center"
-            android:lineSpacingExtra="4dp"
+            android:lineSpacingMultiplier="1.2"
             android:layout_marginTop="8dp"/>
 
     </LinearLayout>

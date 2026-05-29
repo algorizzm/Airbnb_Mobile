@@ -364,15 +364,6 @@
                         android:textSize="14sp"
                         android:layout_marginTop="10dp"/>
 
-                    <TextView
-                        android:id="@+id/btnEditBio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Edit"
-                        android:textColor="#FF385C"
-                        android:textSize="14sp"
-                        android:layout_marginTop="12dp"/>
-
                 </LinearLayout>
 
                 <!-- HOST CARD (NOT STICKY) -->
@@ -442,23 +433,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Your trips"
-                            android:textSize="15sp"
-                            android:textColor="#111111"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/rowHostingAccess"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="20dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Become a host"
                             android:textSize="15sp"
                             android:textColor="#111111"/>
 

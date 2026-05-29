@@ -163,8 +163,14 @@ class WishlistFragment : Fragment() {
             // Observe collections
             launch {
                 viewModel.collections.collect { collections ->
-                    collectionAdapter.submitList(collections)
-                    updateEmptyState(collections.isEmpty())
+                    // Bug 2 Fix: Hide empty Favorites collection from the wishlist screen.
+                    // Favorites should only appear when it contains at least one listing.
+                    // Non-default empty collections are still shown so users know they exist.
+                    val displayCollections = collections.filter { collection ->
+                        !(collection.isDefault && collection.isEmpty())
+                    }
+                    collectionAdapter.submitList(displayCollections)
+                    updateEmptyState(displayCollections.isEmpty())
                 }
             }
 

@@ -16,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.R
 import com.airbnb.databinding.FragmentExploreBinding
 import com.airbnb.ui.traveler.explore.adapter.ListingAdapter
+import com.airbnb.ui.traveler.wishlist.CreateCollectionDialog
+import com.airbnb.ui.traveler.wishlist.SelectCollectionDialog
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.airbnb.ui.auth.isUserAuthenticated
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class ExploreFragment : Fragment(R.layout.fragment_explore) {
@@ -261,27 +264,32 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
     // Wishlist Collection Handling
     // =====================================================
     private fun handleWishlistClick(listingId: String) {
-        // Check if listing is already in wishlist
+        // Check if listing is already in wishlist (sourced from collections, not legacy doc)
         val isInWishlist = viewModel.wishlistIds.value.contains(listingId)
-        
+
         if (isInWishlist) {
             // Remove from all collections
             viewModel.toggleWishlist(listingId)
         } else {
-            // Check how many collections exist
+            // Check how many collections exist to determine UX path
             lifecycleScope.launch {
                 val userId = com.airbnb.core.auth.AuthManager.currentUserId() ?: return@launch
                 val collectionRepo = com.airbnb.data.repository.WishlistCollectionRepository()
-                
+
                 collectionRepo.getCollections(userId)
                     .onSuccess { collections ->
                         when {
-                            collections.isEmpty() || collections.size == 1 -> {
-                                // Auto-save to default collection
+                            collections.isEmpty() -> {
+                                // Bug 2 Fix: No collections yet — show first-save dialog
+                                // instead of silently auto-creating Favorites.
+                                showFirstSaveDialog(listingId)
+                            }
+                            collections.size == 1 -> {
+                                // Single collection — auto-save with no friction
                                 viewModel.toggleWishlist(listingId)
                             }
                             else -> {
-                                // Show collection selection dialog
+                                // Multiple collections — let user pick
                                 showCollectionSelectionDialog(listingId)
                             }
                         }
@@ -294,8 +302,30 @@ class ExploreFragment : Fragment(R.layout.fragment_explore) {
         }
     }
 
+    /**
+     * Bug 2 Fix: Shows a lightweight premium Bottom Sheet dialog for the very first save action.
+     * The user can choose to save directly to Favorites (auto-created)
+     * or create a custom collection first. Matches Airbnb's premium bottom sheet design.
+     */
+    private fun showFirstSaveDialog(listingId: String) {
+        val firstSaveDialog = com.airbnb.ui.traveler.wishlist.FirstSaveDialog.newInstance()
+        firstSaveDialog.setOnSaveToFavoritesListener {
+            // Auto-create Favorites and save — zero friction path
+            viewModel.toggleWishlist(listingId)
+        }
+        firstSaveDialog.setOnCreateCollectionListener {
+            // Open the create collection dialog; after creation, save to it
+            val createDialog = CreateCollectionDialog()
+            createDialog.setOnCollectionCreated { collection ->
+                viewModel.addToCollection(listingId, collection.id)
+            }
+            createDialog.show(childFragmentManager, "CreateCollectionDialog")
+        }
+        firstSaveDialog.show(childFragmentManager, "FirstSaveDialog")
+    }
+
     private fun showCollectionSelectionDialog(listingId: String) {
-        val dialog = com.airbnb.ui.traveler.wishlist.SelectCollectionDialog.newInstance(listingId)
+        val dialog = SelectCollectionDialog.newInstance(listingId)
         dialog.setOnCollectionSelected { collectionId ->
             viewModel.addToCollection(listingId, collectionId)
         }

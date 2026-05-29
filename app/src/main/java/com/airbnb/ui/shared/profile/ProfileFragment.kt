@@ -25,7 +25,6 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.core.mode.AppMode
 import com.airbnb.core.mode.AppModeManager
 import com.airbnb.core.ui.AvatarHelper
-import com.airbnb.core.ui.EditTextDialog
 import com.airbnb.databinding.FragmentProfileBinding
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.bumptech.glide.Glide
@@ -207,16 +206,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             requestGalleryPermission()
         }
 
-        binding.btnEditBio.setOnClickListener {
-            showEditBioDialog()
-        }
-
         binding.rowEditProfile.setOnClickListener {
             findNavController().navigate(R.id.editProfileFragment)
-        }
-
-        binding.rowHostingAccess.setOnClickListener {
-            openHosting()
         }
 
         binding.tvSeeAllHikes.setOnClickListener {
@@ -242,7 +233,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.btnLogin.setOnClickListener {
             GuestPromptDialog.show(childFragmentManager)
         }
-
     }
 
     // =========================================================
@@ -358,21 +348,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     // =========================================================
     // DIALOGS
     // =========================================================
-
-    private fun showEditBioDialog() {
-
-        EditTextDialog.show(
-            context = requireContext(),
-            title = "Edit Bio",
-            initial = viewModel.state.value.user?.bio.orEmpty(),
-            hint = "Tell guests about yourself",
-            maxLength = 200,
-            multiLine = true
-        ) { newBio ->
-
-            viewModel.updateBio(newBio)
-        }
-    }
 
     private fun showAppInfoDialog() {
 

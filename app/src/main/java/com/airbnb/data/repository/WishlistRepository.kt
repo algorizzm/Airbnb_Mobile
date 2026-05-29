@@ -57,11 +57,11 @@ class WishlistRepository(
 
     /**
      * Checks if a listing is in the user's wishlist.
+     * Uses collection system (source of truth) rather than legacy document.
      */
-    suspend fun isListingInWishlist(userId: String, listingId: String): Boolean = runCatching {
-        val wishlist = getWishlist(userId).getOrNull() ?: return@runCatching false
-        wishlist.containsListing(listingId)
-    }.getOrDefault(false)
+    suspend fun isListingInWishlist(userId: String, listingId: String): Boolean {
+        return collectionRepository.isListingInAnyCollection(userId, listingId)
+    }
 
     /**
      * Adds a listing to the user's wishlist.

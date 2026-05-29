@@ -145,6 +145,8 @@ class WishlistCollectionRepository(
     /**
      * Deletes a collection.
      * If moveToDefault is true, moves all listings to the default collection.
+     * If moveToDefault is false, listings that are orphaned (not in any other collection)
+     * will also be removed from the legacy wishlist document to prevent stale state.
      */
     suspend fun deleteCollection(
         collectionId: String,
@@ -170,6 +172,30 @@ class WishlistCollectionRepository(
                 collection.listingIds.forEach { listingId ->
                     addListingToCollection(defaultCollection.id, listingId).getOrThrow()
                 }
+            }
+        } else if (!moveToDefault && collection.listingIds.isNotEmpty()) {
+            // Not moving listings — clean up legacy wishlist document for truly orphaned listings.
+            // A listing is orphaned if it no longer exists in any remaining collection.
+            val remainingCollections = getCollections(userId).getOrNull() ?: emptyList()
+            val stillWishlistedIds = remainingCollections
+                .filter { it.id != collectionId }
+                .flatMap { it.listingIds }
+                .toSet()
+
+            val orphanedIds = collection.listingIds.filter { it !in stillWishlistedIds }
+            if (orphanedIds.isNotEmpty()) {
+                val docRef = db.collection("wishlists").document(userId)
+                val batch = db.batch()
+                orphanedIds.forEach { listingId ->
+                    batch.update(
+                        docRef,
+                        mapOf(
+                            "listingIds" to FieldValue.arrayRemove(listingId),
+                            "updatedAt" to com.google.firebase.Timestamp.now()
+                        )
+                    )
+                }
+                batch.commit().await()
             }
         }
 
