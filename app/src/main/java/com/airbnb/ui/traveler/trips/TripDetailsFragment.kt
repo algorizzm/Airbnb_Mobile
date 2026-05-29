@@ -161,14 +161,19 @@ class TripDetailsFragment : Fragment(R.layout.fragment_trip_details) {
         // Set booking timeline
         binding.tvBookedDate.text = DateFormatter.formatFullDate(reservation.createdAt)
 
-        // Show/hide action buttons based on reservation state
-        val canCheckIn = reservation.canCheckIn()
-        val canCheckOut = reservation.canCheckOut()
-        val canEarlyCheckOut = reservation.canEarlyCheckOut()
-        val isCancellable = reservation.isCancellable()
-        val canReview = reservation.canSubmitReview()
+        // PERMISSION CHECK: Only the guest can check in/out
+        val currentUserId = com.airbnb.core.auth.AuthManager.currentUserId()
+        val isGuest = currentUserId == reservation.guestId
+        
+        // Show/hide action buttons based on reservation state AND permissions
+        val canCheckIn = isGuest && reservation.canCheckIn()
+        val canCheckOut = isGuest && reservation.canCheckOut()
+        val canEarlyCheckOut = isGuest && reservation.canEarlyCheckOut()
+        val isCancellable = isGuest && reservation.isCancellable()
+        val canReview = isGuest && reservation.canSubmitReview()
         
         // Debug logging
+        android.util.Log.d("TripDetails", "Current user: $currentUserId, Guest: ${reservation.guestId}, isGuest: $isGuest")
         android.util.Log.d("TripDetails", "Reservation status: ${reservation.status}")
         android.util.Log.d("TripDetails", "checkedIn: ${reservation.checkedIn}, checkedOut: ${reservation.checkedOut}")
         android.util.Log.d("TripDetails", "canCheckIn: $canCheckIn")

@@ -11,6 +11,7 @@ import com.airbnb.core.auth.AuthManager
 import com.airbnb.data.model.WishlistCollection
 import com.airbnb.data.repository.WishlistCollectionRepository
 import com.airbnb.databinding.DialogCreateCollectionBinding
+import com.google.android.material.R as MaterialR
 import kotlinx.coroutines.launch
 
 /**
@@ -22,7 +23,14 @@ class CreateCollectionDialog : DialogFragment() {
     private val binding get() = _binding!!
 
     private val collectionRepository = WishlistCollectionRepository()
+
     private var onCollectionCreated: ((WishlistCollection) -> Unit)? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setStyle(STYLE_NO_FRAME, android.R.style.Theme_Translucent_NoTitleBar)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,13 +41,24 @@ class CreateCollectionDialog : DialogFragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupButtons()
+
     }
 
     private fun setupButtons() {
+
         binding.btnCancel.setOnClickListener {
             dismiss()
         }
@@ -50,39 +69,51 @@ class CreateCollectionDialog : DialogFragment() {
     }
 
     private fun createCollection() {
+
         val name = binding.etCollectionName.text.toString().trim()
 
         if (name.isEmpty()) {
-            binding.etCollectionName.error = "Collection name is required"
+            binding.tilCollectionName.error = "Collection name is required"
             return
+        } else {
+            binding.tilCollectionName.error = null
         }
 
         val userId = AuthManager.currentUserId()
+
         if (userId == null) {
-            Toast.makeText(requireContext(), "User not authenticated", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "User not authenticated",
+                Toast.LENGTH_SHORT
+            ).show()
+
             dismiss()
             return
         }
 
-        binding.progressBar.visibility = View.VISIBLE
-        binding.btnCreate.isEnabled = false
-        binding.btnCancel.isEnabled = false
+        setLoading(true)
 
         lifecycleScope.launch {
+
             collectionRepository.createCollection(userId, name)
                 .onSuccess { collection ->
+
                     Toast.makeText(
                         requireContext(),
                         "Collection created",
                         Toast.LENGTH_SHORT
                     ).show()
+
                     onCollectionCreated?.invoke(collection)
+
                     dismiss()
                 }
+
                 .onFailure { error ->
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnCreate.isEnabled = true
-                    binding.btnCancel.isEnabled = true
+
+                    setLoading(false)
+
                     Toast.makeText(
                         requireContext(),
                         "Failed to create collection: ${error.message}",
@@ -92,7 +123,20 @@ class CreateCollectionDialog : DialogFragment() {
         }
     }
 
-    fun setOnCollectionCreated(callback: (WishlistCollection) -> Unit): CreateCollectionDialog {
+    private fun setLoading(isLoading: Boolean) {
+
+        binding.progressBar.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
+
+        binding.btnCreate.isEnabled = !isLoading
+        binding.btnCancel.isEnabled = !isLoading
+        binding.etCollectionName.isEnabled = !isLoading
+    }
+
+    fun setOnCollectionCreated(
+        callback: (WishlistCollection) -> Unit
+    ): CreateCollectionDialog {
+
         this.onCollectionCreated = callback
         return this
     }

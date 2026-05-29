@@ -156,7 +156,13 @@
     <fragment
         android:id="@+id/hostTodayFragment"
         android:name="com.airbnb.ui.host.today.HostTodayFragment"
-        android:label="Today" />
+        android:label="Today">
+
+        <action
+            android:id="@+id/action_hostToday_to_tripDetails"
+            app:destination="@id/tripDetailsFragment" />
+
+    </fragment>
 
     <!-- Host Calendar (placeholder — host mode root tab) -->
     <fragment

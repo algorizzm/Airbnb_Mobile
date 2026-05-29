@@ -1,39 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent"
+    android:background="#66000000">
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save to collection"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:layout_margin="24dp"
+        app:cardBackgroundColor="@color/colorSurface"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCollections"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="300dp"
-        android:layout_marginBottom="16dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btnCreateNew"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Create new collection"
-        style="@style/Widget.Material3.Button.OutlinedButton" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
 
-</LinearLayout>
+                <!-- Title -->
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Save to collection"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginEnd="48dp" />
+
+                <!-- Loading -->
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone" />
+
+                <!-- Collections List -->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewCollections"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="320dp"
+                    android:layout_marginBottom="24dp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="4dp" />
+
+                <!-- Create New Collection Button -->
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCreateNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Create new collection"
+                    android:textAllCaps="false"
+                    android:textColor="@color/airbnb_red"
+                    android:textSize="15sp"
+                    app:backgroundTint="@color/airbnb_red_light"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/airbnb_red"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

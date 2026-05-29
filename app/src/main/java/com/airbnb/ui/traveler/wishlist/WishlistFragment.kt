@@ -10,17 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.R
 import com.airbnb.databinding.FragmentWishlistBinding
-import com.airbnb.ui.traveler.wishlist.adapter.WishlistAdapter
 import com.airbnb.ui.traveler.wishlist.adapter.WishlistCollectionAdapter
-import com.airbnb.ui.auth.GuestPromptHelper
 import com.airbnb.ui.auth.isUserAuthenticated
 import kotlinx.coroutines.launch
 import com.airbnb.ui.auth.GuestPromptDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.airbnb.core.ui.EditTextDialog
+import com.airbnb.data.model.WishlistCollection
 
 class WishlistFragment : Fragment() {
 
@@ -108,22 +106,25 @@ class WishlistFragment : Fragment() {
         dialog.show(parentFragmentManager, "CreateCollectionDialog")
     }
 
-    private fun showCollectionOptionsDialog(collection: com.airbnb.data.model.WishlistCollection) {
-        val options = if (collection.isDefault) {
-            arrayOf("Rename")
-        } else {
-            arrayOf("Rename", "Delete")
-        }
+    private fun showCollectionOptionsDialog(
+        collection: WishlistCollection
+    ) {
 
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(collection.name)
-            .setItems(options) { _, which ->
-                when (options[which]) {
-                    "Rename" -> showRenameDialog(collection)
-                    "Delete" -> showDeleteConfirmation(collection)
-                }
+        OptionCollectionDialog()
+            .setCollection(collection)
+
+            .setOnRenameClick {
+                showRenameDialog(it)
             }
-            .show()
+
+            .setOnDeleteClick {
+                viewModel.deleteCollection(collection)
+            }
+
+            .show(
+                parentFragmentManager,
+                "OptionCollectionDialog"
+            )
     }
 
     private fun showRenameDialog(collection: com.airbnb.data.model.WishlistCollection) {
@@ -151,7 +152,7 @@ class WishlistFragment : Fragment() {
             .setTitle("Delete Collection")
             .setMessage(message)
             .setPositiveButton("Delete") { _, _ ->
-                viewModel.deleteCollection(collection.id)
+                viewModel.deleteCollection(collection)
             }
             .setNegativeButton("Cancel", null)
             .show()

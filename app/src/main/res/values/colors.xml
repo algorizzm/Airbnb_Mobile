@@ -43,6 +43,7 @@
     <!-- Status Colors -->
     <color name="green">#34A853</color>
     <color name="red">#FF385C</color>
+    <color name="error_red">#E53935</color>
     <color name="gray">#717171</color>
     <color name="light_gray">#DDDDDD</color>
     <color name="airbnb_black">#222222</color>

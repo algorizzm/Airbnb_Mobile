@@ -1,58 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    android:layout_width="160dp"
+    android:layout_height="200dp"
+    android:layout_margin="10dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground">
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="22dp"
+    app:cardElevation="5dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <!-- Cover Image Placeholder -->
+        <!-- COVER IMAGE -->
         <ImageView
             android:id="@+id/ivCoverImage"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:scaleType="centerCrop"
-            android:background="@android:color/darker_gray"
-            android:contentDescription="Collection cover" />
+            android:background="#EAEAEA"
+            android:contentDescription="Collection cover"/>
 
-        <!-- Collection Info -->
+        <!-- TEXT -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:paddingTop="12dp"
+            android:paddingBottom="2dp">
 
             <TextView
                 android:id="@+id/tvCollectionName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Collection Name"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
+                android:text="Favorites"
+                android:textColor="#111111"
+                android:textSize="14sp"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_medium"/>
 
             <TextView
                 android:id="@+id/tvListingCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0 saved listings"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:text="1 saved listing"
+                android:textColor="#717171"
+                android:textSize="10sp"
+                android:fontFamily="@font/poppins_regular"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

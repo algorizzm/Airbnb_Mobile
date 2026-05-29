@@ -80,11 +80,23 @@ class WishlistViewModel(
         }
     }
 
-    fun deleteCollection(collectionId: String) {
+    fun deleteCollection(collection: WishlistCollection) {
+
+        // HARD BLOCK
+        if (collection.isDefault) {
+            _toast.value = "Favorites collection cannot be deleted"
+            return
+        }
+
         val userId = AuthManager.currentUserId() ?: return
 
         viewModelScope.launch {
-            collectionRepository.deleteCollection(collectionId, userId, moveToDefault = true)
+
+            collectionRepository.deleteCollection(
+                collection.id,
+                userId,
+                moveToDefault = true
+            )
                 .onSuccess {
                     _toast.value = "Collection deleted"
                 }
